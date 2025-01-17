@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "574208874819",
+    "project_id": "artshift-1dd3f",
+    "storage_bucket": "artshift-1dd3f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574208874819:android:1093855be9a03a0fa0b7f6",
+        "android_client_info": {
+          "package_name": "com.example.artshift"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "574208874819-bs99i1tsnuatapobslrasi9m9kmaei7p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.artshift",
+            "certificate_hash": "1bc535763e4f79dfb2ce543e01971c2738a1bc8c"
+          }
+        },
+        {
+          "client_id": "574208874819-j716d320gv0oo3g5gvrktet76divprro.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0hxHYegoN_ckIviij1bxvfiIFRg5RU3M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "574208874819-j716d320gv0oo3g5gvrktet76divprro.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
