@@ -1,4 +1,4 @@
-name: artshift
+name: ARTShift
 description: 'Aplikasi Pengelolaan Jadwal dan Absensi Keryawan'
 
 publish_to: 'none'
@@ -25,12 +25,21 @@ dependencies:
 
   # Other Dependencies
   cupertino_icons: ^1.0.8
+  bloc: ^9.0.0
+  font_awesome_flutter: ^10.8.0
+  flutter_launcher_icons: ^0.14.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
+
+flutter_launcher_icons:
+  android: 'launcher_icon'
+  ios: true
+  image_path: 'assets/icons/ARTShift_icon_app.png'
+  min_sdk_android: 21 # android min sdk min:16, default 21
 
 flutter:
   uses-material-design: true

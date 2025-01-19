@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'login_screen.dart';
+import '../../widgets/custom_button.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -6,13 +8,15 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Home")),
       body: Center(
-        child: ElevatedButton(
+        child: CustomButton(
+          text: "Masuk",
           onPressed: () {
-            //Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginScreen()),
+            );
           },
-          child: const Text("Masuk"),
         ),
       ),
     );
