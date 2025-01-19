@@ -10,6 +10,8 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: CustomButton(
+          width: 130,
+          height: 50,
           text: "Masuk",
           onPressed: () {
             Navigator.push(

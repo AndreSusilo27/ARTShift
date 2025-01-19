@@ -1,4 +1,7 @@
+import 'package:ARTShift/widgets/custom_button.dart';
+import 'package:ARTShift/widgets/custom_textformfield.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LengkapiDataScreen extends StatefulWidget {
@@ -15,30 +18,72 @@ class _LengkapiDataScreenState extends State<LengkapiDataScreen> {
   final _addressController = TextEditingController();
   String _selectedGender = 'Laki - Laki';
 
-  // Fungsi untuk menyimpan data ke Firestore
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  void _loadUserData() async {
+    // Mendapatkan email pengguna yang sedang login
+    User? user = FirebaseAuth.instance.currentUser;
+    String userEmail = user?.email ?? '';
+
+    if (userEmail.isNotEmpty) {
+      try {
+        // Mengambil data pengguna dari Firestore berdasarkan email
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection('biodata')
+            .doc(userEmail)
+            .get();
+
+        if (userDoc.exists) {
+          // Jika data ditemukan, auto-isi form dengan data yang ada
+          setState(() {
+            _jobController.text = userDoc['job'] ?? '';
+            _phoneController.text = userDoc['phone'] ?? '';
+            _selectedGender = userDoc['gender'] ?? 'Laki - Laki';
+            _addressController.text = userDoc['address'] ?? '';
+          });
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Gagal memuat data: $e')),
+        );
+      }
+    }
+  }
+
   void _saveData() async {
     if (_formKey.currentState!.validate()) {
       try {
-        await FirebaseFirestore.instance.collection('users').add({
-          'job': _jobController.text,
-          'phone': _phoneController.text,
-          'gender': _selectedGender,
-          'address': _addressController.text,
-          'created_at': FieldValue.serverTimestamp(),
-        });
+        // Mendapatkan email pengguna yang sedang login
+        User? user = FirebaseAuth.instance.currentUser;
+        String userEmail = user?.email ?? ''; // Ambil email user yang login
 
-        // Menampilkan snackbar jika berhasil
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Data berhasil disimpan')),
-        );
+        if (userEmail.isNotEmpty) {
+          // Menyimpan data ke dalam koleksi 'biodata' dengan ID dokumen berdasarkan email
+          await FirebaseFirestore.instance
+              .collection('biodata')
+              .doc(userEmail)
+              .set({
+            'job': _jobController.text,
+            'phone': _phoneController.text,
+            'gender': _selectedGender,
+            'address': _addressController.text,
+            'created_at': FieldValue.serverTimestamp(),
+            'updated_at':
+                FieldValue.serverTimestamp(), // Menandakan waktu update
+          });
 
-        // Kosongkan input setelah submit
-        _jobController.clear();
-        _phoneController.clear();
-        _addressController.clear();
-        setState(() {
-          _selectedGender = 'Laki - Laki';
-        });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Data berhasil disimpan')),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('User belum login')),
+          );
+        }
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Gagal menyimpan data: $e')),
@@ -51,37 +96,33 @@ class _LengkapiDataScreenState extends State<LengkapiDataScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lengkapi Data',
-            style: TextStyle(fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.deepPurpleAccent,
         automaticallyImplyLeading: false,
+        title: Text('Lengkapi Data'),
+        backgroundColor: Colors.grey[200],
+        elevation: 0,
+        titleTextStyle: TextStyle(
+          color: Colors.black,
+          fontSize: 18,
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
             children: [
               Center(
-                child: Column(
-                  children: [
-                    Text(
-                      'Harap lengkapi data informasi yang dibutuhkan.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
-                    ),
-                    SizedBox(height: 20),
-                  ],
+                child: Text(
+                  'Harap lengkapi data informasi yang dibutuhkan.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
               ),
-              Text("Bidang Pekerjaan"),
-              TextFormField(
+              SizedBox(height: 20),
+              CustomTextFormField(
+                labelText: "Bidang Pekerjaan",
                 controller: _jobController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Masukkan bidang pekerjaan',
-                ),
+                hintText: 'Masukkan bidang pekerjaan',
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Bidang pekerjaan tidak boleh kosong';
@@ -90,14 +131,11 @@ class _LengkapiDataScreenState extends State<LengkapiDataScreen> {
                 },
               ),
               SizedBox(height: 10),
-              Text("No. Telepon"),
-              TextFormField(
+              CustomTextFormField(
+                labelText: "No. Telepon",
                 controller: _phoneController,
+                hintText: '+62 - 021 - 1234 - 5678',
                 keyboardType: TextInputType.phone,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: '+62 - 021 - 1234 - 5678',
-                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Nomor telepon tidak boleh kosong';
@@ -106,7 +144,8 @@ class _LengkapiDataScreenState extends State<LengkapiDataScreen> {
                 },
               ),
               SizedBox(height: 10),
-              Text("Jenis Kelamin"),
+              Text("Jenis Kelamin", style: TextStyle(fontSize: 16)),
+              SizedBox(height: 5),
               DropdownButtonFormField<String>(
                 value: _selectedGender,
                 onChanged: (String? newValue) {
@@ -122,16 +161,15 @@ class _LengkapiDataScreenState extends State<LengkapiDataScreen> {
                     .toList(),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 12, vertical: 14),
                 ),
               ),
               SizedBox(height: 10),
-              Text("Alamat"),
-              TextFormField(
+              CustomTextFormField(
+                labelText: "Alamat",
                 controller: _addressController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Masukkan alamat',
-                ),
+                hintText: 'Masukkan alamat',
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Alamat tidak boleh kosong';
@@ -140,24 +178,15 @@ class _LengkapiDataScreenState extends State<LengkapiDataScreen> {
                 },
               ),
               SizedBox(height: 20),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _saveData,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.purple,
-                    padding: EdgeInsets.symmetric(vertical: 15),
-                  ),
-                  child: Text(
-                    'Simpan Data',
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
-                ),
+              CustomButton(
+                text: 'Simpan Data',
+                onPressed: _saveData,
               ),
             ],
           ),
         ),
       ),
+      floatingActionButton: CustomFloatingBackButton(),
     );
   }
 }

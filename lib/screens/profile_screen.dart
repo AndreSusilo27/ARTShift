@@ -1,7 +1,6 @@
+import 'package:ARTShift/widgets/custom_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:ARTShift/screens/dashboard_admin_screen.dart';
-import 'package:ARTShift/screens/dashboard_karyawan_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   final String email;
@@ -14,10 +13,10 @@ class ProfileScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Profile'),
         automaticallyImplyLeading: false,
+        backgroundColor: const Color.fromARGB(255, 210, 210, 210),
       ),
       body: SafeArea(
         child: FutureBuilder<QuerySnapshot>(
-          // Ambil data pengguna dari koleksi 'users' berdasarkan email
           future: FirebaseFirestore.instance
               .collection('users')
               .where('email', isEqualTo: email)
@@ -28,30 +27,26 @@ class ProfileScreen extends StatelessWidget {
             }
 
             if (snapshot.hasError) {
-              return Center(
-                  child: Text('Terjadi kesalahan: ${snapshot.error}'));
+              return Center(child: Text('Error: ${snapshot.error}'));
             }
 
             if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return const Center(
-                  child: Text('Data pengguna tidak ditemukan.'));
+              return const Center(child: Text('User data not found.'));
             }
 
-            // Ambil data dari koleksi 'users'
+            // Extract user data from the snapshot
             var userData =
                 snapshot.data!.docs[0].data() as Map<String, dynamic>;
-            String name = userData['name'] ?? 'Nama tidak tersedia';
+            String name = userData['name'] ?? 'Name not available';
             String photoUrl = userData['photoUrl'] ?? '';
             String emailFromFirestore =
-                userData['email'] ?? 'Email tidak tersedia';
-            String role =
-                userData['role'] ?? 'Role tidak tersedia'; // Role pengguna
+                userData['email'] ?? 'Email not available';
+            String role = userData['role'] ?? 'Role not available';
 
-            // Ambil data tambahan dari koleksi 'biodata' berdasarkan email
             return FutureBuilder<DocumentSnapshot>(
               future: FirebaseFirestore.instance
-                  .collection('biodata') // Koleksi 'biodata'
-                  .doc(email) // Menggunakan email sebagai ID dokumen
+                  .collection('biodata') // 'biodata' collection
+                  .doc(email)
                   .get(),
               builder: (context, biodataSnapshot) {
                 if (biodataSnapshot.connectionState ==
@@ -60,125 +55,105 @@ class ProfileScreen extends StatelessWidget {
                 }
 
                 if (biodataSnapshot.hasError) {
-                  return Center(
-                      child:
-                          Text('Terjadi kesalahan: ${biodataSnapshot.error}'));
+                  return Center(child: Text('Error: ${biodataSnapshot.error}'));
                 }
 
                 if (!biodataSnapshot.hasData || !biodataSnapshot.data!.exists) {
-                  return const Center(
-                      child: Text('Data biodata tidak ditemukan.'));
+                  return const Center(child: Text('Biodata not found.'));
                 }
 
-                // Ambil data biodata pengguna dari koleksi 'biodata'
+                // Extract biodata from the snapshot
                 var biodata =
                     biodataSnapshot.data!.data() as Map<String, dynamic>;
-                String job = biodata['job'] ?? 'Pekerjaan tidak tersedia';
-                String gender =
-                    biodata['gender'] ?? 'Jenis kelamin tidak tersedia';
-                String phone = biodata['phone'] ?? 'Nomor tidak tersedia';
-                String address = biodata['address'] ?? 'Alamat tidak tersedia';
+                String job = biodata['job'] ?? 'Job not available';
+                String gender = biodata['gender'] ?? 'Gender not available';
+                String phone = biodata['phone'] ?? 'Phone not available';
+                String address = biodata['address'] ?? 'Address not available';
 
                 return Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Card untuk Menampilkan Profil Pengguna
-                      Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        elevation: 5,
-                        child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Column(
-                            children: [
-                              // Foto Profil
-                              CircleAvatar(
-                                radius: 50,
-                                backgroundImage: photoUrl.isNotEmpty
-                                    ? NetworkImage(photoUrl)
-                                    : const AssetImage(
-                                            'assets/default_avatar.png')
-                                        as ImageProvider,
-                              ),
-                              const SizedBox(height: 20),
-                              Text(
-                                "Selamat datang, $name",
-                                style: const TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
+                  child: Center(
+                    // Center the entire content of the screen
+                    child: Column(
+                      crossAxisAlignment:
+                          CrossAxisAlignment.center, // Center all children
+                      children: [
+                        // Profile Card
+                        Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          elevation: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              children: [
+                                // Profile Picture
+                                CircleAvatar(
+                                  radius: 50,
+                                  backgroundImage: photoUrl.isNotEmpty
+                                      ? NetworkImage(photoUrl)
+                                      : const AssetImage(
+                                              'assets/default_avatar.png')
+                                          as ImageProvider,
                                 ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                emailFromFirestore,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey,
+                                const SizedBox(height: 20),
+                                Text(
+                                  "Hello, $name",
+                                  style: const TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                            ],
+                                const SizedBox(height: 8),
+                                Text(
+                                  emailFromFirestore,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                // Display Role
+                                Text(
+                                  "$role",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.blue[800],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 30),
-                      // Menampilkan biodata tambahan dalam bentuk daftar
-                      Text(
-                        "Pekerjaan: $job",
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w500),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        "Jenis Kelamin: $gender",
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w500),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        "Nomor Telepon: $phone",
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w500),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        "Alamat: $address",
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w500),
-                      ),
-                      const SizedBox(height: 30),
-                      // Tombol untuk navigasi ke dashboard berdasarkan role
-                      ElevatedButton(
-                        onPressed: () {
-                          if (role == 'Admin') {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DashboardAdminScreen(
-                                    name, emailFromFirestore, photoUrl),
-                              ),
-                            );
-                          } else if (role == 'Karyawan') {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DashboardKaryawanScreen(
-                                    name, emailFromFirestore, photoUrl),
-                              ),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Role pengguna tidak valid.'),
-                              ),
-                            );
-                          }
-                        },
-                        child: const Text('Go to Dashboard'),
-                      ),
-                    ],
+                        const SizedBox(height: 30),
+                        // Display Additional Biodata
+                        Text(
+                          "Job: $job",
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w500),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          "Gender: $gender",
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w500),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          "Phone: $phone",
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w500),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          "Address: $address",
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
@@ -186,6 +161,7 @@ class ProfileScreen extends StatelessWidget {
           },
         ),
       ),
+      floatingActionButton: CustomFloatingBackButton(),
     );
   }
 }

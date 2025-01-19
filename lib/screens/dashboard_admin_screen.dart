@@ -53,12 +53,11 @@ class DashboardAdminScreen extends StatelessWidget {
         ),
       ),
 
-      // Menggunakan CustomDrawer
-      drawer: CustomDrawer(
+      // Menggunakan CustomDrawerAdmin
+      drawer: CustomDrawerAdmin(
         name: name,
         email: email,
         photoUrl: photoUrl,
-        selectedMenu: "Dashboard", // Menandai menu yang aktif
       ),
 
       body: Align(

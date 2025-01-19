@@ -65,7 +65,7 @@ class DashboardKaryawanScreen extends StatelessWidget {
               currentAccountPicture: Stack(
                 children: [
                   CircleAvatar(
-                    radius: 35,
+                    radius: 40,
                     backgroundImage: NetworkImage(photoUrl),
                   ),
                   Positioned(

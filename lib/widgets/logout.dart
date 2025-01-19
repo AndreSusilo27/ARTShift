@@ -37,8 +37,7 @@ void showLogoutDialog(BuildContext context) {
                 child: OutlinedButton(
                   onPressed: () => Navigator.of(dialogContext).pop(),
                   style: OutlinedButton.styleFrom(
-                    side:
-                        const BorderSide(color: Colors.black54), // Border hitam
+                    side: const BorderSide(color: Colors.grey), // Border hitam
                     padding: const EdgeInsets.symmetric(
                         horizontal: 15, vertical: 10), // Padding
                   ),
@@ -61,8 +60,7 @@ void showLogoutDialog(BuildContext context) {
                         '/splash'); // Arahkan ke SplashScreen terlebih dahulu
                   },
                   style: OutlinedButton.styleFrom(
-                    side:
-                        const BorderSide(color: Colors.black54), // Border hitam
+                    side: const BorderSide(color: Colors.grey), // Border hitam
                     padding: const EdgeInsets.symmetric(
                         horizontal: 15, vertical: 10), // Padding
                   ),
