@@ -38,7 +38,7 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  // 🔹 Form Input Shift
+                  // Form Input Shift
                   Form(
                     key: _formKey,
                     child: Column(
@@ -105,13 +105,12 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
                         ),
                         const Divider(
                             thickness: 2,
-                            height:
-                                30), // 🔹 Pembatas antara form & daftar shift
+                            height: 30), // Pembatas antara form & daftar shift
                       ],
                     ),
                   ),
 
-                  // 🔹 Menampilkan Data Shift
+                  // Menampilkan Data Shift
                   if (state is AkunDanShiftLoading)
                     const Center(child: CircularProgressIndicator()),
 
@@ -155,7 +154,7 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
     );
   }
 
-  // 🔹 Fungsi untuk memilih waktu
+  // Fungsi untuk memilih waktu
   Future<void> _selectTime(
       BuildContext context, TextEditingController controller) async {
     TimeOfDay? pickedTime = await showTimePicker(
@@ -169,7 +168,7 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
     }
   }
 
-  // 🔹 Fungsi untuk memilih tanggal dengan format dd-MM-yyyy
+  // Fungsi untuk memilih tanggal dengan format dd-MM-yyyy
   Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -179,14 +178,14 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
     );
     if (pickedDate != null) {
       String formattedDate =
-          DateFormat('dd-MM-yyyy').format(pickedDate); // 🔹 Format dd-MM-yyyy
+          DateFormat('dd-MM-yyyy').format(pickedDate); // Format dd-MM-yyyy
       setState(() {
         tanggalAkhirController.text = formattedDate;
       });
     }
   }
 
-  // 🔹 Fungsi untuk menambah shift ke Firestore
+  // Fungsi untuk menambah shift ke Firestore
   void _submitData(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       context.read<AkunDanShiftBloc>().add(TambahShiftKategoriEvent(
