@@ -1,4 +1,5 @@
-import 'package:ARTShift/widgets/logout.dart';
+import 'package:ARTShift/widgets/apptheme.dart';
+import 'package:ARTShift/widgets/custom_drawer_karyawan.dart';
 import 'package:flutter/material.dart';
 
 class DashboardKaryawanScreen extends StatelessWidget {
@@ -14,86 +15,11 @@ class DashboardKaryawanScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => _scaffoldKey.currentState!.openDrawer(),
-          icon: Image.asset(
-            'assets/icons/drawer_icon.png',
-            height: 24,
-            width: 24,
-          ),
-        ),
-        title: Padding(
-          padding: const EdgeInsets.only(top: 8.5),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset(
-                'assets/icons/ARTShift_icon.png',
-                height: 26,
-              ),
-              const SizedBox(width: 5),
-              const Text(
-                "ARTShift",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                  color: Color.fromARGB(255, 128, 82, 227),
-                ),
-              ),
-            ],
-          ),
-        ),
-        backgroundColor: const Color.fromARGB(255, 210, 210, 210),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(20),
-            bottomRight: Radius.circular(20),
-          ),
-        ),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            UserAccountsDrawerHeader(
-              accountName: Text(
-                name,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              accountEmail: Text(email),
-              currentAccountPicture: Stack(
-                children: [
-                  CircleAvatar(
-                    radius: 40,
-                    backgroundImage: NetworkImage(photoUrl),
-                  ),
-                  Positioned(
-                    bottom: 3,
-                    right: 8,
-                    child: Container(
-                      width: 12,
-                      height: 12,
-                      decoration: BoxDecoration(
-                        color: Colors.green,
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 1.2),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              decoration: const BoxDecoration(
-                color: Colors.blue,
-              ),
-            ),
-            _buildDrawerItem(Icons.home, "Dashboard", () {}),
-            _buildDrawerItem(Icons.settings, "Pengaturan", () {}),
-            _buildDrawerItem(Icons.logout, "Keluar", () {
-              showLogoutDialog(context);
-            }),
-          ],
-        ),
+      appBar: AppTheme.customAppBar(scaffoldKey: _scaffoldKey),
+      drawer: CustomDrawerKaryawan(
+        name: name,
+        email: email,
+        photoUrl: photoUrl,
       ),
       body: Align(
         alignment: Alignment.topCenter,
@@ -167,17 +93,6 @@ class DashboardKaryawanScreen extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  /// Widget untuk membuat item di Drawer lebih rapi
-  Widget _buildDrawerItem(IconData icon, String title, VoidCallback onTap) {
-    return ListTile(
-      leading: Icon(icon, size: 24),
-      title: Text(title, style: const TextStyle(fontSize: 16)),
-      dense: true,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-      onTap: onTap,
     );
   }
 }

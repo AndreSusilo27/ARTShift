@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/images/ARTShift_Logo.png',
+              'assets/images/ARTShift_logo.png',
               width: 300,
             ),
             const SizedBox(height: 20),

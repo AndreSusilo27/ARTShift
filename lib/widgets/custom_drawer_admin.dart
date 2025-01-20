@@ -1,3 +1,6 @@
+import 'package:ARTShift/screens/kelola_akunadmin_screen.dart';
+import 'package:ARTShift/screens/kelola_akunkaryawan_screen.dart';
+import 'package:ARTShift/screens/kelola_kategori_screen.dart';
 import 'package:ARTShift/screens/lengkapidata_screen.dart';
 import 'package:ARTShift/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -109,17 +112,42 @@ class CustomDrawerAdmin extends StatelessWidget {
               "Laporan",
               navigateTo: () {},
             ),
+
             _buildDrawerItem(
               context,
-              Icons.account_circle_rounded,
+              Icons.group_rounded,
               "Kelola Akun Admin",
-              navigateTo: () {},
+              navigateTo: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => KelolaAkunAdminScreen()),
+                );
+              },
             ),
             _buildDrawerItem(
               context,
               Icons.group_rounded,
-              "Kelola Akun dan Shift Karyawan",
-              navigateTo: () {},
+              "Kelola Akun Karyawan",
+              navigateTo: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => KelolaAkunKaryawanScreen()),
+                );
+              },
+            ),
+            _buildDrawerItem(
+              context,
+              Icons.group_rounded,
+              "Kelola Kategori Shift",
+              navigateTo: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => KelolaKategoriScreen()),
+                );
+              },
             ),
             _buildDrawerItem(
               context,

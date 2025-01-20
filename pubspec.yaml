@@ -28,6 +28,8 @@ dependencies:
   bloc: ^9.0.0
   font_awesome_flutter: ^10.8.0
   flutter_launcher_icons: ^0.14.3
+  intl: ^0.20.1
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:
@@ -38,7 +40,7 @@ dev_dependencies:
 flutter_launcher_icons:
   android: 'launcher_icon'
   ios: true
-  image_path: 'assets/icons/ARTShift_icon_app.png'
+  image_path: 'assets/icons/ARTShift_icon.png'
   min_sdk_android: 21 # android min sdk min:16, default 21
 
 flutter:

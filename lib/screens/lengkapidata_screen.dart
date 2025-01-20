@@ -98,12 +98,6 @@ class _LengkapiDataScreenState extends State<LengkapiDataScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text('Lengkapi Data'),
-        backgroundColor: Colors.grey[200],
-        elevation: 0,
-        titleTextStyle: TextStyle(
-          color: Colors.black,
-          fontSize: 18,
-        ),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),

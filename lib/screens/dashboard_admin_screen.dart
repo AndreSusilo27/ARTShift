@@ -1,3 +1,4 @@
+import 'package:ARTShift/widgets/apptheme.dart';
 import 'package:flutter/material.dart';
 import 'package:ARTShift/widgets/custom_drawer_admin.dart';
 
@@ -14,52 +15,12 @@ class DashboardAdminScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => _scaffoldKey.currentState!.openDrawer(),
-          icon: Image.asset(
-            'assets/icons/drawer_icon.png',
-            height: 24,
-            width: 24,
-          ),
-        ),
-        title: Padding(
-          padding: const EdgeInsets.only(top: 8.5),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset(
-                'assets/icons/ARTShift_icon.png',
-                height: 26,
-              ),
-              const SizedBox(width: 5),
-              const Text(
-                "ARTShift",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                  color: Color.fromARGB(255, 128, 82, 227),
-                ),
-              ),
-            ],
-          ),
-        ),
-        backgroundColor: const Color.fromARGB(255, 210, 210, 210),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(20),
-            bottomRight: Radius.circular(20),
-          ),
-        ),
-      ),
-
-      // Menggunakan CustomDrawerAdmin
+      appBar: AppTheme.customAppBar(scaffoldKey: _scaffoldKey),
       drawer: CustomDrawerAdmin(
         name: name,
         email: email,
         photoUrl: photoUrl,
       ),
-
       body: Align(
         alignment: Alignment.topCenter,
         child: Padding(

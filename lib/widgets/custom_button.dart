@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class CustomButton extends StatelessWidget {
   final String text;
   final IconData? icon;
+  final String? imageAsset; // Menambahkan parameter untuk gambar
   final VoidCallback onPressed;
   final double? width;
   final double? height;
@@ -14,6 +15,7 @@ class CustomButton extends StatelessWidget {
     required this.text,
     required this.onPressed,
     this.icon,
+    this.imageAsset, // Menambahkan imageAsset untuk ikon gambar
     this.width,
     this.height = 50, // Default tinggi 50
     this.color = Colors.blue, // Default warna biru
@@ -39,7 +41,14 @@ class CustomButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (icon != null) ...[
+            if (imageAsset != null) ...[
+              Image.asset(
+                imageAsset!, // Menampilkan gambar jika ada
+                height: 24, // Sesuaikan ukuran gambar
+                width: 24,
+              ),
+              SizedBox(width: 10), // Jarak antara gambar dan teks
+            ] else if (icon != null) ...[
               Icon(icon, color: Colors.white),
               SizedBox(width: 8), // Jarak antara ikon dan teks
             ],

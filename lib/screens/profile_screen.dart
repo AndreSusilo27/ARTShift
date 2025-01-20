@@ -13,7 +13,6 @@ class ProfileScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Profile'),
         automaticallyImplyLeading: false,
-        backgroundColor: const Color.fromARGB(255, 210, 210, 210),
       ),
       body: SafeArea(
         child: FutureBuilder<QuerySnapshot>(
@@ -116,7 +115,7 @@ class ProfileScreen extends StatelessWidget {
                                 const SizedBox(height: 8),
                                 // Display Role
                                 Text(
-                                  "$role",
+                                  " $role ",
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
