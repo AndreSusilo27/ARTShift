@@ -1,15 +1,16 @@
+// shift_kategori_bloc.dart
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'shift_kategori_event.dart';
 import 'shift_kategori_state.dart';
 
-class AkunDanShiftBloc extends Bloc<AkunDanShiftEvent, AkunDanShiftState> {
+class ShiftKategoriBloc extends Bloc<ShiftKategoriEvent, ShiftKategoriState> {
   final FirebaseFirestore firestore;
 
-  AkunDanShiftBloc({required this.firestore}) : super(AkunDanShiftInitial()) {
+  ShiftKategoriBloc({required this.firestore}) : super(ShiftKategoriInitial()) {
     // Handler untuk event FetchShiftKategoriEvent
     on<FetchShiftKategoriEvent>((event, emit) async {
-      emit(AkunDanShiftLoading());
+      emit(ShiftKategoriLoading());
       try {
         // Ambil data dari Firestore
         QuerySnapshot querySnapshot =
@@ -25,9 +26,9 @@ class AkunDanShiftBloc extends Bloc<AkunDanShiftEvent, AkunDanShiftState> {
           };
         }).toList();
 
-        emit(AkunDanShiftLoaded(shiftKategori: shiftKategori));
+        emit(ShiftKategoriLoaded(shiftKategori: shiftKategori));
       } catch (e) {
-        emit(AkunDanShiftError(
+        emit(ShiftKategoriError(
             message: "Gagal mengambil data shift: ${e.toString()}"));
       }
     });
@@ -45,7 +46,7 @@ class AkunDanShiftBloc extends Bloc<AkunDanShiftEvent, AkunDanShiftState> {
         // Setelah menambahkan, refresh daftar shift
         add(FetchShiftKategoriEvent());
       } catch (e) {
-        emit(AkunDanShiftError(
+        emit(ShiftKategoriError(
             message: "Gagal menambah shift: ${e.toString()}"));
       }
     });
@@ -53,12 +54,30 @@ class AkunDanShiftBloc extends Bloc<AkunDanShiftEvent, AkunDanShiftState> {
     // Handler untuk event HapusShiftKategoriEvent
     on<HapusShiftKategoriEvent>((event, emit) async {
       try {
-        await firestore.collection('shift_kategori').doc(event.id).delete();
+        // Mencari dokumen berdasarkan nama_shift
+        final querySnapshot = await firestore
+            .collection('shift_kategori')
+            .where('nama_shift',
+                isEqualTo:
+                    event.namaShift) // Menggunakan nama_shift sebagai parameter
+            .get();
 
-        // Setelah menghapus, refresh daftar shift
+        if (querySnapshot.docs.isEmpty) {
+          emit(ShiftKategoriError(
+              message:
+                  "Shift dengan nama ${event.namaShift} tidak ditemukan."));
+          return;
+        }
+
+        // Menghapus semua dokumen yang ditemukan berdasarkan nama_shift
+        for (var doc in querySnapshot.docs) {
+          await doc.reference.delete();
+        }
+
+        // Setelah menghapus, memuat ulang daftar shift
         add(FetchShiftKategoriEvent());
       } catch (e) {
-        emit(AkunDanShiftError(
+        emit(ShiftKategoriError(
             message: "Gagal menghapus shift: ${e.toString()}"));
       }
     });

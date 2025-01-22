@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   static ThemeData themeData = ThemeData(
+    progressIndicatorTheme: ProgressIndicatorThemeData(color: Colors.blue),
     scaffoldBackgroundColor: Colors.white,
     primaryColor: Colors.blue,
     appBarTheme: const AppBarTheme(
@@ -24,6 +25,26 @@ class AppTheme {
         color: Colors.black,
       ),
     ),
+    inputDecorationTheme: InputDecorationTheme(
+      focusedBorder: OutlineInputBorder(
+        borderSide:
+            const BorderSide(color: Colors.blue), // Warna border saat fokus
+        borderRadius: BorderRadius.circular(10),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: const BorderSide(
+            color: Colors.grey), // Warna border saat tidak fokus
+        borderRadius: BorderRadius.circular(10),
+      ),
+      floatingLabelStyle: TextStyle(color: Colors.blue),
+      focusColor: Colors.blue, // Warna fokus saat mengetik
+      hintStyle: const TextStyle(color: Colors.grey), // Warna hint text
+    ),
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: Colors.blue, // Menetapkan warna kursor menjadi biru
+    ),
+    indicatorColor: Colors.blue,
+    // Warna indikator untuk elemen yang memiliki state fokus
   );
 
   // Custom AppBar dengan efek 3D

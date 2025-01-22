@@ -25,11 +25,7 @@ class CustomDrawerKaryawan extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-              margin: EdgeInsets.only(
-                top: 55,
-                right: 15,
-                left: 15,
-              ),
+              margin: const EdgeInsets.only(top: 55, right: 15, left: 15),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(15),
@@ -92,68 +88,47 @@ class CustomDrawerKaryawan extends StatelessWidget {
                 ],
               ),
             ),
-
-            // MENU UTAMA
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Text(
-                "MENU UTAMA",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.black54),
-              ),
-            ),
-
-            _buildDrawerItem(
-              context,
-              Icons.calendar_today,
-              "Kehadiran",
-              navigateTo: () {},
-            ),
-
             const SizedBox(height: 20),
-
-            // MENU LAINNYA
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                "MENU LAINNYA",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.black54),
-              ),
-            ),
-
+            _buildDrawerHeader("MENU UTAMA"),
+            _buildDrawerItem(
+                context, "assets/icons/icon_menu/kehadiran.png", "Kehadiran",
+                navigateTo: () {}),
+            const SizedBox(height: 20),
+            _buildDrawerHeader("MENU LAINNYA"),
             _buildDrawerItem(
               context,
-              Icons.assignment_rounded,
+              'assets/icons/icon_menu/biodata.png',
               "Lengkapi Data",
               navigateTo: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => LengkapiDataScreen()),
+                  MaterialPageRoute(
+                    builder: (context) => LengkapiDataScreen(),
+                  ),
                 );
               },
             ),
-
             _buildDrawerItem(
               context,
-              Icons.person_outline_rounded,
+              'assets/icons/icon_menu/profil.png',
               "Profil",
               navigateTo: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ProfileScreen(email: email)),
+                    builder: (context) => ProfileScreen(email: email),
+                  ),
                 );
               },
             ),
 
-            // Item logout dengan menggunakan showLogoutDialog
+            // Logout button is placed at the bottom
             _buildDrawerItem(
               context,
-              Icons.exit_to_app_rounded,
+              'assets/icons/icon_menu/logout.png',
               "Keluar",
               navigateTo: () {
-                showLogoutDialog(context); // Memanggil fungsi logout
+                showLogoutDialog(context);
               },
             ),
           ],
@@ -162,18 +137,28 @@ class CustomDrawerKaryawan extends StatelessWidget {
     );
   }
 
-  /// Widget untuk membuat item di Drawer lebih rapi
-  Widget _buildDrawerItem(
-    BuildContext context,
-    IconData icon,
-    String title, {
-    required VoidCallback navigateTo,
-  }) {
+  Widget _buildDrawerHeader(String title) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Text(
+        title,
+        style:
+            const TextStyle(fontWeight: FontWeight.bold, color: Colors.black54),
+      ),
+    );
+  }
+
+  Widget _buildDrawerItem(BuildContext context, String iconPath, String title,
+      {required VoidCallback navigateTo}) {
     return ListTile(
-      leading: Icon(icon, size: 24),
+      leading: Image.asset(
+        iconPath,
+        width: 26, // Ukuran ikon diperbesar agar lebih sesuai
+        height: 26, // Ukuran ikon diperbesar agar lebih sesuai
+      ),
       title: Text(title, style: const TextStyle(fontSize: 16)),
       dense: true,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
       onTap: navigateTo,
     );
   }

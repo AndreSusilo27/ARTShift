@@ -1,10 +1,17 @@
 // kelola_akunkaryawan_event.dart
-abstract class KelolaAkunkaryawanEvent {}
+abstract class KelolaAkunKaryawanEvent {}
 
-class FetchKaryawanEvent extends KelolaAkunkaryawanEvent {}
+class FetchKaryawanEvent extends KelolaAkunKaryawanEvent {}
 
-class DeleteKaryawanEvent extends KelolaAkunkaryawanEvent {
-  final String email; // Email yang akan digunakan untuk menghapus karyawan
-
+class DeleteKaryawanEvent extends KelolaAkunKaryawanEvent {
+  final String email;
   DeleteKaryawanEvent({required this.email});
+}
+
+class SimpanShiftEvent extends KelolaAkunKaryawanEvent {
+  final Map<String, bool> selectedKaryawan;
+  final String selectedShift;
+
+  SimpanShiftEvent(
+      {required this.selectedKaryawan, required this.selectedShift});
 }

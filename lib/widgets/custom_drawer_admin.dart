@@ -1,9 +1,10 @@
+import 'package:ARTShift/screens/shift_karyawan_screen.dart';
+import 'package:flutter/material.dart';
 import 'package:ARTShift/screens/kelola_akunadmin_screen.dart';
 import 'package:ARTShift/screens/kelola_akunkaryawan_screen.dart';
 import 'package:ARTShift/screens/kelola_kategori_screen.dart';
 import 'package:ARTShift/screens/lengkapidata_screen.dart';
 import 'package:ARTShift/screens/profile_screen.dart';
-import 'package:flutter/material.dart';
 import 'package:ARTShift/widgets/logout.dart';
 
 class CustomDrawerAdmin extends StatelessWidget {
@@ -28,11 +29,7 @@ class CustomDrawerAdmin extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-              margin: EdgeInsets.only(
-                top: 55,
-                right: 15,
-                left: 15,
-              ),
+              margin: const EdgeInsets.only(top: 55, right: 15, left: 15),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(15),
@@ -95,113 +92,73 @@ class CustomDrawerAdmin extends StatelessWidget {
                 ],
               ),
             ),
-
-            // MENU UTAMA
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Text(
-                "MENU UTAMA",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.black54),
-              ),
-            ),
-
-            _buildDrawerItem(
-              context,
-              Icons.assignment_sharp,
-              "Laporan",
-              navigateTo: () {},
-            ),
-
-            _buildDrawerItem(
-              context,
-              Icons.group_rounded,
-              "Kelola Akun Admin",
-              navigateTo: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => KelolaAkunAdminScreen()),
-                );
-              },
-            ),
-            _buildDrawerItem(
-              context,
-              Icons.group_rounded,
-              "Kelola Akun Karyawan",
-              navigateTo: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => KelolaAkunKaryawanScreen()),
-                );
-              },
-            ),
-            _buildDrawerItem(
-              context,
-              Icons.group_rounded,
-              "Kelola Kategori Shift",
-              navigateTo: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => KelolaKategoriScreen()),
-                );
-              },
-            ),
-            _buildDrawerItem(
-              context,
-              Icons.meeting_room_rounded,
-              "Adakan Rapat",
-              navigateTo: () {},
-            ),
-
             const SizedBox(height: 20),
+            // MENU UTAMA
+            _buildSectionTitle("MENU UTAMA"),
+
+            _buildDrawerItem(context, 'assets/icons/icon_menu/kelolaadmin.png',
+                "Kelola Akun Admin", navigateTo: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => KelolaAkunAdminScreen()));
+            }),
+            _buildDrawerItem(
+                context,
+                'assets/icons/icon_menu/kelolakaryawan.png',
+                "Kelola Akun Karyawan", navigateTo: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => KelolaAkunKaryawanScreen()));
+            }),
+            _buildDrawerItem(context, 'assets/icons/icon_menu/shift.png',
+                "Kelola Shift Karyawan", navigateTo: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => KelolaShiftKaryawanScreen()));
+            }),
+            _buildDrawerItem(
+                context,
+                'assets/icons/icon_menu/kategorishift.png',
+                "Kelola Kategori Shift", navigateTo: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => KelolaKategoriScreen()));
+            }),
+            _buildDrawerItem(
+                context, 'assets/icons/icon_menu/meeting.png', "Adakan Rapat",
+                navigateTo: () {}),
+            _buildDrawerItem(
+                context, 'assets/icons/icon_menu/laporan.png', "Laporan",
+                navigateTo: () {}),
+            const SizedBox(height: 10), // Jarak antar bagian
 
             // MENU LAINNYA
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                "MENU LAINNYA",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.black54),
-              ),
-            ),
-
+            _buildSectionTitle("MENU LAINNYA"),
             _buildDrawerItem(
-              context,
-              Icons.assignment_rounded,
-              "Lengkapi Data",
-              navigateTo: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LengkapiDataScreen()),
-                );
-              },
-            ),
-
-            _buildDrawerItem(
-              context,
-              Icons.person_outline_rounded,
-              "Profil",
-              navigateTo: () {
-                Navigator.push(
+                context, 'assets/icons/icon_menu/biodata.png', "Lengkapi Data",
+                navigateTo: () {
+              Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ProfileScreen(email: email)),
-                );
-              },
-            ),
-
-            // Item logout dengan menggunakan showLogoutDialog
+                      builder: (context) => LengkapiDataScreen()));
+            }),
             _buildDrawerItem(
-              context,
-              Icons.exit_to_app_rounded,
-              "Keluar",
-              navigateTo: () {
-                showLogoutDialog(context); // Memanggil fungsi logout
-              },
-            ),
+                context, 'assets/icons/icon_menu/profil.png', "Profil",
+                navigateTo: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProfileScreen(email: email)));
+            }),
+            _buildDrawerItem(
+                context, 'assets/icons/icon_menu/logout.png', "Keluar",
+                navigateTo: () {
+              showLogoutDialog(context);
+            }),
           ],
         ),
       ),
@@ -211,16 +168,31 @@ class CustomDrawerAdmin extends StatelessWidget {
   /// Widget untuk membuat item di Drawer lebih rapi
   Widget _buildDrawerItem(
     BuildContext context,
-    IconData icon,
+    String imagePath,
     String title, {
     required VoidCallback navigateTo,
   }) {
     return ListTile(
-      leading: Icon(icon, size: 24),
+      leading: Image.asset(imagePath,
+          width: 26, height: 26), // Ukuran icon lebih besar
       title: Text(title, style: const TextStyle(fontSize: 16)),
       dense: true,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      contentPadding: const EdgeInsets.symmetric(
+          horizontal: 20, vertical: 5), // Jarak antar menu lebih rapat
       onTap: navigateTo,
+    );
+  }
+
+  /// Widget untuk membuat judul section lebih rapi
+  Widget _buildSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+          horizontal: 15, vertical: 0), // Jarak lebih dekat
+      child: Text(
+        title,
+        style:
+            const TextStyle(fontWeight: FontWeight.bold, color: Colors.black54),
+      ),
     );
   }
 }

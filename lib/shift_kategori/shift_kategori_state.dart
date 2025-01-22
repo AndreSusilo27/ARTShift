@@ -1,33 +1,45 @@
 import 'package:equatable/equatable.dart';
 
-abstract class AkunDanShiftState extends Equatable {
-  const AkunDanShiftState();
+abstract class ShiftKategoriState extends Equatable {
+  const ShiftKategoriState();
 
   @override
   List<Object> get props => [];
 }
 
 // State awal ketika aplikasi dibuka
-class AkunDanShiftInitial extends AkunDanShiftState {}
+class ShiftKategoriInitial extends ShiftKategoriState {}
 
 // State loading saat sedang mengambil data
-class AkunDanShiftLoading extends AkunDanShiftState {}
+class ShiftKategoriLoading extends ShiftKategoriState {}
 
 // State ketika data shift berhasil diambil
-class AkunDanShiftLoaded extends AkunDanShiftState {
+class ShiftKategoriLoaded extends ShiftKategoriState {
   final List<Map<String, dynamic>> shiftKategori;
 
-  const AkunDanShiftLoaded({required this.shiftKategori});
+  const ShiftKategoriLoaded({required this.shiftKategori});
 
   @override
   List<Object> get props => [shiftKategori];
+
+  get shiftList => shiftKategori;
+}
+
+// State ketika data shift berhasil diambil (ShiftListLoaded)
+class ShiftListLoaded extends ShiftKategoriState {
+  final List<Map<String, dynamic>> shiftList;
+
+  const ShiftListLoaded({required this.shiftList});
+
+  @override
+  List<Object> get props => [shiftList];
 }
 
 // State error jika terjadi kesalahan
-class AkunDanShiftError extends AkunDanShiftState {
+class ShiftKategoriError extends ShiftKategoriState {
   final String message;
 
-  const AkunDanShiftError({required this.message});
+  const ShiftKategoriError({required this.message});
 
   @override
   List<Object> get props => [message];

@@ -21,9 +21,10 @@ class MyApp extends StatelessWidget {
       create: (context) => AuthBloc(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+
         initialRoute: '/splash', // Menentukan halaman pertama (SplashScreen)
         routes: {
-          '/splash': (context) => const SplashScreen(
+          '/splash': (context) => SplashScreen(
                 nextScreen: HomeScreen(),
               ),
           '/home': (context) => const HomeScreen(),

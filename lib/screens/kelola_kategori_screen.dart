@@ -30,11 +30,11 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
       ),
       body: BlocProvider(
         create: (context) =>
-            AkunDanShiftBloc(firestore: FirebaseFirestore.instance)
+            ShiftKategoriBloc(firestore: FirebaseFirestore.instance)
               ..add(FetchShiftKategoriEvent()),
-        child: BlocBuilder<AkunDanShiftBloc, AkunDanShiftState>(
+        child: BlocBuilder<ShiftKategoriBloc, ShiftKategoriState>(
           builder: (context, state) {
-            return SingleChildScrollView(
+            return Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
@@ -46,16 +46,22 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
                         TextFormField(
                           controller: kategoriShiftController,
                           decoration: const InputDecoration(
-                              labelText: 'Kategori Shift'),
+                              labelText: 'Kategori Shift',
+                              border: OutlineInputBorder(),
+                              filled: true,
+                              fillColor: Colors.white),
                           validator: (value) => value!.isEmpty
                               ? 'Kategori tidak boleh kosong'
                               : null,
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 15),
                         TextFormField(
                           controller: jamMasukController,
                           decoration: InputDecoration(
                             labelText: 'Jam Masuk',
+                            border: const OutlineInputBorder(),
+                            filled: true,
+                            fillColor: Colors.white,
                             suffixIcon: IconButton(
                               icon: const Icon(Icons.access_time),
                               onPressed: () =>
@@ -67,11 +73,14 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
                               ? 'Jam masuk tidak boleh kosong'
                               : null,
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 15),
                         TextFormField(
                           controller: jamKeluarController,
                           decoration: InputDecoration(
                             labelText: 'Jam Keluar',
+                            border: const OutlineInputBorder(),
+                            filled: true,
+                            fillColor: Colors.white,
                             suffixIcon: IconButton(
                               icon: const Icon(Icons.access_time),
                               onPressed: () =>
@@ -83,11 +92,14 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
                               ? 'Jam keluar tidak boleh kosong'
                               : null,
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 15),
                         TextFormField(
                           controller: tanggalAkhirController,
                           decoration: InputDecoration(
                             labelText: 'Tanggal Akhir (dd-MM-yyyy)',
+                            border: const OutlineInputBorder(),
+                            filled: true,
+                            fillColor: Colors.white,
                             suffixIcon: IconButton(
                               icon: const Icon(Icons.calendar_today),
                               onPressed: () => _selectDate(context),
@@ -98,10 +110,20 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
                               ? 'Tanggal akhir tidak boleh kosong'
                               : null,
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 25),
                         ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(double.infinity, 50),
+                            backgroundColor: Colors.blueAccent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
                           onPressed: () => _submitData(context),
-                          child: const Text('Tambah Shift'),
+                          child: const Text(
+                            'Tambah Shift',
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
                         ),
                         const Divider(
                             thickness: 2,
@@ -111,38 +133,109 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
                   ),
 
                   // Menampilkan Data Shift
-                  if (state is AkunDanShiftLoading)
+                  if (state is ShiftKategoriLoading)
                     const Center(child: CircularProgressIndicator()),
 
-                  if (state is AkunDanShiftError)
+                  if (state is ShiftKategoriError)
                     Center(
                         child: Text(state.message,
                             style: const TextStyle(color: Colors.red))),
 
-                  if (state is AkunDanShiftLoaded)
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: state.shiftKategori.length,
-                      itemBuilder: (context, index) {
-                        final shift = state.shiftKategori[index];
-                        return Card(
-                          margin: const EdgeInsets.symmetric(vertical: 5),
-                          child: ListTile(
-                            title: Text(shift['nama_shift']),
-                            subtitle: Text(
-                              "Jam Masuk: ${shift['jam_masuk']} - Jam Keluar: ${shift['jam_keluar']}\nTanggal Akhir: ${shift['tanggal_akhir']}",
+                  if (state is ShiftKategoriLoaded)
+                    // Menampilkan daftar shift dalam ListView
+                    Expanded(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        itemCount: state.shiftKategori.length,
+                        itemBuilder: (context, index) {
+                          final shift = state.shiftKategori[index];
+                          return Card(
+                            elevation: 5,
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                            trailing: IconButton(
-                              icon: const Icon(Icons.delete, color: Colors.red),
-                              onPressed: () {
-                                context.read<AkunDanShiftBloc>().add(
-                                    HapusShiftKategoriEvent(id: shift['id']));
-                              },
+                            child: ListTile(
+                              contentPadding: const EdgeInsets.all(16),
+                              title: Text(
+                                shift['nama_shift'],
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                              subtitle: Text(
+                                "${shift['jam_masuk']} - ${shift['jam_keluar']}\nTanggal Akhir: ${shift['tanggal_akhir']}",
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                              trailing: Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 8), // Padding agar lebih seimbang
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(8),
+                                  onTap: () {
+                                    // Menampilkan dialog konfirmasi
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text(
+                                              'Konfirmasi Hapus Shift'),
+                                          content: Text(
+                                              'Apakah Anda yakin ingin menghapus shift "${shift['nama_shift']}"?'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context)
+                                                    .pop(); // Menutup dialog
+                                              },
+                                              child: const Text('Batal'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                if (shift['nama_shift'] !=
+                                                    null) {
+                                                  // Memanggil event HapusShiftKategoriEvent jika pengguna yakin untuk menghapus
+                                                  context
+                                                      .read<ShiftKategoriBloc>()
+                                                      .add(HapusShiftKategoriEvent(
+                                                          namaShift: shift[
+                                                              'nama_shift']));
+                                                  Navigator.of(context)
+                                                      .pop(); // Menutup dialog setelah aksi hapus
+                                                } else {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(const SnackBar(
+                                                          content: Text(
+                                                              'ID tidak valid!')));
+                                                  Navigator.of(context)
+                                                      .pop(); // Menutup dialog jika terjadi error
+                                                }
+                                              },
+                                              child: const Text('Hapus'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(6),
+                                    decoration: BoxDecoration(
+                                      color: Colors.red.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: const Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                      size: 22,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                 ],
               ),
@@ -188,7 +281,7 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
   // Fungsi untuk menambah shift ke Firestore
   void _submitData(BuildContext context) {
     if (_formKey.currentState!.validate()) {
-      context.read<AkunDanShiftBloc>().add(TambahShiftKategoriEvent(
+      context.read<ShiftKategoriBloc>().add(TambahShiftKategoriEvent(
             kategoriShift: kategoriShiftController.text,
             jamMasuk: jamMasukController.text,
             jamKeluar: jamKeluarController.text,

@@ -4,29 +4,33 @@ import 'package:flutter/material.dart';
 class CustomButton extends StatelessWidget {
   final String text;
   final IconData? icon;
-  final String? imageAsset; // Menambahkan parameter untuk gambar
+  final String? imageAsset;
   final VoidCallback onPressed;
   final double? width;
-  final double? height;
-  final Color? color;
+  final double height;
+  final Color color;
+  final Color textColor;
   final double borderRadius;
+  final TextStyle? textStyle;
 
   const CustomButton({
+    super.key,
     required this.text,
     required this.onPressed,
     this.icon,
-    this.imageAsset, // Menambahkan imageAsset untuk ikon gambar
+    this.imageAsset,
     this.width,
-    this.height = 50, // Default tinggi 50
-    this.color = Colors.blue, // Default warna biru
-    this.borderRadius = 8, // Default border radius 8
-    super.key,
+    this.height = 50,
+    this.color = Colors.blue,
+    this.textColor = Colors.white,
+    this.borderRadius = 13,
+    this.textStyle,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width ?? double.infinity, // Default penuh jika tidak diatur
+      width: width ?? double.infinity,
       height: height,
       child: ElevatedButton(
         onPressed: onPressed,
@@ -35,30 +39,33 @@ class CustomButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius),
           ),
-          padding: EdgeInsets.symmetric(vertical: 14),
+          padding: const EdgeInsets.symmetric(vertical: 14),
           elevation: 5,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // Tampilkan ikon dari asset atau icon
             if (imageAsset != null) ...[
               Image.asset(
-                imageAsset!, // Menampilkan gambar jika ada
-                height: 24, // Sesuaikan ukuran gambar
+                imageAsset!,
+                height: 24,
                 width: 24,
               ),
-              SizedBox(width: 10), // Jarak antara gambar dan teks
+              const SizedBox(width: 10),
             ] else if (icon != null) ...[
-              Icon(icon, color: Colors.white),
-              SizedBox(width: 8), // Jarak antara ikon dan teks
+              Icon(icon, color: textColor),
+              const SizedBox(width: 8),
             ],
+            // Tampilkan teks dengan style atau default style
             Text(
               text,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+              style: textStyle ??
+                  TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: textColor,
+                  ),
             ),
           ],
         ),
@@ -78,10 +85,10 @@ class CustomFloatingBackButton extends StatelessWidget {
   const CustomFloatingBackButton({
     super.key,
     this.onPressed,
-    this.icon = Icons.arrow_back, // Default ikon kembali
-    this.size = 50, // Default ukuran FloatingActionButton
-    this.backgroundColor = Colors.blueGrey, // Default warna tombol
-    this.iconColor = Colors.white, // Default warna ikon
+    this.icon = Icons.arrow_back,
+    this.size = 50,
+    this.backgroundColor = Colors.blue,
+    this.iconColor = Colors.white,
   });
 
   @override

@@ -1,18 +1,23 @@
 // kelola_akunkaryawan_state.dart
-abstract class KelolaShiftKaryawanState {}
+abstract class KelolaAkunkaryawanState {}
 
-class KelolaShiftKaryawanInitial extends KelolaShiftKaryawanState {}
+class KelolaAkunkaryawanInitial extends KelolaAkunkaryawanState {}
 
-class KelolaShiftKaryawanLoading extends KelolaShiftKaryawanState {}
+class KelolaAkunkaryawanLoading extends KelolaAkunkaryawanState {}
 
-class KelolaShiftKaryawanError extends KelolaShiftKaryawanState {
+class KelolaAkunkaryawanError extends KelolaAkunkaryawanState {
   final String message;
 
-  KelolaShiftKaryawanError({required this.message});
+  KelolaAkunkaryawanError({required this.message});
 }
 
-class KelolaShiftKaryawanLoaded extends KelolaShiftKaryawanState {
+class KelolaAkunkaryawanLoaded extends KelolaAkunkaryawanState {
   final List<Map<String, dynamic>> karyawanList;
 
-  KelolaShiftKaryawanLoaded({required this.karyawanList});
+  KelolaAkunkaryawanLoaded({required this.karyawanList});
+}
+
+class KelolaAkunkaryawanSuccess extends KelolaAkunkaryawanState {
+  final String message;
+  KelolaAkunkaryawanSuccess({required this.message});
 }

@@ -1,17 +1,17 @@
 import 'package:equatable/equatable.dart';
 
-abstract class AkunDanShiftEvent extends Equatable {
-  const AkunDanShiftEvent();
+abstract class ShiftKategoriEvent extends Equatable {
+  const ShiftKategoriEvent();
 
   @override
   List<Object> get props => [];
 }
 
 // Event untuk mengambil daftar shift
-class FetchShiftKategoriEvent extends AkunDanShiftEvent {}
+class FetchShiftKategoriEvent extends ShiftKategoriEvent {}
 
 // Event untuk menambahkan kategori shift baru
-class TambahShiftKategoriEvent extends AkunDanShiftEvent {
+class TambahShiftKategoriEvent extends ShiftKategoriEvent {
   final String kategoriShift;
   final String jamMasuk;
   final String jamKeluar;
@@ -29,11 +29,8 @@ class TambahShiftKategoriEvent extends AkunDanShiftEvent {
 }
 
 // Event untuk menghapus kategori shift berdasarkan ID
-class HapusShiftKategoriEvent extends AkunDanShiftEvent {
-  final String id;
+class HapusShiftKategoriEvent extends ShiftKategoriEvent {
+  final String namaShift;
 
-  const HapusShiftKategoriEvent({required this.id});
-
-  @override
-  List<Object> get props => [id];
+  const HapusShiftKategoriEvent({required this.namaShift});
 }
