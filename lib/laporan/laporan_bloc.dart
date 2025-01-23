@@ -24,8 +24,33 @@ class LaporanBloc extends Bloc<LaporanEvent, LaporanState> {
               .get();
         }
 
-        final laporanData = snapshot.docs.map((doc) => doc.data()).toList();
-        emit(LaporanLoaded(laporanData));
+        List<Map<String, dynamic>> laporanData = [];
+
+        // Mengambil data dari subkoleksi 'absensi_harian' untuk setiap dokumen email
+        for (var doc in snapshot.docs) {
+          final email =
+              doc.id; // Menggunakan ID dokumen (email) sebagai identifikasi
+          final absensiHarianSnapshot = await firestore
+              .collection('absensi')
+              .doc(email)
+              .collection('absensi_harian')
+              .get();
+
+          // Mengambil data absensi untuk setiap tanggal dalam subkoleksi
+          for (var absensiDoc in absensiHarianSnapshot.docs) {
+            final data = absensiDoc.data();
+            laporanData.add({
+              'email': email,
+              'tanggal': data['tanggal'],
+              'hadir': data['hadir'],
+              'keluar': data['keluar'],
+              'sakit': data['sakit'],
+              'izin': data['izin'],
+            });
+          }
+        }
+
+        emit(LaporanLoaded(laporanData)); // Kirimkan data laporan ke state
       } catch (e) {
         emit(LaporanError("Error fetching data: ${e.toString()}"));
       }

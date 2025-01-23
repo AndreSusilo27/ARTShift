@@ -30,8 +30,6 @@ class AbsensiBloc extends Bloc<AbsensiEvent, AbsensiState> {
       emit(state.copyWith(
           currentTime: DateFormat('HH:mm:ss').format(DateTime.now())));
     });
-
-    // Event untuk mengecek status absensi saat halaman dibuka
     on<CheckAbsensiEvent>((event, emit) async {
       final DateTime now = DateTime.now();
       final String formattedDate = DateFormat('dd-MM-yyyy').format(now);
@@ -39,16 +37,18 @@ class AbsensiBloc extends Bloc<AbsensiEvent, AbsensiState> {
       final String docId = event.email;
 
       try {
-        final docRef = firestore.collection('absensi').doc(docId);
+        // Mengakses subkoleksi absensi_harian untuk dokumen berdasarkan email
+        final docRef = firestore
+            .collection('absensi')
+            .doc(docId)
+            .collection('absensi_harian')
+            .doc(formattedDate);
         final docSnapshot = await docRef.get();
 
         if (docSnapshot.exists) {
           final data = docSnapshot.data();
-          if (data != null &&
-              data.containsKey('keluar') &&
-              data['keluar'] != null &&
-              data['keluar']['tanggal'] == formattedDate) {
-            // Jika sudah absen keluar, matikan semua tombol
+          if (data != null && data['keluar'] != null) {
+            // Jika sudah ada absensi keluar di tanggal tersebut
             emit(state.copyWith(
               canAbsenMasuk: false,
               canAbsenKeluar: false,
@@ -56,8 +56,25 @@ class AbsensiBloc extends Bloc<AbsensiEvent, AbsensiState> {
               absensiStatus: "Sudah absen keluar",
               errorMessage: "Anda sudah melakukan absensi keluar hari ini!",
             ));
-            return;
+          } else if (data!['hadir'] != null) {
+            // Jika sudah absen masuk, tombol absen keluar aktif
+            emit(state.copyWith(
+              canAbsenMasuk: false,
+              canAbsenKeluar: true,
+              isSakitOrIzin: false,
+              absensiStatus: "Sudah absen masuk",
+              successMessage: "Anda sudah absen masuk!",
+            ));
           }
+        } else {
+          // Jika belum ada absensi untuk hari tersebut
+          emit(state.copyWith(
+            canAbsenMasuk: true,
+            canAbsenKeluar: false,
+            isSakitOrIzin: false,
+            absensiStatus: "Belum ada absensi hari ini",
+            successMessage: "Silakan absen masuk!",
+          ));
         }
       } catch (e) {
         emit(state.copyWith(
@@ -75,38 +92,28 @@ class AbsensiBloc extends Bloc<AbsensiEvent, AbsensiState> {
       final String docId = event.email;
 
       try {
-        final docRef = firestore.collection('absensi').doc(docId);
+        final docRef = firestore
+            .collection('absensi')
+            .doc(docId)
+            .collection('absensi_harian')
+            .doc(formattedDate);
+
         final docSnapshot = await docRef.get();
 
+        // Jika belum ada data untuk hari tersebut, buat dokumen baru
         if (!docSnapshot.exists) {
           await docRef.set({
-            'email': event.email,
-            'name': event.name,
+            'tanggal': formattedDate,
             'hadir': null,
             'keluar': null,
             'sakit': null,
             'izin': null,
           });
-        } else {
-          final data = docSnapshot.data();
-          if (data != null &&
-              data.containsKey('keluar') &&
-              data['keluar'] != null &&
-              data['keluar']['tanggal'] == formattedDate) {
-            emit(state.copyWith(
-              canAbsenMasuk: false,
-              canAbsenKeluar: false,
-              isSakitOrIzin: false,
-              absensiStatus: "Sudah absen keluar",
-              errorMessage: "Anda sudah melakukan absensi keluar hari ini!",
-            ));
-            return;
-          }
         }
 
         if (event.status == "Hadir") {
           await docRef.update({
-            'hadir': {'tanggal': formattedDate, 'waktu': formattedTime},
+            'hadir': {'waktu': formattedTime},
           });
 
           emit(state.copyWith(
@@ -118,7 +125,7 @@ class AbsensiBloc extends Bloc<AbsensiEvent, AbsensiState> {
           ));
         } else if (event.status == "Keluar") {
           await docRef.update({
-            'keluar': {'tanggal': formattedDate, 'waktu': formattedTime},
+            'keluar': {'waktu': formattedTime},
           });
 
           emit(state.copyWith(
@@ -131,7 +138,7 @@ class AbsensiBloc extends Bloc<AbsensiEvent, AbsensiState> {
           ));
         } else if (event.status == "Sakit") {
           await docRef.update({
-            'sakit': {'tanggal': formattedDate, 'waktu': formattedTime},
+            'sakit': {'waktu': formattedTime},
           });
 
           emit(state.copyWith(
@@ -143,7 +150,7 @@ class AbsensiBloc extends Bloc<AbsensiEvent, AbsensiState> {
           ));
         } else if (event.status == "Izin") {
           await docRef.update({
-            'izin': {'tanggal': formattedDate, 'waktu': formattedTime},
+            'izin': {'waktu': formattedTime},
           });
 
           emit(state.copyWith(
