@@ -6,17 +6,24 @@ class AppTheme {
     scaffoldBackgroundColor: Colors.white,
     primaryColor: Colors.blue,
     appBarTheme: const AppBarTheme(
+      centerTitle: true,
       backgroundColor: Color.fromARGB(255, 210, 210, 210),
+      titleTextStyle: TextStyle(
+          // color: Color(0xFF4A90E2),
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'Poppins',
+          fontSize: 22),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(20),
           bottomRight: Radius.circular(20),
         ),
       ),
-      elevation: 0, // Hapus elevation default, kita pakai boxShadow manual
+      elevation: 6,
     ),
     iconTheme: const IconThemeData(
-      color: Colors.blue, // Warna ikon biru
+      color: Colors.blue,
       size: 24,
     ),
     textTheme: const TextTheme(
@@ -27,27 +34,24 @@ class AppTheme {
     ),
     inputDecorationTheme: InputDecorationTheme(
       focusedBorder: OutlineInputBorder(
-        borderSide:
-            const BorderSide(color: Colors.blue), // Warna border saat fokus
+        borderSide: const BorderSide(color: Colors.blue),
         borderRadius: BorderRadius.circular(10),
       ),
       enabledBorder: OutlineInputBorder(
-        borderSide: const BorderSide(
-            color: Colors.grey), // Warna border saat tidak fokus
+        borderSide: const BorderSide(color: Colors.grey),
         borderRadius: BorderRadius.circular(10),
       ),
       floatingLabelStyle: TextStyle(color: Colors.blue),
-      focusColor: Colors.blue, // Warna fokus saat mengetik
-      hintStyle: const TextStyle(color: Colors.grey), // Warna hint text
+      focusColor: Colors.blue,
+      hintStyle: const TextStyle(color: Colors.grey),
     ),
     textSelectionTheme: const TextSelectionThemeData(
-      cursorColor: Colors.blue, // Menetapkan warna kursor menjadi biru
+      cursorColor: Colors.blue,
     ),
     indicatorColor: Colors.blue,
-    // Warna indikator untuk elemen yang memiliki state fokus
   );
 
-  // Custom AppBar dengan efek 3D
+  // Custom AppBar Biasa
   static PreferredSizeWidget customAppBar({
     required GlobalKey<ScaffoldState> scaffoldKey,
   }) {
@@ -60,11 +64,12 @@ class AppTheme {
               color: Colors.black.withOpacity(0.3),
               blurRadius: 10,
               spreadRadius: 2,
-              offset: const Offset(0, 5), // Bayangan ke bawah
+              offset: const Offset(0, 5),
             ),
           ],
         ),
         child: AppBar(
+          toolbarHeight: 60, // Pastikan tinggi AppBar tetap 60px
           leading: IconButton(
             onPressed: () => scaffoldKey.currentState!.openDrawer(),
             icon: Image.asset(
@@ -88,7 +93,7 @@ class AppTheme {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 24,
-                    color: Color(0xFF4A90E2), // Menggunakan format Hexa
+                    color: Color(0xFF4A90E2),
                   ),
                 ),
               ],

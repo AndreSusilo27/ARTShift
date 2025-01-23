@@ -33,20 +33,9 @@ class HomeScreen extends StatelessWidget {
                     // Logo
                     Image.asset(
                       'assets/images/ARTShift_logo.png',
-                      width: 150, // Ukuran logo
+                      width: 170, // Ukuran logo
                     ),
                     const SizedBox(height: 20),
-
-                    // Teks "Selamat Datang"
-                    const Text(
-                      "Selamat Datang di ARTShift",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87, // Warna teks
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
                   ],
                 ),
               ),

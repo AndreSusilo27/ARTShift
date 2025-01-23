@@ -12,6 +12,7 @@ class CustomButton extends StatelessWidget {
   final Color textColor;
   final double borderRadius;
   final TextStyle? textStyle;
+  final double? elevation; // Perbaikan tipe data
 
   const CustomButton({
     super.key,
@@ -25,6 +26,7 @@ class CustomButton extends StatelessWidget {
     this.textColor = Colors.white,
     this.borderRadius = 13,
     this.textStyle,
+    this.elevation, // Perbaikan penutup konstruktor
   });
 
   @override
@@ -40,7 +42,7 @@ class CustomButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(borderRadius),
           ),
           padding: const EdgeInsets.symmetric(vertical: 14),
-          elevation: 5,
+          elevation: elevation, // Menggunakan nilai elevation yang benar
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

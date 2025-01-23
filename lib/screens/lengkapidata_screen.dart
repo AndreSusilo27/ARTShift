@@ -95,9 +95,24 @@ class _LengkapiDataScreenState extends State<LengkapiDataScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text('Lengkapi Data'),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(60.0),
+        child: Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.3),
+                blurRadius: 10,
+                spreadRadius: 2,
+                offset: const Offset(0, 5),
+              ),
+            ],
+          ),
+          child: AppBar(
+            title: Text('Lengkapi Data'),
+            automaticallyImplyLeading: false,
+          ),
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),

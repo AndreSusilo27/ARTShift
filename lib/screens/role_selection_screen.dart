@@ -21,7 +21,6 @@ class RoleSelectionScreen extends StatelessWidget {
   });
 
   void _selectRole(BuildContext context, String role) async {
-    // Simpan role di Firestore
     await FirebaseFirestore.instance.collection('users').doc(uid).set({
       'name': name,
       'email': email,
@@ -30,7 +29,6 @@ class RoleSelectionScreen extends StatelessWidget {
       'createdAt': DateTime.now(),
     });
 
-    // Navigasi ke dashboard sesuai role
     if (role == "Admin") {
       Navigator.pushReplacement(
         context,
@@ -47,37 +45,87 @@ class RoleSelectionScreen extends StatelessWidget {
       );
     }
 
-    // Update state di BLoC
     context.read<AuthBloc>().add(UpdateUserRole(role));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Pilih Role"),
-        automaticallyImplyLeading: false,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset(
+            'assets/images/beranda.jpg',
+            fit: BoxFit.cover,
+          ),
+          Center(
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              margin: const EdgeInsets.symmetric(horizontal: 30),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.8),
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 10,
+                    spreadRadius: 2,
+                    offset: Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundImage: NetworkImage(photoUrl),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    "Selamat Datang, $name",
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    "Silakan pilih peran Anda",
+                    style: TextStyle(fontSize: 16, color: Colors.black54),
+                  ),
+                  const SizedBox(height: 30),
+                  _buildRoleButton(context, "Admin", Icons.admin_panel_settings,
+                      Colors.blueAccent),
+                  const SizedBox(height: 15),
+                  _buildRoleButton(
+                      context, "Karyawan", Icons.work, Colors.lightBlueAccent),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              "Pilih peran Anda",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => _selectRole(context, "Admin"),
-              child: const Text("Admin"),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () => _selectRole(context, "Karyawan"),
-              child: const Text("Karyawan"),
-            ),
-          ],
-        ),
+    );
+  }
+
+  Widget _buildRoleButton(
+      BuildContext context, String role, IconData icon, Color color) {
+    return ElevatedButton.icon(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      ),
+      onPressed: () => _selectRole(context, role),
+      icon: Icon(icon, color: Colors.white),
+      label: Text(
+        role,
+        style: const TextStyle(
+            fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
       ),
     );
   }

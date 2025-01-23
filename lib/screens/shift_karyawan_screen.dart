@@ -106,9 +106,24 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Kelola Shift Karyawan"),
-        automaticallyImplyLeading: false,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(60.0),
+        child: Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.3),
+                blurRadius: 10,
+                spreadRadius: 2,
+                offset: const Offset(0, 5),
+              ),
+            ],
+          ),
+          child: AppBar(
+            title: Text('Kelola Shift Karyawan'),
+            automaticallyImplyLeading: false,
+          ),
+        ),
       ),
       body: BlocProvider(
         create: (context) =>
@@ -127,7 +142,6 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
             }
 
             if (state is KelolaAkunkaryawanLoaded) {
-              // Filter karyawan list berdasarkan search query
               List<dynamic> filteredKaryawanList = state.karyawanList
                   .where((karyawan) =>
                       karyawan['name']
@@ -138,7 +152,6 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
                           .contains(searchQuery.toLowerCase()))
                   .toList();
 
-              // Inisialisasi checkbox untuk tiap karyawan
               if (selectedAccounts.length != filteredKaryawanList.length) {
                 selectedAccounts =
                     List.generate(filteredKaryawanList.length, (_) => false);
@@ -146,207 +159,426 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
 
               return Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Judul dan kata-kata
-                    const Text(
-                      'Kelola Shift Karyawan',
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      'Pilih akun yang ingin dikelola atau dihapus.',
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Search, Dropdown, and Save button
-                    Row(
-                      children: [
-                        Expanded(
-                          child: SizedBox(
-                            height: 48,
-                            child: TextField(
-                              onChanged: (value) {
-                                setState(() {
-                                  searchQuery = value;
-                                });
-                              },
-                              decoration: InputDecoration(
-                                labelText: 'Cari Karyawan',
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 12, horizontal: 16),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
+                child: SingleChildScrollView(
+                  // Tambahkan SingleChildScrollView disini
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: const Text(
+                          'Pilih shift karyawan yang ingin dikelola shift nya',
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              height: 48,
+                              child: TextField(
+                                onChanged: (value) {
+                                  setState(() {
+                                    searchQuery = value;
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  labelText: 'Cari Karyawan',
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 12, horizontal: 16),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 8),
-                        // Dropdown Button untuk memilih shift
-                        Container(
-                          height: 48,
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: Colors.grey, width: 1),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              value: selectedShift,
-                              hint: const Text(
-                                'Pilih Shift',
-                                style: TextStyle(fontSize: 14),
-                              ),
-                              onChanged: (newValue) {
-                                setState(() {
-                                  selectedShift = newValue;
-                                });
-                              },
-                              dropdownColor: Colors.white,
-                              icon: const Icon(Icons.arrow_drop_down, size: 24),
-                              style: const TextStyle(
-                                  fontSize: 14, color: Colors.black),
-                              isExpanded: false,
-                              items: shiftData.map((shift) {
-                                return DropdownMenuItem<String>(
-                                  value: shift['nama_shift'],
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 8),
-                                    child: Text(
-                                      "${shift['nama_shift']} (${shift['jam_masuk']} - ${shift['jam_keluar']})",
-                                      style: const TextStyle(fontSize: 12),
+                          const SizedBox(width: 8),
+                          Container(
+                            height: 48,
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: Colors.grey, width: 1),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                value: selectedShift,
+                                hint: const Text(
+                                  'Pilih Shift',
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    selectedShift = newValue;
+                                  });
+                                },
+                                dropdownColor: Colors.white,
+                                icon:
+                                    const Icon(Icons.arrow_drop_down, size: 24),
+                                style: const TextStyle(
+                                    fontSize: 14, color: Colors.black),
+                                isExpanded: false,
+                                items: shiftData.map((shift) {
+                                  return DropdownMenuItem<String>(
+                                    value: shift['nama_shift'],
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8),
+                                      child: Text(
+                                        "${shift['nama_shift']} (${shift['jam_masuk']} - ${shift['jam_keluar']})",
+                                        style: const TextStyle(fontSize: 12),
+                                      ),
                                     ),
-                                  ),
-                                );
-                              }).toList(),
+                                  );
+                                }).toList(),
+                              ),
                             ),
                           ),
-                        ),
+                          const SizedBox(width: 10),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  offset: Offset(0, 4),
+                                  blurRadius: 8,
+                                ),
+                              ],
+                            ),
+                            child: IconButton(
+                              onPressed: () {
+                                if (selectedShift == null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content:
+                                          Text("Pilih shift terlebih dahulu!"),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                  return;
+                                }
 
-                        const SizedBox(width: 10),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black26,
-                                offset: Offset(0, 4),
-                                blurRadius: 8,
+                                if (!selectedAccounts.contains(true)) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content:
+                                          Text("Pilih minimal satu karyawan!"),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                  return;
+                                }
+
+                                saveSelectedAccountsToFirestore(context
+                                    .read<KelolaAkunKaryawanBloc>()
+                                    .state);
+                              },
+                              icon: const Icon(
+                                Icons.save,
+                                color: Colors.white,
+                              ),
+                              tooltip: "Simpan Shift Karyawan",
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Container(
+                        height: 420,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.blueGrey,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: ListView.builder(
+                          itemCount: filteredKaryawanList.length,
+                          itemBuilder: (context, index) {
+                            final karyawan = filteredKaryawanList[index];
+                            final photoUrl = karyawan['photoUrl'] ?? '';
+
+                            return Card(
+                              elevation: 3,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 4, horizontal: 4),
+                              child: ListTile(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 12),
+                                leading: photoUrl.isNotEmpty
+                                    ? CircleAvatar(
+                                        backgroundImage: NetworkImage(photoUrl),
+                                        radius: 28)
+                                    : const CircleAvatar(
+                                        radius: 28,
+                                        child: Icon(Icons.person, size: 30)),
+                                title: Text(karyawan['name'] ?? 'Tanpa Nama',
+                                    style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600)),
+                                subtitle: Text(
+                                    "${karyawan['email'] ?? 'Tidak diketahui'}",
+                                    style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Color.fromARGB(
+                                            255, 133, 133, 133))),
+                                trailing: Checkbox(
+                                  value: selectedAccounts[index],
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5)),
+                                  checkColor: Colors.white,
+                                  activeColor: Colors.blue,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      selectedAccounts[index] = value!;
+                                    });
+                                  },
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 25),
+                      const Divider(
+                        color: Colors.blueGrey,
+                        thickness: 1.0,
+                        indent: 10,
+                        endIndent: 10,
+                      ),
+                      Center(
+                        child: Column(
+                          children: [
+                            const Text(
+                              'Menampilkan Akun Karyawan dengan Shift nya',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Container(
+                        height: 420,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.blueGrey,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: filteredKaryawanList.length,
+                                itemBuilder: (context, index) {
+                                  final karyawan = filteredKaryawanList[index];
+                                  final photoUrl = karyawan['photoUrl'] ?? '';
+
+                                  return FutureBuilder<Map<String, dynamic>>(
+                                    future: getShiftByEmail(
+                                        karyawan['email'] ?? ''),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const Center(
+                                            child: CircularProgressIndicator());
+                                      } else if (snapshot.hasError) {
+                                        return const Center(
+                                            child: Text(
+                                                'Error fetching shift data'));
+                                      } else if (snapshot.hasData) {
+                                        final shiftKaryawan =
+                                            snapshot.data ?? {};
+
+                                        return Card(
+                                          elevation: 3,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 6, horizontal: 10),
+                                          child: ListTile(
+                                            contentPadding:
+                                                const EdgeInsets.symmetric(
+                                                    vertical: 8,
+                                                    horizontal: 12),
+                                            leading: photoUrl.isNotEmpty
+                                                ? CircleAvatar(
+                                                    backgroundImage:
+                                                        NetworkImage(photoUrl),
+                                                    radius: 28,
+                                                  )
+                                                : const CircleAvatar(
+                                                    radius: 28,
+                                                    child: Icon(Icons.person,
+                                                        size: 30),
+                                                  ),
+                                            title: Text(
+                                              karyawan['name'] ?? 'Tanpa Nama',
+                                              style: const TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            subtitle: Text(
+                                              "${karyawan['email'] ?? 'Tidak diketahui'}",
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  color: Color.fromARGB(
+                                                      255, 133, 133, 133)),
+                                            ),
+                                            trailing: GestureDetector(
+                                              onTap: () {
+                                                // Tampilkan dialog yang lebih profesional
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return Dialog(
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12),
+                                                      ),
+                                                      elevation: 16,
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(20),
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          children: [
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Text(
+                                                                  'Shift Details',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        20,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Colors
+                                                                        .blueGrey,
+                                                                  ),
+                                                                ),
+                                                                IconButton(
+                                                                  icon:
+                                                                      const Icon(
+                                                                    Icons.close,
+                                                                    color: Colors
+                                                                        .red,
+                                                                    size: 30,
+                                                                  ),
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            const SizedBox(
+                                                                height: 15),
+                                                            Text(
+                                                              'Nama Shift: ${shiftKaryawan['nama_shift'] ?? 'Tidak Tersedia'}',
+                                                              style:
+                                                                  const TextStyle(
+                                                                      fontSize:
+                                                                          16),
+                                                            ),
+                                                            const SizedBox(
+                                                                height: 10),
+                                                            Text(
+                                                              'Jam Masuk: ${shiftKaryawan['jam_masuk'] ?? 'Tidak Tersedia'}',
+                                                              style:
+                                                                  const TextStyle(
+                                                                      fontSize:
+                                                                          16),
+                                                            ),
+                                                            const SizedBox(
+                                                                height: 10),
+                                                            Text(
+                                                              'Jam Keluar: ${shiftKaryawan['jam_keluar'] ?? 'Tidak Tersedia'}',
+                                                              style:
+                                                                  const TextStyle(
+                                                                      fontSize:
+                                                                          16),
+                                                            ),
+                                                            const SizedBox(
+                                                                height: 10),
+                                                            Text(
+                                                              'Tanggal Akhir: ${shiftKaryawan['tanggal_akhir'] ?? 'Tidak Tersedia'}',
+                                                              style:
+                                                                  const TextStyle(
+                                                                      fontSize:
+                                                                          16),
+                                                            ),
+                                                            const SizedBox(
+                                                                height: 20),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 8,
+                                                        horizontal: 16),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.blue,
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                ),
+                                                child: Text(
+                                                  shiftKaryawan['nama_shift'] ??
+                                                      'Tanpa Shift',
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 14),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        return const Center(
+                                            child: Text(
+                                                'No shift data available'));
+                                      }
+                                    },
+                                  );
+                                },
                               ),
                             ],
                           ),
-                          child: IconButton(
-                            onPressed: () {
-                              if (selectedShift == null) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content:
-                                        Text("Pilih shift terlebih dahulu!"),
-                                    backgroundColor: Colors.red,
-                                  ),
-                                );
-                                return;
-                              }
-
-                              if (!selectedAccounts.contains(true)) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content:
-                                        Text("Pilih minimal satu karyawan!"),
-                                    backgroundColor: Colors.red,
-                                  ),
-                                );
-                                return;
-                              }
-
-                              saveSelectedAccountsToFirestore(
-                                  context.read<KelolaAkunKaryawanBloc>().state);
-                            },
-                            icon: const Icon(
-                              Icons.save,
-                              color: Colors.white,
-                            ),
-                            tooltip: "Simpan Shift Karyawan",
-                          ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Container untuk menampilkan data akun karyawan
-                    Expanded(
-                        child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 8),
-                      decoration: BoxDecoration(
-                        color: Colors.blueGrey,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: filteredKaryawanList.length,
-                        itemBuilder: (context, index) {
-                          final karyawan = filteredKaryawanList[index];
-                          final photoUrl = karyawan['photoUrl'] ?? '';
-
-                          return Card(
-                            elevation: 3,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 6, horizontal: 10),
-                            child: ListTile(
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 12),
-                              leading: photoUrl.isNotEmpty
-                                  ? CircleAvatar(
-                                      backgroundImage: NetworkImage(photoUrl),
-                                      radius: 28,
-                                    )
-                                  : const CircleAvatar(
-                                      radius: 28,
-                                      child: Icon(Icons.person, size: 30),
-                                    ),
-                              title: Text(
-                                karyawan['name'] ?? 'Tanpa Nama',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              subtitle: Text(
-                                "${karyawan['email'] ?? 'Tidak diketahui'}",
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Color.fromARGB(255, 133, 133, 133),
-                                ),
-                              ),
-                              trailing: Checkbox(
-                                value: selectedAccounts[index],
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5)),
-                                checkColor: Colors.white,
-                                activeColor: Colors.blue,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    selectedAccounts[index] = value!;
-                                  });
-                                },
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    )),
-                  ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               );
             }
@@ -357,5 +589,25 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
       ),
       floatingActionButton: CustomFloatingBackButton(),
     );
+  }
+}
+
+Future<Map<String, dynamic>> getShiftByEmail(String email) async {
+  try {
+    // Mengambil data dari koleksi shift_karyawan berdasarkan email
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('shift_karyawan')
+        .where('email', isEqualTo: email) // Filter berdasarkan email
+        .get();
+
+    if (snapshot.docs.isNotEmpty) {
+      // Jika data ditemukan, ambil data pertama
+      return snapshot.docs.first.data() as Map<String, dynamic>;
+    } else {
+      return {}; // Kembalikan kosong jika tidak ada data
+    }
+  } catch (e) {
+    print('Error fetching shift data: $e');
+    return {}; // Kembalikan kosong jika terjadi error
   }
 }

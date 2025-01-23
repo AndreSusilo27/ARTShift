@@ -20,9 +20,24 @@ class _KelolaAkunKaryawanScreenState extends State<KelolaAkunKaryawanScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Kelola Akun Karyawan"),
-        automaticallyImplyLeading: false,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(60.0),
+        child: Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.3),
+                blurRadius: 10,
+                spreadRadius: 2,
+                offset: const Offset(0, 5),
+              ),
+            ],
+          ),
+          child: AppBar(
+            title: Text('Kelola Akun Karyawan'),
+            automaticallyImplyLeading: false,
+          ),
+        ),
       ),
       body: BlocProvider(
         create: (context) =>
@@ -56,16 +71,11 @@ class _KelolaAkunKaryawanScreenState extends State<KelolaAkunKaryawanScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Judul
-                    const Text(
-                      'Kelola Akun Karyawan',
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      'Hapus akun karyawan yang tidak diperlukan.',
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    Center(
+                      child: const Text(
+                        'Hapus akun karyawan yang tidak diperlukan.',
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
                     ),
                     const SizedBox(height: 20),
 
@@ -83,19 +93,17 @@ class _KelolaAkunKaryawanScreenState extends State<KelolaAkunKaryawanScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
-
-                    // List Akun Karyawan
                     Expanded(
                       child: Container(
+                        height: 420, // Ukuran tetap 420 piksel
                         padding: const EdgeInsets.symmetric(
                             vertical: 10, horizontal: 8),
                         decoration: BoxDecoration(
                           color: Colors.blueGrey,
                           borderRadius: BorderRadius.circular(12),
                         ),
+
                         child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: filteredKaryawanList.length,
                           itemBuilder: (context, index) {
                             final karyawan = filteredKaryawanList[index];

@@ -24,9 +24,24 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Kelola Kategori Shift'),
-        automaticallyImplyLeading: false,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(60.0),
+        child: Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.3),
+                blurRadius: 10,
+                spreadRadius: 2,
+                offset: const Offset(0, 5),
+              ),
+            ],
+          ),
+          child: AppBar(
+            title: Text('Kelola Kategori Shift'),
+            automaticallyImplyLeading: false,
+          ),
+        ),
       ),
       body: BlocProvider(
         create: (context) =>
@@ -38,6 +53,11 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
+                  const Text(
+                    'Buat atau Hapus shift yang tidak diperlukan.',
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                  const SizedBox(height: 20),
                   // Form Input Shift
                   Form(
                     key: _formKey,
@@ -144,97 +164,116 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
                   if (state is ShiftKategoriLoaded)
                     // Menampilkan daftar shift dalam ListView
                     Expanded(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        itemCount: state.shiftKategori.length,
-                        itemBuilder: (context, index) {
-                          final shift = state.shiftKategori[index];
-                          return Card(
-                            elevation: 5,
-                            margin: const EdgeInsets.symmetric(vertical: 10),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: ListTile(
-                              contentPadding: const EdgeInsets.all(16),
-                              title: Text(
-                                shift['nama_shift'],
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 16),
+                      child: Container(
+                        height: 420, // Menetapkan tinggi Container menjadi 420
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 8), // Padding untuk estetika
+                        decoration: BoxDecoration(
+                          color: Colors
+                              .blueGrey, // Menetapkan warna latar belakang menjadi blueGrey
+                          borderRadius: BorderRadius.circular(
+                              12), // Sudut melengkung untuk estetika
+                        ),
+                        child: ListView.builder(
+                          itemCount: state.shiftKategori.length,
+                          itemBuilder: (context, index) {
+                            final shift = state.shiftKategori[index];
+                            return Card(
+                              elevation: 5,
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 4,
+                                  horizontal:
+                                      4), // Mengurangi margin antar card
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              subtitle: Text(
-                                "${shift['jam_masuk']} - ${shift['jam_keluar']}\nTanggal Akhir: ${shift['tanggal_akhir']}",
-                                style: const TextStyle(fontSize: 14),
-                              ),
-                              trailing: Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 8), // Padding agar lebih seimbang
-                                child: InkWell(
-                                  borderRadius: BorderRadius.circular(8),
-                                  onTap: () {
-                                    // Menampilkan dialog konfirmasi
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text(
-                                              'Konfirmasi Hapus Shift'),
-                                          content: Text(
-                                              'Apakah Anda yakin ingin menghapus shift "${shift['nama_shift']}"?'),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context)
-                                                    .pop(); // Menutup dialog
-                                              },
-                                              child: const Text('Batal'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                if (shift['nama_shift'] !=
-                                                    null) {
-                                                  // Memanggil event HapusShiftKategoriEvent jika pengguna yakin untuk menghapus
-                                                  context
-                                                      .read<ShiftKategoriBloc>()
-                                                      .add(HapusShiftKategoriEvent(
-                                                          namaShift: shift[
-                                                              'nama_shift']));
+                              child: ListTile(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 8,
+                                    horizontal: 12), // Mengurangi padding
+                                title: Text(
+                                  shift['nama_shift'],
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                ),
+                                subtitle: Text(
+                                  "${shift['jam_masuk']} - ${shift['jam_keluar']}\nTanggal Akhir: ${shift['tanggal_akhir']}",
+                                  style: const TextStyle(fontSize: 14),
+                                ),
+                                trailing: Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 8), // Padding agar lebih seimbang
+                                  child: InkWell(
+                                    borderRadius: BorderRadius.circular(8),
+                                    onTap: () {
+                                      // Menampilkan dialog konfirmasi
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text(
+                                                'Konfirmasi Hapus Shift'),
+                                            content: Text(
+                                                'Apakah Anda yakin ingin menghapus shift "${shift['nama_shift']}"?'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
                                                   Navigator.of(context)
-                                                      .pop(); // Menutup dialog setelah aksi hapus
-                                                } else {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(const SnackBar(
-                                                          content: Text(
-                                                              'ID tidak valid!')));
-                                                  Navigator.of(context)
-                                                      .pop(); // Menutup dialog jika terjadi error
-                                                }
-                                              },
-                                              child: const Text('Hapus'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.all(6),
-                                    decoration: BoxDecoration(
-                                      color: Colors.red.withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: const Icon(
-                                      Icons.delete,
-                                      color: Colors.red,
-                                      size: 22,
+                                                      .pop(); // Menutup dialog
+                                                },
+                                                child: const Text('Batal'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  if (shift['nama_shift'] !=
+                                                      null) {
+                                                    // Memanggil event HapusShiftKategoriEvent jika pengguna yakin untuk menghapus
+                                                    context
+                                                        .read<
+                                                            ShiftKategoriBloc>()
+                                                        .add(HapusShiftKategoriEvent(
+                                                            namaShift: shift[
+                                                                'nama_shift']));
+                                                    Navigator.of(context)
+                                                        .pop(); // Menutup dialog setelah aksi hapus
+                                                  } else {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                            const SnackBar(
+                                                                content: Text(
+                                                                    'ID tidak valid!')));
+                                                    Navigator.of(context)
+                                                        .pop(); // Menutup dialog jika terjadi error
+                                                  }
+                                                },
+                                                child: const Text('Hapus'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.all(6),
+                                      decoration: BoxDecoration(
+                                        color: Colors.red.withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: const Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
+                                        size: 22,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
                     ),
                 ],

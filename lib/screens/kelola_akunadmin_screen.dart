@@ -19,9 +19,24 @@ class _KelolaAkunAdminScreenState extends State<KelolaAkunAdminScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Kelola Akun Admin"),
-        automaticallyImplyLeading: false,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(60.0),
+        child: Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.3),
+                blurRadius: 10,
+                spreadRadius: 2,
+                offset: const Offset(0, 5),
+              ),
+            ],
+          ),
+          child: AppBar(
+            title: Text('Kelola Akun Admin'),
+            automaticallyImplyLeading: false,
+          ),
+        ),
       ),
       body: BlocProvider(
         create: (context) =>
@@ -55,15 +70,11 @@ class _KelolaAkunAdminScreenState extends State<KelolaAkunAdminScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Kelola Akun Admin',
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      'Hapus akun admin yang tidak diperlukan.',
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    Center(
+                      child: const Text(
+                        'Hapus akun admin yang tidak diperlukan.',
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
                     ),
                     const SizedBox(height: 20),
                     TextField(
@@ -81,14 +92,15 @@ class _KelolaAkunAdminScreenState extends State<KelolaAkunAdminScreen> {
                     const SizedBox(height: 20),
                     Expanded(
                       child: Container(
+                        height: 420, // Ukuran tetap 420 piksel
                         padding: const EdgeInsets.symmetric(
                             vertical: 10, horizontal: 8),
                         decoration: BoxDecoration(
                           color: Colors.blueGrey,
                           borderRadius: BorderRadius.circular(12),
                         ),
+
                         child: ListView.builder(
-                          shrinkWrap: true,
                           itemCount: filteredAdminList.length,
                           itemBuilder: (context, index) {
                             final admin = filteredAdminList[index];

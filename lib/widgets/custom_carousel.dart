@@ -12,17 +12,16 @@ class _CustomCarouselState extends State<CustomCarousel> {
   int _currentIndex = 0;
 
   final List<String> imagePaths = [
-    'assets/images/kehadiran.png',
-    'assets/images/kelolajadwal.png',
-    'assets/images/kelolashift.png',
-    'assets/images/meeting.png',
+    'assets/images/Employee.png',
+    'assets/images/Admin.png',
+    'assets/images/Shift.png',
+    'assets/images/Meeting.png',
   ];
 
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
-    double carouselHeight = screenHeight * 0.68; // 65% dari tinggi layar
+    double carouselHeight = screenHeight * 0.65; // 65% dari tinggi layar
 
     return Column(
       children: [
@@ -45,12 +44,12 @@ class _CustomCarouselState extends State<CustomCarousel> {
                 blendMode: BlendMode.overlay, // Lebih smooth
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  clipBehavior: Clip.antiAlias, // Menghindari overflow
+                  clipBehavior: Clip.antiAlias,
                   child: Image.asset(
                     imagePath,
-                    fit: BoxFit.contain, // Menggunakan BoxFit.contain
-                    width: screenWidth *
-                        0.85, // Gunakan lebar layar agar responsif
+                    fit: BoxFit
+                        .cover, // Menyesuaikan gambar agar memenuhi slider
+                    width: double.infinity, // Gunakan lebar maksimum
                     height: carouselHeight, // Menentukan tinggi agar konsisten
                   ),
                 ),
@@ -61,7 +60,7 @@ class _CustomCarouselState extends State<CustomCarousel> {
               autoPlay: true,
               autoPlayInterval: const Duration(seconds: 3),
               enlargeCenterPage: true,
-              viewportFraction: 0.85,
+              viewportFraction: 0.90, // Menggunakan seluruh lebar slider
               onPageChanged: (index, reason) {
                 setState(() {
                   _currentIndex = index;

@@ -10,9 +10,24 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile'),
-        automaticallyImplyLeading: false,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(60.0),
+        child: Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.3),
+                blurRadius: 10,
+                spreadRadius: 2,
+                offset: const Offset(0, 5),
+              ),
+            ],
+          ),
+          child: AppBar(
+            title: Text('Profil'),
+            automaticallyImplyLeading: false,
+          ),
+        ),
       ),
       body: SafeArea(
         child: FutureBuilder<QuerySnapshot>(
@@ -33,7 +48,7 @@ class ProfileScreen extends StatelessWidget {
               return const Center(child: Text('User data not found.'));
             }
 
-            // Extract user data from the snapshot
+            // Extract user data
             var userData =
                 snapshot.data!.docs[0].data() as Map<String, dynamic>;
             String name = userData['name'] ?? 'Name not available';
@@ -44,7 +59,7 @@ class ProfileScreen extends StatelessWidget {
 
             return FutureBuilder<DocumentSnapshot>(
               future: FirebaseFirestore.instance
-                  .collection('biodata') // 'biodata' collection
+                  .collection('biodata')
                   .doc(email)
                   .get(),
               builder: (context, biodataSnapshot) {
@@ -61,50 +76,52 @@ class ProfileScreen extends StatelessWidget {
                   return const Center(child: Text('Biodata not found.'));
                 }
 
-                // Extract biodata from the snapshot
+                // Extract biodata
                 var biodata =
                     biodataSnapshot.data!.data() as Map<String, dynamic>;
-                String job = biodata['job'] ?? 'Job not available';
-                String gender = biodata['gender'] ?? 'Gender not available';
-                String phone = biodata['phone'] ?? 'Phone not available';
-                String address = biodata['address'] ?? 'Address not available';
+                String job = biodata['job'] ?? 'Not available';
+                String gender = biodata['gender'] ?? 'Not available';
+                String phone = biodata['phone'] ?? 'Not available';
+                String address = biodata['address'] ?? 'Not available';
 
-                return Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Center(
-                    // Center the entire content of the screen
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
                     child: Column(
-                      crossAxisAlignment:
-                          CrossAxisAlignment.center, // Center all children
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        // Profile Card
+                        // Profile Card with Glass Effect
                         Card(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
-                          elevation: 5,
+                          elevation: 8,
+                          shadowColor: Colors.blueAccent.withOpacity(0.3),
                           child: Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: Column(
                               children: [
                                 // Profile Picture
                                 CircleAvatar(
-                                  radius: 50,
+                                  radius: 55,
+                                  backgroundColor: Colors.blueAccent.shade100,
                                   backgroundImage: photoUrl.isNotEmpty
                                       ? NetworkImage(photoUrl)
                                       : const AssetImage(
                                               'assets/default_avatar.png')
                                           as ImageProvider,
                                 ),
-                                const SizedBox(height: 20),
+                                const SizedBox(height: 15),
+                                // Name
                                 Text(
-                                  "Hello, $name",
+                                  name,
                                   style: const TextStyle(
                                     fontSize: 22,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                const SizedBox(height: 8),
+                                const SizedBox(height: 5),
+                                // Email
                                 Text(
                                   emailFromFirestore,
                                   style: TextStyle(
@@ -112,45 +129,55 @@ class ProfileScreen extends StatelessWidget {
                                     color: Colors.grey[600],
                                   ),
                                 ),
-                                const SizedBox(height: 8),
-                                // Display Role
-                                Text(
-                                  " $role ",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.blue[800],
+                                const SizedBox(height: 10),
+                                // Role
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 5),
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue.shade100,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(
+                                    role,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blue.shade800,
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
                         ),
-                        const SizedBox(height: 30),
-                        // Display Additional Biodata
-                        Text(
-                          "Job: $job",
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w500),
+                        const SizedBox(height: 25),
+
+                        // Additional Biodata
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.blue.shade50,
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.blueAccent.withOpacity(0.2),
+                                blurRadius: 6,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          padding: const EdgeInsets.all(15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildInfoRow("Pekerjaan", job),
+                              _buildInfoRow("Jenis Kelamin", gender),
+                              _buildInfoRow("No.Telepon", phone),
+                              _buildInfoRow("Alamat", address),
+                            ],
+                          ),
                         ),
-                        const SizedBox(height: 10),
-                        Text(
-                          "Gender: $gender",
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w500),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          "Phone: $phone",
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w500),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          "Address: $address",
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w500),
-                        ),
+                        const SizedBox(height: 25),
                       ],
                     ),
                   ),
@@ -160,7 +187,32 @@ class ProfileScreen extends StatelessWidget {
           },
         ),
       ),
-      floatingActionButton: CustomFloatingBackButton(),
+      floatingActionButton: const CustomFloatingBackButton(),
+    );
+  }
+
+  // Helper method for building user information row
+  Widget _buildInfoRow(String title, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        children: [
+          Text(
+            "$title: ",
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: const TextStyle(fontSize: 16),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
