@@ -57,9 +57,7 @@ class ShiftKategoriBloc extends Bloc<ShiftKategoriEvent, ShiftKategoriState> {
         // Mencari dokumen berdasarkan nama_shift
         final querySnapshot = await firestore
             .collection('shift_kategori')
-            .where('nama_shift',
-                isEqualTo:
-                    event.namaShift) // Menggunakan nama_shift sebagai parameter
+            .where('nama_shift', isEqualTo: event.namaShift)
             .get();
 
         if (querySnapshot.docs.isEmpty) {

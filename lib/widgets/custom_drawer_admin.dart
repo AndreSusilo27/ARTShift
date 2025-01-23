@@ -1,3 +1,4 @@
+import 'package:ARTShift/screens/laporan_screen.dart';
 import 'package:ARTShift/screens/shift_karyawan_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ARTShift/screens/kelola_akunadmin_screen.dart';
@@ -133,7 +134,10 @@ class CustomDrawerAdmin extends StatelessWidget {
                 navigateTo: () {}),
             _buildDrawerItem(
                 context, 'assets/icons/icon_menu/laporan.png', "Laporan",
-                navigateTo: () {}),
+                navigateTo: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LaporanScreen()));
+            }),
             const SizedBox(height: 10), // Jarak antar bagian
 
             // MENU LAINNYA

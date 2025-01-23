@@ -210,8 +210,10 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
                                     onTap: () {
                                       // Menampilkan dialog konfirmasi
                                       showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
+                                        context:
+                                            context, // Gunakan context dari parent
+                                        builder: (BuildContext dialogContext) {
+                                          // Ubah nama context agar tidak bingung
                                           return AlertDialog(
                                             title: const Text(
                                                 'Konfirmasi Hapus Shift'),
@@ -220,34 +222,24 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
                                             actions: <Widget>[
                                               TextButton(
                                                 onPressed: () {
-                                                  Navigator.of(context)
-                                                      .pop(); // Menutup dialog
+                                                  Navigator.of(dialogContext,
+                                                          rootNavigator: true)
+                                                      .pop();
                                                 },
                                                 child: const Text('Batal'),
                                               ),
                                               TextButton(
                                                 onPressed: () {
-                                                  if (shift['nama_shift'] !=
-                                                      null) {
-                                                    // Memanggil event HapusShiftKategoriEvent jika pengguna yakin untuk menghapus
-                                                    context
-                                                        .read<
-                                                            ShiftKategoriBloc>()
-                                                        .add(HapusShiftKategoriEvent(
-                                                            namaShift: shift[
-                                                                'nama_shift']));
-                                                    Navigator.of(context)
-                                                        .pop(); // Menutup dialog setelah aksi hapus
-                                                  } else {
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(
-                                                            const SnackBar(
-                                                                content: Text(
-                                                                    'ID tidak valid!')));
-                                                    Navigator.of(context)
-                                                        .pop(); // Menutup dialog jika terjadi error
-                                                  }
+                                                  final bloc = BlocProvider.of<
+                                                          ShiftKategoriBloc>(
+                                                      context); // Gunakan context dari widget induk
+                                                  bloc.add(
+                                                      HapusShiftKategoriEvent(
+                                                          namaShift: shift[
+                                                              'nama_shift']));
+                                                  Navigator.of(dialogContext,
+                                                          rootNavigator: true)
+                                                      .pop();
                                                 },
                                                 child: const Text('Hapus'),
                                               ),

@@ -1,3 +1,4 @@
+import 'package:ARTShift/screens/absensi_screen.dart';
 import 'package:ARTShift/screens/lengkapidata_screen.dart';
 import 'package:ARTShift/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -92,7 +93,17 @@ class CustomDrawerKaryawan extends StatelessWidget {
             _buildDrawerHeader("MENU UTAMA"),
             _buildDrawerItem(
                 context, "assets/icons/icon_menu/kehadiran.png", "Kehadiran",
-                navigateTo: () {}),
+                navigateTo: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AbsensiScreen(
+                    email: email,
+                    name: name,
+                  ),
+                ),
+              );
+            }),
             const SizedBox(height: 20),
             _buildDrawerHeader("MENU LAINNYA"),
             _buildDrawerItem(
