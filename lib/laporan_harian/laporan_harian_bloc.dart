@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'laporan_event.dart';
-import 'laporan_state.dart';
+import 'laporan_harian_event.dart';
+import 'laporan_harian_state.dart';
 
 class LaporanBloc extends Bloc<LaporanEvent, LaporanState> {
   final FirebaseFirestore firestore;

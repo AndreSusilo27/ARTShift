@@ -1,4 +1,5 @@
-import 'package:ARTShift/laporan/laporan_bloc.dart';
+import 'package:ARTShift/kelola_akunkaryawan/kelola_akunkaryawan_bloc.dart';
+import 'package:ARTShift/laporan_harian/laporan_harian_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,6 +34,10 @@ class MyApp extends StatelessWidget {
         BlocProvider<LaporanBloc>(
           create: (context) =>
               LaporanBloc(firestore: FirebaseFirestore.instance),
+        ),
+        BlocProvider<KelolaAkunKaryawanBloc>(
+          create: (context) =>
+              KelolaAkunKaryawanBloc(firestore: FirebaseFirestore.instance),
         ),
       ],
       child: MaterialApp(

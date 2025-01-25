@@ -1,3 +1,4 @@
+import 'package:ARTShift/screens/jadwal_rapat_screen.dart';
 import 'package:ARTShift/screens/laporan_screen.dart';
 import 'package:ARTShift/screens/shift_karyawan_screen.dart';
 import 'package:flutter/material.dart';
@@ -131,7 +132,10 @@ class CustomDrawerAdmin extends StatelessWidget {
             }),
             _buildDrawerItem(
                 context, 'assets/icons/icon_menu/meeting.png', "Adakan Rapat",
-                navigateTo: () {}),
+                navigateTo: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => JadwalRapatScreen()));
+            }),
             _buildDrawerItem(
                 context, 'assets/icons/icon_menu/laporan.png', "Laporan",
                 navigateTo: () {

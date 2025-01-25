@@ -3,6 +3,8 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  file_saver
+  open_file_linux
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

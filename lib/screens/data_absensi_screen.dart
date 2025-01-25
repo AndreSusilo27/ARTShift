@@ -1,11 +1,158 @@
 import 'package:ARTShift/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:excel/excel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+import 'package:open_file/open_file.dart';
 
 class DataAbsensiScreen extends StatelessWidget {
   final String userEmail;
 
   const DataAbsensiScreen({super.key, required this.userEmail});
+
+  void _showExportConfirmation(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          titlePadding: const EdgeInsets.all(20),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          actionsPadding:
+              const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          title: const Row(
+            children: [
+              Icon(Icons.file_download, color: Colors.blue, size: 28),
+              SizedBox(width: 10),
+              Text("Konfirmasi Ekspor",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+            ],
+          ),
+          content: const Text(
+            "Apakah Anda yakin ingin mengekspor data absensi ke file Excel?",
+            style: TextStyle(fontSize: 16),
+          ),
+          actions: [
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () => Navigator.of(dialogContext).pop(),
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: Colors.grey),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                    ),
+                    child: const Text(
+                      "Batal",
+                      style: TextStyle(
+                          color: Colors.green, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 5),
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () {
+                      Navigator.of(dialogContext).pop(); // Tutup dialog
+                      _exportToExcel(context); // Lakukan ekspor data
+                    },
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: Colors.grey),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                    ),
+                    child: const Text(
+                      "Ya, Ekspor",
+                      style: TextStyle(
+                          color: Colors.blue, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _exportToExcel(BuildContext context) async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('absensi')
+        .doc(userEmail)
+        .collection('absensi_harian')
+        .get();
+
+    if (snapshot.docs.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Tidak ada data absensi untuk diekspor')),
+      );
+      return;
+    }
+
+    var excel = Excel.createExcel();
+    Sheet sheet = excel['Sheet1'];
+
+    sheet.cell(CellIndex.indexByString('A1')).value = TextCellValue('Tanggal');
+    sheet.cell(CellIndex.indexByString('B1')).value = TextCellValue('Hadir');
+    sheet.cell(CellIndex.indexByString('C1')).value = TextCellValue('Keluar');
+    sheet.cell(CellIndex.indexByString('D1')).value = TextCellValue('Sakit');
+    sheet.cell(CellIndex.indexByString('E1')).value = TextCellValue('Izin');
+
+    int row = 2;
+    for (var doc in snapshot.docs) {
+      var data = doc.data() as Map<String, dynamic>;
+      var tanggal = data['tanggal'] ?? 'Tidak ada tanggal';
+      var hadir = data['hadir']?['waktu'] ?? 'Belum hadir';
+      var keluar = data['keluar']?['waktu'] ?? 'Belum keluar';
+      var sakit = data['sakit'] ?? 'Tidak sakit';
+      var izin = data['izin'] ?? 'Tidak izin';
+
+      sheet.cell(CellIndex.indexByString('A$row')).value =
+          TextCellValue(tanggal);
+      sheet.cell(CellIndex.indexByString('B$row')).value = TextCellValue(hadir);
+      sheet.cell(CellIndex.indexByString('C$row')).value =
+          TextCellValue(keluar);
+      sheet.cell(CellIndex.indexByString('D$row')).value = TextCellValue(sakit);
+      sheet.cell(CellIndex.indexByString('E$row')).value = TextCellValue(izin);
+      row++;
+    }
+
+    final directory = await getApplicationDocumentsDirectory();
+    final username = userEmail.split('@').first;
+    final filePath = '${directory.path}/absensi_$username.xlsx';
+    final file = File(filePath);
+    await file.writeAsBytes(excel.encode()!);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Data berhasil diekspor ke Excel!')),
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("File Berhasil Disimpan"),
+          content: Text("File telah disimpan di:\n$filePath"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                OpenFile.open(filePath);
+              },
+              child: const Text("Buka File"),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("Tutup"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,75 +161,77 @@ class DataAbsensiScreen extends StatelessWidget {
         title: const Text('Data Absensi'),
         automaticallyImplyLeading: false,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // Menampilkan email pengguna dengan desain lebih profesional
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              decoration: BoxDecoration(
-                color: Colors.blueAccent,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 8,
-                    spreadRadius: 2,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Center(
-                child: Text(
-                  'Data Absensi - $userEmail',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+      body: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            margin: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.blueAccent,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 8,
+                  spreadRadius: 2,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Center(
+              child: Text(
+                'Data Absensi - $userEmail',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ),
             ),
-            const SizedBox(
-                height: 16), // Menambahkan jarak antara email dan konten
-
-            // Membungkus ListView dengan Expanded
-            Expanded(
+          ),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.all(5),
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                color: Colors.blueGrey,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(
+                      12), // Menentukan radius untuk sudut kiri atas
+                  topRight: Radius.circular(
+                      12), // Menentukan radius untuk sudut kanan atas
+                  bottomLeft: Radius.circular(
+                      0), // Menjaga sudut kiri bawah tetap tegak
+                  bottomRight: Radius.circular(
+                      0), // Menjaga sudut kanan bawah tetap tegak
+                ),
+              ),
               child: FutureBuilder<QuerySnapshot>(
                 future: FirebaseFirestore.instance
                     .collection('absensi')
-                    .doc(
-                        userEmail) // Mengambil dokumen berdasarkan email pengguna
+                    .doc(userEmail)
                     .collection('absensi_harian')
                     .get(),
                 builder: (context, snapshot) {
-                  // Menunggu data atau sedang dalam proses pengambilan
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   }
-
-                  // Menangani jika terjadi error dalam pengambilan data
                   if (snapshot.hasError) {
-                    return Center(
-                        child: Text('Terjadi kesalahan saat mengambil data'));
+                    return const Center(child: Text('Terjadi kesalahan'));
                   }
-
-                  // Cek apakah data tidak ada atau kosong
                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                    return Center(
-                        child: Text('Tidak ada data absensi untuk $userEmail'));
+                    return const Center(child: Text('Tidak ada data absensi'));
                   }
 
-                  // Mengambil data absensi dari dokumen Firestore
                   return ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
                       var absensi = snapshot.data!.docs[index];
                       var tanggal = absensi['tanggal'] ?? 'Tidak ada tanggal';
-                      var hadir = absensi['hadir'] ?? {'waktu': 'Belum hadir'};
+                      var hadir = absensi['hadir']?['waktu'] ?? 'Belum hadir';
                       var keluar =
-                          absensi['keluar'] ?? {'waktu': 'Belum keluar'};
+                          absensi['keluar']?['waktu'] ?? 'Belum keluar';
                       var sakit = absensi['sakit'] ?? 'Tidak sakit';
                       var izin = absensi['izin'] ?? 'Tidak izin';
 
@@ -97,22 +246,17 @@ class DataAbsensiScreen extends StatelessWidget {
                               vertical: 12, horizontal: 16),
                           title: Text(
                             'Tanggal: $tanggal',
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           ),
-                          subtitle: Padding(
-                            padding: const EdgeInsets.only(top: 8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Hadir: ${hadir['waktu']}'),
-                                Text('Keluar: ${keluar['waktu']}'),
-                                Text('Sakit: $sakit'),
-                                Text('Izin: $izin'),
-                              ],
-                            ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Hadir: $hadir'),
+                              Text('Keluar: $keluar'),
+                              Text('Sakit: $sakit'),
+                              Text('Izin: $izin'),
+                            ],
                           ),
                         ),
                       );
@@ -121,10 +265,31 @@ class DataAbsensiScreen extends StatelessWidget {
                 },
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-      floatingActionButton: CustomFloatingBackButton(),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment:
+            CrossAxisAlignment.end, // Memastikan tombol tetap di kanan bawah
+        children: [
+          SizedBox(
+            width: 50,
+            height: 50,
+            child: FloatingActionButton(
+              heroTag: "Export",
+              onPressed: () => _showExportConfirmation(context),
+              tooltip: 'Export ke Excel',
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
+              child: const Icon(Icons.print,
+                  size: 24), // Ukuran ikon tetap proporsional
+            ),
+          ),
+          const SizedBox(height: 16), // Jarak antar tombol lebih jelas
+          const CustomFloatingBackButton(), // Pastikan ini didefinisikan dengan baik
+        ],
+      ),
     );
   }
 }
