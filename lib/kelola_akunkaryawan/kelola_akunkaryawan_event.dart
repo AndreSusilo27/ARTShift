@@ -1,4 +1,3 @@
-// kelola_akunkaryawan_event.dart
 import 'package:flutter/material.dart';
 
 abstract class KelolaAkunKaryawanEvent {}
@@ -7,8 +6,9 @@ class FetchKaryawanEvent extends KelolaAkunKaryawanEvent {}
 
 class FetchKaryawanEvent2 extends KelolaAkunKaryawanEvent {
   final ScaffoldMessengerState scaffoldMessenger;
+  final BuildContext context; // Menambahkan BuildContext
 
-  FetchKaryawanEvent2({required this.scaffoldMessenger});
+  FetchKaryawanEvent2({required this.scaffoldMessenger, required this.context});
 }
 
 class DeleteKaryawanEvent extends KelolaAkunKaryawanEvent {

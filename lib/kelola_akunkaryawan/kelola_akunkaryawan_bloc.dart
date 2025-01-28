@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:path_provider/path_provider.dart';
 import 'kelola_akunkaryawan_event.dart';
 import 'kelola_akunkaryawan_state.dart';
+import 'package:open_file/open_file.dart';
 
 class KelolaAkunKaryawanBloc
     extends Bloc<KelolaAkunKaryawanEvent, KelolaAkunkaryawanState> {
@@ -16,7 +17,6 @@ class KelolaAkunKaryawanBloc
       : super(KelolaAkunkaryawanInitial()) {
     on<FetchKaryawanEvent>(_fetchKaryawan);
     on<FetchKaryawanEvent2>(_exportDataToExcel);
-    on<SimpanShiftEvent>(_simpanShift);
     on<DeleteKaryawanEvent>(_deleteKaryawan);
   }
 
@@ -48,14 +48,37 @@ class KelolaAkunKaryawanBloc
 
   Future<void> _exportDataToExcel(
       FetchKaryawanEvent2 event, Emitter<KelolaAkunkaryawanState> emit) async {
-    emit(KelolaAkunkaryawanLoading());
+    emit(
+        KelolaAkunkaryawanLoading()); // Menandakan proses loading sedang berlangsung
+
+    // Menampilkan Snackbar untuk menunjukkan proses sedang berjalan
+    final snackBar = SnackBar(
+      content: Text("Sedang mengambil data..."),
+      backgroundColor: Colors.orange,
+    );
+    event.scaffoldMessenger.showSnackBar(snackBar);
+
+    // Menunggu 1.5 detik sebelum menutup Snackbar
+    await Future.delayed(Duration(seconds: 1, milliseconds: 950));
+
+    // Menutup Snackbar setelah 1.5 detik
+    ScaffoldMessenger.of(event.context).hideCurrentSnackBar();
+
     try {
+      // Ambil data karyawan dengan role 'Karyawan'
       final karyawanSnapshot = await firestore
           .collection('users')
           .where('role', isEqualTo: 'Karyawan')
           .get();
+
       if (karyawanSnapshot.docs.isEmpty) {
         emit(KelolaAkunkaryawanError(message: "Tidak ada data karyawan."));
+        event.scaffoldMessenger.showSnackBar(
+          SnackBar(
+            content: Text("Tidak ada data karyawan."),
+            backgroundColor: Colors.red,
+          ),
+        );
         return;
       }
 
@@ -68,58 +91,89 @@ class KelolaAkunKaryawanBloc
         };
       }).toList();
 
+      // Membuat Excel baru
       var excel = Excel.createExcel();
-      Sheet sheet = excel['Absensi'];
-      sheet.appendRow([
-        TextCellValue('Nama Karyawan'),
-        TextCellValue('Tanggal'),
-        TextCellValue('Jam Masuk'),
-        TextCellValue('Jam Keluar'),
-        TextCellValue('Keterangan'),
-      ]);
-
       bool adaData = false;
+
+      // Loop untuk setiap karyawan
       for (var karyawan in karyawanList) {
         String email = karyawan['email'];
         if (email.isEmpty) continue;
 
+        // Ambil data absensi karyawan berdasarkan email
         final absensiSnapshot = await firestore
             .collection('absensi')
             .doc(email)
             .collection('absensi_harian')
             .get();
+
         if (absensiSnapshot.docs.isNotEmpty) {
           adaData = true;
+
+          // Buat sheet baru dengan nama sesuai nama karyawan atau email
+          Sheet sheet = excel[email];
+
+          // Menambahkan header untuk sheet
+          sheet.appendRow([
+            TextCellValue('Nama Karyawan'),
+            TextCellValue('Tanggal'),
+          ]);
+
+          // Loop untuk data absensi karyawan dan masukkan ke dalam sheet
           for (var doc in absensiSnapshot.docs) {
             var data = doc.data();
+
+            // Menambahkan data absensi ke dalam sheet
             sheet.appendRow([
-              TextCellValue(karyawan['name']),
+              TextCellValue(karyawan['name'] ?? 'Tanpa Nama'),
               TextCellValue(data['tanggal'] ?? ''),
-              TextCellValue(data['jamMasuk'] ?? ''),
-              TextCellValue(data['jamKeluar'] ?? ''),
-              TextCellValue(data['keterangan'] ?? ''),
             ]);
           }
         }
       }
 
+      // Jika tidak ada data absensi, tampilkan error
       if (!adaData) {
         emit(KelolaAkunkaryawanError(
             message: "Tidak ada data absensi yang diekspor."));
+        event.scaffoldMessenger.showSnackBar(
+          SnackBar(
+            content: Text("Tidak ada data absensi yang diekspor."),
+            backgroundColor: Colors.red,
+          ),
+        );
         return;
       }
+
+      // Simpan file Excel
       var bytes = excel.save();
       if (bytes != null) {
         Uint8List uint8ListBytes =
             Uint8List.fromList(bytes); // Konversi List<int> ke Uint8List
 
+        // Menyimpan file Excel ke penyimpanan perangkat
         String filePath = await saveExcelToStorage(uint8ListBytes,
             "Absensi_Karyawan_${DateTime.now().millisecondsSinceEpoch}");
 
+        // Menampilkan snackbar untuk memberi tahu bahwa ekspor berhasil
         event.scaffoldMessenger.showSnackBar(
           SnackBar(
             content: Text("Data berhasil diekspor: $filePath"),
             backgroundColor: Colors.green,
+          ),
+        );
+
+        // Delay untuk menunggu Snackbar selesai, baru tampilkan dialog
+        await Future.delayed(Duration(milliseconds: 500));
+
+        // Menampilkan dialog untuk membuka file setelah ekspor berhasil
+        showExportSuccessDialog(event.context, filePath);
+      } else {
+        emit(KelolaAkunkaryawanError(message: "Gagal menyimpan data."));
+        event.scaffoldMessenger.showSnackBar(
+          SnackBar(
+            content: Text("Gagal menyimpan data."),
+            backgroundColor: Colors.red,
           ),
         );
       }
@@ -128,11 +182,46 @@ class KelolaAkunKaryawanBloc
     } catch (e) {
       emit(KelolaAkunkaryawanError(
           message: 'Gagal mengekspor data: ${e.toString()}'));
+      event.scaffoldMessenger.showSnackBar(
+        SnackBar(
+          content: Text("Gagal mengekspor data: ${e.toString()}"),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
+  Future<void> showExportSuccessDialog(
+      BuildContext context, String filePath) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("File Berhasil Disimpan"),
+          content: Text("File telah disimpan di:\n$filePath"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                OpenFile.open(
+                    filePath); // Membuka file setelah menekan tombol "Buka File"
+              },
+              child: const Text("Buka File"),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("Tutup"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+// Fungsi untuk menyimpan file ke penyimpanan perangkat
   Future<String> saveExcelToStorage(Uint8List bytes, String fileName) async {
     try {
+      // Menyimpan file ke direktori Download atau direktori dokumen aplikasi
       Directory? directory = Directory('/storage/emulated/0/Download');
       if (!directory.existsSync()) {
         directory = await getApplicationDocumentsDirectory();
@@ -142,26 +231,6 @@ class KelolaAkunKaryawanBloc
       return file.path;
     } catch (e) {
       return "Gagal menyimpan file: ${e.toString()}";
-    }
-  }
-
-  Future<void> _simpanShift(
-      SimpanShiftEvent event, Emitter<KelolaAkunkaryawanState> emit) async {
-    emit(KelolaAkunkaryawanLoading());
-    try {
-      for (var entry in event.selectedKaryawan.entries) {
-        if (entry.value) {
-          await firestore.collection('shifts').add({
-            'email': entry.key,
-            'shift': event.selectedShift,
-            'timestamp': FieldValue.serverTimestamp(),
-          });
-        }
-      }
-      emit(KelolaAkunkaryawanSuccess(message: 'Shift berhasil disimpan.'));
-    } catch (e) {
-      emit(KelolaAkunkaryawanError(
-          message: 'Gagal menyimpan shift: ${e.toString()}'));
     }
   }
 

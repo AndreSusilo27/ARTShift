@@ -1,8 +1,9 @@
+import 'package:ARTShift/screens/absensi_screen.dart';
 import 'package:ARTShift/widgets/apptheme.dart';
 import 'package:ARTShift/widgets/cardmeeting.dart';
 import 'package:ARTShift/widgets/custom_drawer_karyawan.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // Pastikan sudah mengimpor cloud_firestore
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DashboardKaryawanScreen extends StatefulWidget {
   final String email;
@@ -25,6 +26,7 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
   String namekaryawan = "";
   String photoUrlkaryawan = "";
   String tanggalAkhir = "";
+  bool showShiftDetails = false; // Untuk menampilkan atau menyembunyikan shift
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -42,10 +44,8 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
           jamMasuk = data['jam_masuk'] ?? "00:00";
           jamKeluar = data['jam_keluar'] ?? "00:00";
           namaShift = data['nama_shift'] ?? "";
-          namekaryawan =
-              data['name'] ?? widget.name; // Gunakan nama yang sudah ada
-          photoUrlkaryawan = data['photoUrl'] ??
-              widget.photoUrl; // Gunakan photoUrl yang sudah ada
+          namekaryawan = data['name'] ?? widget.name;
+          photoUrlkaryawan = data['photoUrl'] ?? widget.photoUrl;
           tanggalAkhir = data['tanggal_akhir'] ?? "";
         });
       }
@@ -57,7 +57,7 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchShiftData(); // Memanggil fungsi untuk mengambil data saat halaman pertama kali dimuat
+    _fetchShiftData();
   }
 
   @override
@@ -70,174 +70,228 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
         email: widget.email,
         photoUrl: widget.photoUrl,
       ),
-      body: SingleChildScrollView(
-        child: Align(
-          alignment: Alignment.topCenter,
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  elevation: 5,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Stack(
+      body: Container(
+        height: 825,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/bg2.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: RefreshIndicator(
+          onRefresh: _fetchShiftData,
+          child: SingleChildScrollView(
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 10),
+                    Text(
+                      "Dashboard Karyawan",
+                      style: TextStyle(
+                        fontSize:
+                            24, // Ukuran teks yang cukup besar untuk judul
+                        fontWeight: FontWeight.bold, // Membuat teks tebal
+                        color: Colors.white, // Warna putih
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    // Card Profil & Shift
+                    Card(
+                      margin: const EdgeInsets.all(10),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15)),
+                      elevation: 5,
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment
+                              .start, // Pastikan tidak ada perpindahan posisi
                           children: [
+                            // Foto Profil
                             CircleAvatar(
-                              radius: 50,
-                              backgroundImage: NetworkImage(photoUrlkaryawan),
+                              radius: 47,
+                              backgroundImage: photoUrlkaryawan.isNotEmpty
+                                  ? NetworkImage(photoUrlkaryawan)
+                                  : const AssetImage(
+                                          "assets/images/default_profile.png")
+                                      as ImageProvider,
                             ),
-                            Positioned(
-                              bottom: 4,
-                              right: 8,
-                              child: Container(
-                                width: 16,
-                                height: 16,
+                            const SizedBox(width: 10),
+
+                            // Info Profil & Shift
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    namekaryawan,
+                                    style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    widget.email,
+                                    style: const TextStyle(color: Colors.grey),
+                                  ),
+                                  const SizedBox(height: 8),
+
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        showShiftDetails = !showShiftDetails;
+                                      });
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      foregroundColor: Colors.white,
+                                      backgroundColor:
+                                          Colors.blue, // Warna teks putih
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            12), // Sudut melengkung untuk tombol
+                                      ),
+                                      elevation:
+                                          5, // Memberikan bayangan pada tombol
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 10,
+                                          horizontal:
+                                              24), // Padding lebih besar
+                                    ),
+                                    child: Text(
+                                      showShiftDetails
+                                          ? "Sembunyikan Shift"
+                                          : "Lihat Shift",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+
+                                  // Animasi tampilan shift agar tidak mengganggu tata letak
+                                  AnimatedCrossFade(
+                                    firstChild: const SizedBox.shrink(),
+                                    secondChild: Card(
+                                      margin: const EdgeInsets.only(top: 10),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(7),
+                                        side: BorderSide(
+                                            color: Colors.blue,
+                                            width: 2), // Border biru
+                                      ),
+                                      elevation: 5,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text("Shift: $namaShift",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                    color: Colors.black87)),
+                                            SizedBox(height: 8),
+                                            Text("Jam: $jamMasuk - $jamKeluar",
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.black54)),
+                                            SizedBox(height: 8),
+                                            Text("Tanggal Akhir: $tanggalAkhir",
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.black54)),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    crossFadeState: showShiftDetails
+                                        ? CrossFadeState.showSecond
+                                        : CrossFadeState.showFirst,
+                                    duration: const Duration(milliseconds: 300),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            // Navigasi ke Absensi
+                            IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AbsensiScreen(
+                                      email: widget.email,
+                                      name: widget.name,
+                                    ),
+                                  ),
+                                );
+                              },
+                              icon: Container(
+                                padding: const EdgeInsets.all(6),
                                 decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  shape: BoxShape.circle,
-                                  border:
-                                      Border.all(color: Colors.white, width: 2),
+                                  color: Colors.blue.withOpacity(
+                                      0.1), // Warna latar belakang yang sama
+                                  borderRadius: BorderRadius.circular(
+                                      8), // Border radius yang serupa
+                                ),
+                                child: const Icon(
+                                  Icons.calendar_today,
+                                  color: Colors.blue,
+                                  size: 30,
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 20),
-                        Text(
-                          "Selamat datang, ${widget.name}",
-                          style: const TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          widget.email,
-                          style:
-                              const TextStyle(fontSize: 16, color: Colors.grey),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                // Card menampilkan data shift
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  elevation: 8,
-                  shadowColor: Colors.black.withOpacity(0.1),
-                  color: Colors.white,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "SHIFT",
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blueGrey,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "$namaShift",
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black87,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "$jamMasuk - $jamKeluar",
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black87,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Tanggal Akhir:",
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black54,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              "$tanggalAkhir",
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black87,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                // Menggunakan Expanded dengan ukuran tetap 500px
-                Container(
-                  margin: const EdgeInsets.all(
-                      10), // Menambahkan margin luar sebesar 10
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  decoration: BoxDecoration(
-                    color: Colors
-                        .blueGrey, // Menambahkan warna latar belakang blue-grey
-                    borderRadius:
-                        BorderRadius.circular(15), // Sudut Card melengkung
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 6,
-                        offset: const Offset(0, 3),
                       ),
-                    ],
-                  ),
-                  child: SizedBox(
-                    height: 500, // Menentukan tinggi tetap 500px
-                    child:
-                        MeetingList(), // MeetingList tetap berada dalam SizedBox
-                  ),
-                )
-              ],
+                    ),
+                    SizedBox(height: 20),
+                    Divider(
+                      color: Colors.white, // Warna putih untuk divider
+                      thickness: 2, // Ketebalan divider
+                      indent: 20, // Jarak awal dari divider
+                      endIndent: 20, // Jarak akhir dari divider
+                    ),
+
+                    Text(
+                      "List Meeting",
+                      style: TextStyle(
+                        fontSize:
+                            24, // Ukuran teks yang cukup besar untuk judul
+                        fontWeight: FontWeight.bold, // Membuat teks tebal
+                        color: Colors.white, // Warna putih
+                      ),
+                    ),
+
+                    SizedBox(height: 10),
+                    // List Meeting
+                    Container(
+                      margin: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(203, 255, 255, 255),
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 6,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: SizedBox(
+                        height: 500,
+                        child:
+                            MeetingList(), // Pastikan widget ini sudah dideklarasikan di project Anda
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),

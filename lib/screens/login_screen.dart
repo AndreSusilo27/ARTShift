@@ -46,38 +46,49 @@ class LoginScreen extends StatelessWidget {
 
           return Container(
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  const Color.fromARGB(255, 49, 181, 229),
-                  const Color.fromARGB(255, 44, 163, 207),
-                  const Color.fromARGB(255, 20, 78, 99),
-                  Colors.black
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
+              image: DecorationImage(
+                image: AssetImage('assets/images/bg2.png'),
+                fit: BoxFit.cover,
               ),
-              // image: DecorationImage(
-              //   image: AssetImage('assets/images/background.png'),
-              //   fit: BoxFit.cover,
-              // ),
             ),
             child: SingleChildScrollView(
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 40),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(height: 10),
                     const CustomCarousel(),
                     const SizedBox(height: 10),
                     // Logo
-                    Image.asset(
-                      'assets/icons/ARTShift_icon2.png',
-                      height: 50,
-                      fit: BoxFit.contain,
+                    Center(
+                      child: Container(
+                        width: 230,
+                        height: 45,
+                        padding: EdgeInsets.all(5),
+                        margin: EdgeInsets.symmetric(vertical: 5),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 10,
+                              offset: Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Image.asset(
+                            'assets/icons/ARTShift_icon2.png',
+                            height: 50,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ),
                     ),
-
+                    const SizedBox(height: 10),
                     // Divider dengan teks "LOGIN"
                     Row(
                       children: [
@@ -110,7 +121,7 @@ class LoginScreen extends StatelessWidget {
                         style: TextStyle(fontSize: 16, color: Colors.white70),
                       ),
                     ),
-                    const SizedBox(height: 25),
+                    const SizedBox(height: 22),
                     // Tombol Sign-in Google
                     MouseRegion(
                       cursor: SystemMouseCursors.click,
@@ -125,19 +136,18 @@ class LoginScreen extends StatelessWidget {
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                         ),
-                        width: double.infinity,
+                        width: 375,
                         elevation: 5,
                       ),
                     ),
-                    const SizedBox(height: 12),
-                    // Footer
+                    const SizedBox(height: 20),
+                    // Footer tanpa padding yang berlebihan
                     Container(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 100, vertical: 10),
+                      margin: const EdgeInsets.symmetric(horizontal: 100),
                       height: 4,
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(2),
+                        borderRadius: BorderRadius.circular(5),
                       ),
                     ),
                   ],

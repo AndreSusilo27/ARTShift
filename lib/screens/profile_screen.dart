@@ -85,100 +85,110 @@ class ProfileScreen extends StatelessWidget {
                 String address = biodata['address'] ?? 'Not available';
 
                 return SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        // Profile Card with Glass Effect
-                        Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          elevation: 8,
-                          shadowColor: Colors.blueAccent.withOpacity(0.3),
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Column(
-                              children: [
-                                // Profile Picture
-                                CircleAvatar(
-                                  radius: 55,
-                                  backgroundColor: Colors.blueAccent.shade100,
-                                  backgroundImage: photoUrl.isNotEmpty
-                                      ? NetworkImage(photoUrl)
-                                      : const AssetImage(
-                                              'assets/default_avatar.png')
-                                          as ImageProvider,
-                                ),
-                                const SizedBox(height: 15),
-                                // Name
-                                Text(
-                                  name,
-                                  style: const TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
+                  child: Container(
+                    height: 825,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                            "assets/images/bg2.png"), // Background image
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          // Profile Card with Glass Effect
+                          Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            elevation: 8,
+                            shadowColor: Colors.blueAccent.withOpacity(0.3),
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                children: [
+                                  // Profile Picture
+                                  CircleAvatar(
+                                    radius: 55,
+                                    backgroundColor: Colors.blueAccent.shade100,
+                                    backgroundImage: photoUrl.isNotEmpty
+                                        ? NetworkImage(photoUrl)
+                                        : const AssetImage(
+                                                'assets/default_avatar.png')
+                                            as ImageProvider,
                                   ),
-                                ),
-                                const SizedBox(height: 5),
-                                // Email
-                                Text(
-                                  emailFromFirestore,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.grey[600],
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                // Role
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 5),
-                                  decoration: BoxDecoration(
-                                    color: Colors.blue.shade100,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Text(
-                                    role,
-                                    style: TextStyle(
-                                      fontSize: 16,
+                                  const SizedBox(height: 15),
+                                  // Name
+                                  Text(
+                                    name,
+                                    style: const TextStyle(
+                                      fontSize: 22,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.blue.shade800,
                                     ),
                                   ),
+                                  const SizedBox(height: 5),
+                                  // Email
+                                  Text(
+                                    emailFromFirestore,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  // Role
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue.shade100,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      role,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.blue.shade800,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 25),
+
+                          // Additional Biodata
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.blue.shade50,
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.blueAccent.withOpacity(0.2),
+                                  blurRadius: 6,
+                                  offset: const Offset(0, 3),
                                 ),
                               ],
                             ),
+                            padding: const EdgeInsets.all(15),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _buildInfoRow("Pekerjaan", job),
+                                _buildInfoRow("Jenis Kelamin", gender),
+                                _buildInfoRow("No.Telepon", phone),
+                                _buildInfoRow("Alamat", address),
+                              ],
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 25),
-
-                        // Additional Biodata
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.blue.shade50,
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.blueAccent.withOpacity(0.2),
-                                blurRadius: 6,
-                                offset: const Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          padding: const EdgeInsets.all(15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _buildInfoRow("Pekerjaan", job),
-                              _buildInfoRow("Jenis Kelamin", gender),
-                              _buildInfoRow("No.Telepon", phone),
-                              _buildInfoRow("Alamat", address),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 25),
-                      ],
+                          const SizedBox(height: 25),
+                        ],
+                      ),
                     ),
                   ),
                 );

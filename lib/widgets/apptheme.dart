@@ -7,19 +7,19 @@ class AppTheme {
     primaryColor: Colors.blue,
     appBarTheme: const AppBarTheme(
       centerTitle: true,
-      backgroundColor: Color.fromARGB(255, 210, 210, 210),
+      backgroundColor: Color.fromARGB(255, 3, 1, 83),
       titleTextStyle: TextStyle(
           // color: Color(0xFF4A90E2),
-          color: Colors.black,
+          color: Color(0xFF4A90E2),
           fontWeight: FontWeight.bold,
           fontFamily: 'Poppins',
           fontSize: 22),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(20),
-          bottomRight: Radius.circular(20),
-        ),
-      ),
+      // shape: RoundedRectangleBorder(
+      //   borderRadius: BorderRadius.only(
+      //     bottomLeft: Radius.circular(20),
+      //     bottomRight: Radius.circular(20),
+      //   ),
+      // ),
       elevation: 6,
     ),
     iconTheme: const IconThemeData(
@@ -61,7 +61,7 @@ class AppTheme {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.3),
+              color: const Color.fromARGB(214, 2, 1, 83),
               blurRadius: 10,
               spreadRadius: 2,
               offset: const Offset(0, 5),
@@ -99,13 +99,14 @@ class AppTheme {
               ],
             ),
           ),
-          backgroundColor: const Color.fromARGB(255, 210, 210, 210),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(20),
-              bottomRight: Radius.circular(20),
-            ),
-          ),
+          // backgroundColor: const Color.fromARGB(255, 210, 210, 210),
+          backgroundColor: const Color.fromARGB(255, 3, 1, 83),
+          // shape: const RoundedRectangleBorder(
+          //   borderRadius: BorderRadius.only(
+          //     bottomLeft: Radius.circular(20),
+          //     bottomRight: Radius.circular(20),
+          //   ),
+          // ),
         ),
       ),
     );

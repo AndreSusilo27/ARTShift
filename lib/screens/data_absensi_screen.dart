@@ -194,7 +194,7 @@ class DataAbsensiScreen extends StatelessWidget {
               padding: EdgeInsets.all(5),
               margin: EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
-                color: Colors.blueGrey,
+                color: const Color.fromARGB(203, 255, 255, 255),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(
                       12), // Menentukan radius untuk sudut kiri atas
@@ -223,44 +223,52 @@ class DataAbsensiScreen extends StatelessWidget {
                     return const Center(child: Text('Tidak ada data absensi'));
                   }
 
-                  return ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: snapshot.data!.docs.length,
-                    itemBuilder: (context, index) {
-                      var absensi = snapshot.data!.docs[index];
-                      var tanggal = absensi['tanggal'] ?? 'Tidak ada tanggal';
-                      var hadir = absensi['hadir']?['waktu'] ?? 'Belum hadir';
-                      var keluar =
-                          absensi['keluar']?['waktu'] ?? 'Belum keluar';
-                      var sakit = absensi['sakit'] ?? 'Tidak sakit';
-                      var izin = absensi['izin'] ?? 'Tidak izin';
+                  return Container(
+                    height: 670, // Ukuran tetap 420 piksel
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.blue[800]),
+                    child: ListView.builder(
+                      padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        var absensi = snapshot.data!.docs[index];
+                        var tanggal = absensi['tanggal'] ?? 'Tidak ada tanggal';
+                        var hadir = absensi['hadir']?['waktu'] ?? 'Belum hadir';
+                        var keluar =
+                            absensi['keluar']?['waktu'] ?? 'Belum keluar';
+                        var sakit = absensi['sakit'] ?? 'Tidak sakit';
+                        var izin = absensi['izin'] ?? 'Tidak izin';
 
-                      return Card(
-                        margin: const EdgeInsets.symmetric(vertical: 8),
-                        elevation: 4,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: ListTile(
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 12, horizontal: 16),
-                          title: Text(
-                            'Tanggal: $tanggal',
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
+                        return Card(
+                          margin: const EdgeInsets.symmetric(vertical: 8),
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Hadir: $hadir'),
-                              Text('Keluar: $keluar'),
-                              Text('Sakit: $sakit'),
-                              Text('Izin: $izin'),
-                            ],
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 12, horizontal: 16),
+                            title: Text(
+                              'Tanggal: $tanggal',
+                              style: const TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Hadir: $hadir'),
+                                Text('Keluar: $keluar'),
+                                Text('Sakit: $sakit'),
+                                Text('Izin: $izin'),
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   );
                 },
               ),

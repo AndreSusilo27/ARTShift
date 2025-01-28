@@ -165,26 +165,19 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
                     // Menampilkan daftar shift dalam ListView
                     Expanded(
                       child: Container(
-                        height: 420, // Menetapkan tinggi Container menjadi 420
+                        height: 670, // Ukuran tetap 420 piksel
                         padding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                            horizontal: 8), // Padding untuk estetika
+                            vertical: 5, horizontal: 15),
                         decoration: BoxDecoration(
-                          color: Colors
-                              .blueGrey, // Menetapkan warna latar belakang menjadi blueGrey
-                          borderRadius: BorderRadius.circular(
-                              12), // Sudut melengkung untuk estetika
-                        ),
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.blue[800]),
                         child: ListView.builder(
                           itemCount: state.shiftKategori.length,
                           itemBuilder: (context, index) {
                             final shift = state.shiftKategori[index];
                             return Card(
                               elevation: 5,
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 4,
-                                  horizontal:
-                                      4), // Mengurangi margin antar card
+                              margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -215,8 +208,23 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
                                         builder: (BuildContext dialogContext) {
                                           // Ubah nama context agar tidak bingung
                                           return AlertDialog(
-                                            title: const Text(
-                                                'Konfirmasi Hapus Shift'),
+                                            title: const Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.warning_amber_rounded,
+                                                  color: Colors.red,
+                                                  size: 28,
+                                                ),
+                                                SizedBox(width: 10),
+                                                Text(
+                                                  "Konfirmasi Hapus Shift",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 18),
+                                                ),
+                                              ],
+                                            ),
                                             content: Text(
                                                 'Apakah Anda yakin ingin menghapus shift "${shift['nama_shift']}"?'),
                                             actions: <Widget>[
@@ -226,7 +234,11 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
                                                           rootNavigator: true)
                                                       .pop();
                                                 },
-                                                child: const Text('Batal'),
+                                                child: const Text(
+                                                  'Batal',
+                                                  style: TextStyle(
+                                                      color: Colors.green),
+                                                ),
                                               ),
                                               TextButton(
                                                 onPressed: () {
@@ -241,7 +253,11 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
                                                           rootNavigator: true)
                                                       .pop();
                                                 },
-                                                child: const Text('Hapus'),
+                                                child: const Text(
+                                                  'Hapus',
+                                                  style: TextStyle(
+                                                      color: Colors.red),
+                                                ),
                                               ),
                                             ],
                                           );

@@ -26,148 +26,175 @@ class CustomDrawerAdmin extends StatelessWidget {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.58,
       child: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-              margin: const EdgeInsets.only(top: 55, right: 15, left: 15),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 10,
-                    spreadRadius: 2,
-                    offset: const Offset(0, 5),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Stack(
-                    children: [
-                      CircleAvatar(
-                        radius: 40,
-                        backgroundImage: NetworkImage(photoUrl),
-                      ),
-                      Positioned(
-                        bottom: 4,
-                        right: 6,
-                        child: Container(
-                          width: 16,
-                          height: 16,
-                          decoration: BoxDecoration(
-                            color: Colors.green,
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.white, width: 2),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.3),
-                                blurRadius: 4,
-                              ),
-                            ],
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                const Color(0xFF0D0A9B),
+                const Color(0xFF0C07B3),
+                const Color(0xFF030262),
+                const Color(0xFF030153),
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                margin: const EdgeInsets.only(top: 55, right: 15, left: 15),
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 226, 243, 254),
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      spreadRadius: 2,
+                      offset: const Offset(0, 5),
+                    ),
+                    BoxShadow(
+                      color: Colors.white
+                          .withOpacity(0.8), // Menambahkan efek border putih
+                      blurRadius: 12, // Menambahkan blur untuk efek neon
+                      spreadRadius:
+                          1, // Menambahkan sedikit spread untuk efek menyala
+                      offset: const Offset(0, 0),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Stack(
+                      children: [
+                        CircleAvatar(
+                          radius: 40,
+                          backgroundImage: NetworkImage(photoUrl),
+                        ),
+                        Positioned(
+                          bottom: 4,
+                          right: 6,
+                          child: Container(
+                            width: 16,
+                            height: 16,
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.white, width: 2),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.3),
+                                  blurRadius: 4,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.black87,
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    name,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      color: Colors.black87,
                     ),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    email,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.black54,
+                    const SizedBox(height: 5),
+                    Text(
+                      email,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.black54,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            // MENU UTAMA
-            _buildSectionTitle("MENU UTAMA"),
 
-            _buildDrawerItem(context, 'assets/icons/icon_menu/kelolaadmin.png',
-                "Kelola Akun Admin", navigateTo: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => KelolaAkunAdminScreen()));
-            }),
-            _buildDrawerItem(
-                context,
-                'assets/icons/icon_menu/kelolakaryawan.png',
-                "Kelola Akun Karyawan", navigateTo: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => KelolaAkunKaryawanScreen()));
-            }),
-            _buildDrawerItem(context, 'assets/icons/icon_menu/shift.png',
-                "Kelola Shift Karyawan", navigateTo: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => KelolaShiftKaryawanScreen()));
-            }),
-            _buildDrawerItem(
-                context,
-                'assets/icons/icon_menu/kategorishift.png',
-                "Kelola Kategori Shift", navigateTo: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => KelolaKategoriScreen()));
-            }),
-            _buildDrawerItem(
-                context, 'assets/icons/icon_menu/meeting.png', "Adakan Rapat",
-                navigateTo: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => JadwalRapatScreen()));
-            }),
-            _buildDrawerItem(
-                context, 'assets/icons/icon_menu/laporan.png', "Laporan",
-                navigateTo: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LaporanScreen()));
-            }),
-            const SizedBox(height: 10), // Jarak antar bagian
+              const SizedBox(height: 20),
+              // MENU UTAMA
+              _buildSectionTitle("MENU UTAMA"),
 
-            // MENU LAINNYA
-            _buildSectionTitle("MENU LAINNYA"),
-            _buildDrawerItem(
-                context, 'assets/icons/icon_menu/biodata.png', "Lengkapi Data",
-                navigateTo: () {
-              Navigator.push(
+              _buildDrawerItem(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => LengkapiDataScreen()));
-            }),
-            _buildDrawerItem(
-                context, 'assets/icons/icon_menu/profil.png', "Profil",
-                navigateTo: () {
-              Navigator.push(
+                  'assets/icons/icon_menu/kelolaadmin.png',
+                  "Kelola Akun Admin", navigateTo: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => KelolaAkunAdminScreen()));
+              }),
+              _buildDrawerItem(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => ProfileScreen(email: email)));
-            }),
-            _buildDrawerItem(
-                context, 'assets/icons/icon_menu/logout.png', "Keluar",
-                navigateTo: () {
-              showLogoutDialog(context);
-            }),
-          ],
+                  'assets/icons/icon_menu/kelolakaryawan.png',
+                  "Kelola Akun Karyawan", navigateTo: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => KelolaAkunKaryawanScreen()));
+              }),
+              _buildDrawerItem(context, 'assets/icons/icon_menu/shift.png',
+                  "Kelola Shift Karyawan", navigateTo: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => KelolaShiftKaryawanScreen()));
+              }),
+              _buildDrawerItem(
+                  context,
+                  'assets/icons/icon_menu/kategorishift.png',
+                  "Kelola Kategori Shift", navigateTo: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => KelolaKategoriScreen()));
+              }),
+              _buildDrawerItem(
+                  context, 'assets/icons/icon_menu/meeting.png', "Adakan Rapat",
+                  navigateTo: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => JadwalRapatScreen()));
+              }),
+              _buildDrawerItem(
+                  context, 'assets/icons/icon_menu/laporan.png', "Laporan",
+                  navigateTo: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => LaporanScreen()));
+              }),
+              const SizedBox(height: 10), // Jarak antar bagian
+
+              // MENU LAINNYA
+              _buildSectionTitle("MENU LAINNYA"),
+              _buildDrawerItem(context, 'assets/icons/icon_menu/biodata.png',
+                  "Lengkapi Data", navigateTo: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LengkapiDataScreen()));
+              }),
+              _buildDrawerItem(
+                  context, 'assets/icons/icon_menu/profil.png', "Profil",
+                  navigateTo: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ProfileScreen(email: email)));
+              }),
+              _buildDrawerItem(
+                  context, 'assets/icons/icon_menu/logout.png', "Keluar",
+                  navigateTo: () {
+                showLogoutDialog(context);
+              }),
+            ],
+          ),
         ),
       ),
     );
@@ -183,7 +210,14 @@ class CustomDrawerAdmin extends StatelessWidget {
     return ListTile(
       leading: Image.asset(imagePath,
           width: 26, height: 26), // Ukuran icon lebih besar
-      title: Text(title, style: const TextStyle(fontSize: 16)),
+      title: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 16,
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
       dense: true,
       contentPadding: const EdgeInsets.symmetric(
           horizontal: 20, vertical: 5), // Jarak antar menu lebih rapat
@@ -198,8 +232,10 @@ class CustomDrawerAdmin extends StatelessWidget {
           horizontal: 15, vertical: 0), // Jarak lebih dekat
       child: Text(
         title,
-        style:
-            const TextStyle(fontWeight: FontWeight.bold, color: Colors.black54),
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
       ),
     );
   }

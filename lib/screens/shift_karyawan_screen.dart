@@ -48,6 +48,13 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
     }
   }
 
+  void _refreshData(BuildContext context) {
+    context.read<KelolaAkunKaryawanBloc>().add(FetchKaryawanEvent());
+    setState(() {
+      selectedAccounts = [];
+    });
+  }
+
   Future<void> saveSelectedAccountsToFirestore(dynamic state) async {
     try {
       for (int i = 0; i < selectedAccounts.length; i++) {
@@ -82,6 +89,8 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
               .set(shiftKaryawanData);
 
           print("Data shift untuk ${karyawan['email']} berhasil disimpan.");
+
+          _refreshData(context);
         }
       }
 
@@ -207,7 +216,10 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
                                 value: selectedShift,
                                 hint: const Text(
                                   'Pilih Shift',
-                                  style: TextStyle(fontSize: 14),
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                                 onChanged: (newValue) {
                                   setState(() {
@@ -288,13 +300,12 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
                       ),
                       const SizedBox(height: 20),
                       Container(
-                        height: 420,
+                        height: 425, // Ukuran tetap 420 piksel
                         padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 8),
+                            vertical: 5, horizontal: 15),
                         decoration: BoxDecoration(
-                          color: Colors.blueGrey,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.blue[800]),
                         child: ListView.builder(
                           itemCount: filteredKaryawanList.length,
                           itemBuilder: (context, index) {
@@ -306,8 +317,7 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 4, horizontal: 4),
+                              margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
                               child: ListTile(
                                 contentPadding: const EdgeInsets.symmetric(
                                     vertical: 8, horizontal: 12),
@@ -347,7 +357,7 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
                       ),
                       const SizedBox(height: 25),
                       const Divider(
-                        color: Colors.blueGrey,
+                        color: Color.fromARGB(203, 255, 255, 255),
                         thickness: 1.0,
                         indent: 10,
                         endIndent: 10,
@@ -368,13 +378,12 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
                       ),
                       const SizedBox(height: 10),
                       Container(
-                        height: 420,
+                        height: 425, // Ukuran tetap 420 piksel
                         padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 8),
+                            vertical: 5, horizontal: 15),
                         decoration: BoxDecoration(
-                          color: Colors.blueGrey,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.blue[800]),
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
@@ -408,8 +417,8 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(10),
                                           ),
-                                          margin: const EdgeInsets.symmetric(
-                                              vertical: 6, horizontal: 10),
+                                          margin:
+                                              EdgeInsets.fromLTRB(0, 10, 0, 0),
                                           child: ListTile(
                                             contentPadding:
                                                 const EdgeInsets.symmetric(

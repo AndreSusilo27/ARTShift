@@ -76,17 +76,56 @@ class _LengkapiDataScreenState extends State<LengkapiDataScreen> {
                 FieldValue.serverTimestamp(), // Menandakan waktu update
           });
 
+          // Menampilkan Snackbar setelah berhasil menyimpan data
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Data berhasil disimpan')),
+            SnackBar(
+              content: Text(
+                'Data berhasil disimpan',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 2),
+            ),
           );
+
+          // Melakukan pop untuk kembali ke halaman sebelumnya
+          Future.delayed(Duration(seconds: 1), () {
+            Navigator.pop(context);
+          });
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('User belum login')),
+            SnackBar(
+              content: Text(
+                'Data gagal disimpan',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 2),
+            ),
           );
         }
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Gagal menyimpan data: $e')),
+          SnackBar(
+            content: Text(
+              'Gagal menyimpan data: $e',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+            backgroundColor: Colors.orange,
+            duration: Duration(seconds: 3),
+          ),
         );
       }
     }

@@ -66,117 +66,119 @@ class _KelolaAkunKaryawanScreenState extends State<KelolaAkunKaryawanScreen> {
                           .contains(searchQuery.toLowerCase()))
                   .toList();
 
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: const Text(
-                        'Hapus akun karyawan yang tidak diperlukan.',
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Search field
-                    TextField(
-                      onChanged: (value) {
-                        setState(() {
-                          searchQuery = value;
-                        });
-                      },
-                      decoration: InputDecoration(
-                        labelText: 'Cari Karyawan',
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8)),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Expanded(
-                      child: Container(
-                        height: 420, // Ukuran tetap 420 piksel
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 8),
-                        decoration: BoxDecoration(
-                          color: Colors.blueGrey,
-                          borderRadius: BorderRadius.circular(12),
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: const Text(
+                          'Hapus akun karyawan yang tidak diperlukan.',
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
                         ),
+                      ),
+                      const SizedBox(height: 20),
 
-                        child: ListView.builder(
-                          itemCount: filteredKaryawanList.length,
-                          itemBuilder: (context, index) {
-                            final karyawan = filteredKaryawanList[index];
-                            final photoUrl = karyawan['photoUrl'] ?? '';
+                      // Search field
+                      TextField(
+                        onChanged: (value) {
+                          setState(() {
+                            searchQuery = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'Cari Karyawan',
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8)),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Container(
+                        height: 670, // Ukuran tetap 420 piksel
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 15),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.blue[800]),
+                        child: Expanded(
+                          child: ListView.builder(
+                            itemCount: filteredKaryawanList.length,
+                            itemBuilder: (context, index) {
+                              final karyawan = filteredKaryawanList[index];
+                              final photoUrl = karyawan['photoUrl'] ?? '';
 
-                            return Card(
-                              elevation: 3,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 6, horizontal: 10),
-                              child: ListTile(
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 8, horizontal: 12),
-                                leading: photoUrl.isNotEmpty
-                                    ? CircleAvatar(
-                                        backgroundImage: NetworkImage(photoUrl),
-                                        radius: 28, // Lebih proporsional
-                                      )
-                                    : const CircleAvatar(
-                                        radius: 28,
-                                        child: Icon(Icons.person, size: 30),
-                                      ),
-                                title: Text(
-                                  karyawan['name'] ?? 'Tanpa Nama',
-                                  style: const TextStyle(
-                                    fontSize:
-                                        18, // Ukuran font judul lebih jelas
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                              return Card(
+                                elevation: 3,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                                subtitle: Text(
-                                  "${karyawan['email'] ?? 'Tidak diketahui'}",
-                                  style: const TextStyle(
-                                    fontSize:
-                                        14, // Ukuran font email diperbaiki
-                                    color: Color.fromARGB(255, 133, 133, 133),
+                                margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                child: ListTile(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 8, horizontal: 12),
+                                  leading: photoUrl.isNotEmpty
+                                      ? CircleAvatar(
+                                          backgroundImage:
+                                              NetworkImage(photoUrl),
+                                          radius: 28, // Lebih proporsional
+                                        )
+                                      : const CircleAvatar(
+                                          radius: 28,
+                                          child: Icon(Icons.person, size: 30),
+                                        ),
+                                  title: Text(
+                                    karyawan['name'] ?? 'Tanpa Nama',
+                                    style: const TextStyle(
+                                      fontSize:
+                                          18, // Ukuran font judul lebih jelas
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
-                                ),
-                                trailing: Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 8), // Padding agar lebih seimbang
-                                  child: InkWell(
-                                    borderRadius: BorderRadius.circular(
-                                        8), // Efek klik membulat
-                                    onTap: () {
-                                      _showDeleteConfirmationDialog(
-                                          context, karyawan['email']);
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.all(
-                                          6), // Spasi agar tidak terlalu rapat
-                                      decoration: BoxDecoration(
-                                        color: Colors.red.withOpacity(
-                                            0.1), // Warna merah transparan agar tidak terlalu tajam
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: const Icon(
-                                        Icons.delete,
-                                        color: Colors.red,
-                                        size: 22, // Ukuran lebih proporsional
+                                  subtitle: Text(
+                                    "${karyawan['email'] ?? 'Tidak diketahui'}",
+                                    style: const TextStyle(
+                                      fontSize:
+                                          14, // Ukuran font email diperbaiki
+                                      color: Color.fromARGB(255, 133, 133, 133),
+                                    ),
+                                  ),
+                                  trailing: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right:
+                                            8), // Padding agar lebih seimbang
+                                    child: InkWell(
+                                      borderRadius: BorderRadius.circular(
+                                          8), // Efek klik membulat
+                                      onTap: () {
+                                        _showDeleteConfirmationDialog(
+                                            context, karyawan['email']);
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(
+                                            6), // Spasi agar tidak terlalu rapat
+                                        decoration: BoxDecoration(
+                                          color: Colors.red.withOpacity(
+                                              0.1), // Warna merah transparan agar tidak terlalu tajam
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: const Icon(
+                                          Icons.delete,
+                                          color: Colors.red,
+                                          size: 22, // Ukuran lebih proporsional
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             }
@@ -195,12 +197,25 @@ class _KelolaAkunKaryawanScreenState extends State<KelolaAkunKaryawanScreen> {
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text("Konfirmasi Hapus"),
+          title: const Row(
+            children: [
+              Icon(
+                Icons.warning_amber_rounded,
+                color: Colors.red,
+                size: 28,
+              ),
+              SizedBox(width: 10),
+              Text(
+                "Konfirmasi Hapus Akun Karyawan",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+            ],
+          ),
           content: Text("Apakah Anda yakin ingin menghapus akun $email?"),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
-              child: const Text("Batal"),
+              child: const Text("Batal", style: TextStyle(color: Colors.green)),
             ),
             TextButton(
               onPressed: () {

@@ -12,10 +12,10 @@ class _CustomCarouselState extends State<CustomCarousel> {
   int _currentIndex = 0;
 
   final List<String> imagePaths = [
-    'assets/images/Employee.png',
-    'assets/images/Admin.png',
-    'assets/images/Shift.png',
-    'assets/images/Meeting.png',
+    'assets/images/slideshow/Karyawan.jpg',
+    'assets/images/slideshow/Admin.jpg',
+    'assets/images/slideshow/Orang Banyak.jpg',
+    'assets/images/slideshow/Meeting.jpg',
   ];
 
   @override
@@ -43,7 +43,7 @@ class _CustomCarouselState extends State<CustomCarousel> {
                 },
                 blendMode: BlendMode.overlay, // Lebih smooth
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(5),
                   clipBehavior: Clip.antiAlias,
                   child: Image.asset(
                     imagePath,
@@ -80,7 +80,7 @@ class _CustomCarouselState extends State<CustomCarousel> {
               margin: const EdgeInsets.symmetric(horizontal: 4),
               decoration: BoxDecoration(
                 color: _currentIndex == entry.key ? Colors.blue : Colors.grey,
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(10),
               ),
             );
           }).toList(),

@@ -87,8 +87,13 @@ class _LaporanScreenState extends State<LaporanScreen> {
   }
 
   void _exportToExcel(BuildContext context) {
+    // Memastikan Bloc sudah di-provide
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+
+    // Menggunakan read untuk mendapatkan Bloc dan mengirimkan event
     context.read<KelolaAkunKaryawanBloc>().add(
-          FetchKaryawanEvent2(scaffoldMessenger: ScaffoldMessenger.of(context)),
+          FetchKaryawanEvent2(
+              scaffoldMessenger: scaffoldMessenger, context: context),
         );
   }
 
@@ -170,13 +175,12 @@ class _LaporanScreenState extends State<LaporanScreen> {
                     const SizedBox(height: 20),
                     Expanded(
                       child: Container(
-                        height: 420, // Ukuran tetap 420 piksel
+                        height: 670, // Ukuran tetap 420 piksel
                         padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 8),
+                            vertical: 5, horizontal: 15),
                         decoration: BoxDecoration(
-                          color: Colors.blueGrey,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.blue[800]),
                         child: ListView.builder(
                           itemCount: filteredKaryawanList.length,
                           itemBuilder: (context, index) {
@@ -188,8 +192,7 @@ class _LaporanScreenState extends State<LaporanScreen> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 6, horizontal: 10),
+                              margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
                               child: ListTile(
                                 contentPadding: const EdgeInsets.symmetric(
                                     vertical: 8, horizontal: 12),

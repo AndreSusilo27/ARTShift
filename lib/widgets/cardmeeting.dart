@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'package:url_launcher/url_launcher.dart';
+
 class MeetingList extends StatelessWidget {
   const MeetingList({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      // Membungkus dengan Expanded untuk mengatasi ruang vertikal tak terbatas
       child: StreamBuilder<QuerySnapshot>(
         stream:
             FirebaseFirestore.instance.collection('jadwal_meeting').snapshots(),
@@ -64,11 +65,11 @@ class CardMeeting extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 10, // Efek bayangan untuk tampilan 3D
-      shadowColor: Colors.black, // Warna bayangan
+      elevation: 10,
+      shadowColor: Colors.black,
       margin: const EdgeInsets.symmetric(vertical: 10),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15), // Sudut melengkung
+        borderRadius: BorderRadius.circular(15),
       ),
       child: ListTile(
         title: Text(namaRapat),
@@ -82,22 +83,20 @@ class CardMeeting extends StatelessWidget {
         trailing: Padding(
           padding: const EdgeInsets.only(right: 8),
           child: InkWell(
-            borderRadius: BorderRadius.circular(8), // Efek klik membulat
+            borderRadius: BorderRadius.circular(8),
             onTap: () {
-              // Arahkan ke meeting menggunakan linkMeeting
               _showLinkDialog(context, linkMeeting);
             },
             child: Container(
-              padding:
-                  const EdgeInsets.all(6), // Spasi agar tidak terlalu rapat
+              padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
-                color: Colors.blue.withOpacity(0.1), // Warna biru transparan
+                color: Colors.blue.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: const Icon(
-                Icons.calendar_today, // Ikon kalender
+                Icons.arrow_forward_ios,
                 color: Colors.blue,
-                size: 22, // Ukuran lebih proporsional
+                size: 22,
               ),
             ),
           ),
@@ -106,28 +105,91 @@ class CardMeeting extends StatelessWidget {
     );
   }
 
-  // Fungsi untuk menampilkan dialog atau aksi ketika ikon kalender diklik
   void _showLinkDialog(BuildContext context, String linkMeeting) {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text("Link Meeting"),
-          content: Text("Klik untuk bergabung dalam meeting:\n$linkMeeting"),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-              },
-              child: const Text("Tutup"),
-            ),
-            TextButton(
-              onPressed: () {
-                // Logika untuk membuka link meeting
-                Navigator.of(dialogContext).pop();
-                _openMeetingLink(linkMeeting);
-              },
-              child: const Text("Masuk ke Meeting"),
+          titlePadding: const EdgeInsets.all(20),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          actionsPadding:
+              const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          elevation: 8, // Efek elevasi agar lebih elegan
+          title: const Row(
+            children: [
+              Icon(
+                Icons.video_call_rounded,
+                color: Colors.blue,
+                size: 28,
+              ),
+              SizedBox(width: 10),
+              Text(
+                "Link Meeting",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Klik tombol di bawah untuk bergabung dalam meeting:",
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 10),
+              SelectableText(
+                linkMeeting,
+                style: const TextStyle(
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () => Navigator.of(dialogContext).pop(),
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: Colors.grey),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                    ),
+                    child: const Text(
+                      "Tutup",
+                      style: TextStyle(
+                          color: Colors.red, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 5),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(dialogContext).pop();
+                      _openMeetingLink(linkMeeting);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                    ),
+                    child: const Text(
+                      "Masuk ke Meeting",
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         );
@@ -135,9 +197,12 @@ class CardMeeting extends StatelessWidget {
     );
   }
 
-  // Fungsi untuk membuka link meeting (bisa menggunakan url_launcher)
-  void _openMeetingLink(String link) {
-    // Misalnya menggunakan url_launcher
-    // launch(link);
+  // Fungsi untuk membuka link meeting dengan fleksibel (Google Meet, Zoom, dll.)
+  void _openMeetingLink(String link) async {
+    final Uri url = Uri.parse(link);
+
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch $link';
+    }
   }
 }
