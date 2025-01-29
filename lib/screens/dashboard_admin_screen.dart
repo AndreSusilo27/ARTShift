@@ -59,8 +59,7 @@ class _DashboardAdminScreenState extends State<DashboardAdminScreen> {
         jumlahKaryawan = karyawanCount;
         jumlahAdmin = adminCount;
         jumlahShiftKategori = shiftKategoriCount;
-        jumlahJadwalMeeting =
-            jadwalMeetingCount; // Menyimpan jumlah jadwal meeting
+        jumlahJadwalMeeting = jadwalMeetingCount;
       });
     } catch (e) {
       print('Error mengambil data: $e');
@@ -97,9 +96,9 @@ class _DashboardAdminScreenState extends State<DashboardAdminScreen> {
                   Text(
                     "Dashboard Admin",
                     style: TextStyle(
-                      fontSize: 24, // Ukuran teks yang cukup besar untuk judul
-                      fontWeight: FontWeight.bold, // Membuat teks tebal
-                      color: Colors.white, // Warna putih
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -128,7 +127,7 @@ class _DashboardAdminScreenState extends State<DashboardAdminScreen> {
                                   jumlahAdmin),
                             ],
                           ),
-                          SizedBox(height: 16), // Spacing between the rows
+                          SizedBox(height: 16),
                           // Flex Row kedua
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -150,17 +149,17 @@ class _DashboardAdminScreenState extends State<DashboardAdminScreen> {
                   ),
                   SizedBox(height: 20),
                   Divider(
-                    color: Colors.white, // Warna putih untuk divider
-                    thickness: 2, // Ketebalan divider
-                    indent: 20, // Jarak awal dari divider
-                    endIndent: 20, // Jarak akhir dari divider
+                    color: Colors.white,
+                    thickness: 2,
+                    indent: 20,
+                    endIndent: 20,
                   ),
                   Text(
                     "List Meeting",
                     style: TextStyle(
-                      fontSize: 24, // Ukuran teks yang cukup besar untuk judul
-                      fontWeight: FontWeight.bold, // Membuat teks tebal
-                      color: Colors.white, // Warna putih
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
                   ),
                   SizedBox(height: 10),
@@ -228,15 +227,14 @@ Widget _buildStatContainer(String imagePath, String title, int data) {
               // Menambahkan latar belakang biru dengan opacity pada gambar
               Container(
                 decoration: BoxDecoration(
-                  color: Color(0x1A2196F3), // Warna biru dengan opasitas 0.1
-                  borderRadius: BorderRadius.circular(5), // Membulatkan sudut
+                  color: Color(0x1A2196F3),
+                  borderRadius: BorderRadius.circular(5),
                 ),
-                padding: EdgeInsets.all(
-                    5), // Menambahkan padding untuk latar belakang
+                padding: EdgeInsets.all(5),
                 child: Image.asset(
                   imagePath,
-                  width: 25, // Ukuran gambar ikon
-                  height: 25, // Ukuran gambar ikon
+                  width: 25,
+                  height: 25,
                 ),
               ),
             ],

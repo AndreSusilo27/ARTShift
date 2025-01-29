@@ -10,7 +10,6 @@ class KelolaAkunAdminBloc
 
   KelolaAkunAdminBloc({required this.firestore})
       : super(KelolaAkunAdminInitial()) {
-    // Handler untuk FetchKaryawanEvent
     on<FetchAdminEvent>((event, emit) async {
       emit(KelolaAkunAdminLoading());
 
@@ -23,7 +22,6 @@ class KelolaAkunAdminBloc
         List<Map<String, dynamic>> adminList = karyawanSnapshot.docs.map((doc) {
           final data = doc.data();
 
-          // Menambahkan photoUrl ke dalam map karyawan
           return {
             'name': data.containsKey('name')
                 ? data['name'] ?? 'Tanpa Nama'
@@ -31,9 +29,8 @@ class KelolaAkunAdminBloc
             'email': data.containsKey('email')
                 ? data['email'] ?? 'Tidak diketahui'
                 : 'Tidak diketahui',
-            'photoUrl': data.containsKey('photoUrl')
-                ? data['photoUrl'] ?? '' // Memastikan photoUrl tidak null
-                : '', // Jika tidak ada photoUrl, beri nilai kosong
+            'photoUrl':
+                data.containsKey('photoUrl') ? data['photoUrl'] ?? '' : '',
           };
         }).toList();
 

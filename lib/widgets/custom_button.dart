@@ -12,7 +12,7 @@ class CustomButton extends StatelessWidget {
   final Color textColor;
   final double borderRadius;
   final TextStyle? textStyle;
-  final double? elevation; // Perbaikan tipe data
+  final double? elevation;
 
   const CustomButton({
     super.key,
@@ -26,7 +26,7 @@ class CustomButton extends StatelessWidget {
     this.textColor = Colors.white,
     this.borderRadius = 13,
     this.textStyle,
-    this.elevation, // Perbaikan penutup konstruktor
+    this.elevation,
   });
 
   @override
@@ -42,12 +42,11 @@ class CustomButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(borderRadius),
           ),
           padding: const EdgeInsets.symmetric(vertical: 14),
-          elevation: elevation, // Menggunakan nilai elevation yang benar
+          elevation: elevation,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Tampilkan ikon dari asset atau icon
             if (imageAsset != null) ...[
               Image.asset(
                 imageAsset!,
@@ -59,7 +58,6 @@ class CustomButton extends StatelessWidget {
               Icon(icon, color: textColor),
               const SizedBox(width: 8),
             ],
-            // Tampilkan teks dengan style atau default style
             Text(
               text,
               style: textStyle ??
@@ -76,7 +74,7 @@ class CustomButton extends StatelessWidget {
   }
 }
 
-/// === Custom Floating Back Button ===
+//Custom Floating Back Button
 class CustomFloatingBackButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final IconData icon;

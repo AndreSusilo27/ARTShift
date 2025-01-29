@@ -7,9 +7,8 @@ class LaporanBloc extends Bloc<LaporanEvent, LaporanState> {
   final FirebaseFirestore firestore;
 
   LaporanBloc({required this.firestore}) : super(LaporanInitial()) {
-    // Menangani event FetchLaporanEvent
     on<FetchLaporanEvent>((event, emit) async {
-      emit(LaporanLoading()); // Menampilkan loading saat fetch data
+      emit(LaporanLoading());
       try {
         QuerySnapshot<Map<String, dynamic>> snapshot;
 
@@ -28,8 +27,7 @@ class LaporanBloc extends Bloc<LaporanEvent, LaporanState> {
 
         // Mengambil data dari subkoleksi 'absensi_harian' untuk setiap dokumen email
         for (var doc in snapshot.docs) {
-          final email =
-              doc.id; // Menggunakan ID dokumen (email) sebagai identifikasi
+          final email = doc.id;
           final absensiHarianSnapshot = await firestore
               .collection('absensi')
               .doc(email)
@@ -50,7 +48,7 @@ class LaporanBloc extends Bloc<LaporanEvent, LaporanState> {
           }
         }
 
-        emit(LaporanLoaded(laporanData)); // Kirimkan data laporan ke state
+        emit(LaporanLoaded(laporanData));
       } catch (e) {
         emit(LaporanError("Error fetching data: ${e.toString()}"));
       }

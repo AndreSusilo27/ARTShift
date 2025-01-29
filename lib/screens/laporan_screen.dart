@@ -63,8 +63,8 @@ class _LaporanScreenState extends State<LaporanScreen> {
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () {
-                      Navigator.of(dialogContext).pop(); // Tutup dialog
-                      _exportToExcel(context); // Lakukan ekspor data
+                      Navigator.of(dialogContext).pop();
+                      _exportToExcel(context);
                     },
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(color: Colors.grey),
@@ -175,7 +175,7 @@ class _LaporanScreenState extends State<LaporanScreen> {
                     const SizedBox(height: 20),
                     Expanded(
                       child: Container(
-                        height: 670, // Ukuran tetap 420 piksel
+                        height: 670,
                         padding: const EdgeInsets.symmetric(
                             vertical: 5, horizontal: 15),
                         decoration: BoxDecoration(
@@ -199,7 +199,7 @@ class _LaporanScreenState extends State<LaporanScreen> {
                                 leading: photoUrl.isNotEmpty
                                     ? CircleAvatar(
                                         backgroundImage: NetworkImage(photoUrl),
-                                        radius: 28, // Lebih proporsional
+                                        radius: 28,
                                       )
                                     : const CircleAvatar(
                                         radius: 28,
@@ -263,8 +263,7 @@ class _LaporanScreenState extends State<LaporanScreen> {
       ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment:
-            CrossAxisAlignment.end, // Memastikan tombol tetap di kanan bawah
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           SizedBox(
             width: 50,
@@ -275,12 +274,11 @@ class _LaporanScreenState extends State<LaporanScreen> {
               tooltip: 'Export ke Excel',
               backgroundColor: Colors.blue,
               foregroundColor: Colors.white,
-              child: const Icon(Icons.print,
-                  size: 24), // Ukuran ikon tetap proporsional
+              child: const Icon(Icons.print, size: 24),
             ),
           ),
-          const SizedBox(height: 16), // Jarak antar tombol lebih jelas
-          const CustomFloatingBackButton(), // Pastikan ini didefinisikan dengan baik
+          const SizedBox(height: 16),
+          const CustomFloatingBackButton(),
         ],
       ),
     );

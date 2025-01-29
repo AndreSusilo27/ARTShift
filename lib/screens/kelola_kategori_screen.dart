@@ -145,9 +145,7 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
                         ),
-                        const Divider(
-                            thickness: 2,
-                            height: 30), // Pembatas antara form & daftar shift
+                        const Divider(thickness: 2, height: 30),
                       ],
                     ),
                   ),
@@ -165,7 +163,7 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
                     // Menampilkan daftar shift dalam ListView
                     Expanded(
                       child: Container(
-                        height: 670, // Ukuran tetap 420 piksel
+                        height: 670,
                         padding: const EdgeInsets.symmetric(
                             vertical: 5, horizontal: 15),
                         decoration: BoxDecoration(
@@ -183,8 +181,7 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
                               ),
                               child: ListTile(
                                 contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 8,
-                                    horizontal: 12), // Mengurangi padding
+                                    vertical: 8, horizontal: 12),
                                 title: Text(
                                   shift['nama_shift'],
                                   style: const TextStyle(
@@ -196,17 +193,13 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
                                   style: const TextStyle(fontSize: 14),
                                 ),
                                 trailing: Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 8), // Padding agar lebih seimbang
+                                  padding: const EdgeInsets.only(right: 8),
                                   child: InkWell(
                                     borderRadius: BorderRadius.circular(8),
                                     onTap: () {
-                                      // Menampilkan dialog konfirmasi
                                       showDialog(
-                                        context:
-                                            context, // Gunakan context dari parent
+                                        context: context,
                                         builder: (BuildContext dialogContext) {
-                                          // Ubah nama context agar tidak bingung
                                           return AlertDialog(
                                             title: const Row(
                                               children: [
@@ -244,7 +237,7 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
                                                 onPressed: () {
                                                   final bloc = BlocProvider.of<
                                                           ShiftKategoriBloc>(
-                                                      context); // Gunakan context dari widget induk
+                                                      context);
                                                   bloc.add(
                                                       HapusShiftKategoriEvent(
                                                           namaShift: shift[
@@ -317,8 +310,7 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
       lastDate: DateTime(2030),
     );
     if (pickedDate != null) {
-      String formattedDate =
-          DateFormat('dd-MM-yyyy').format(pickedDate); // Format dd-MM-yyyy
+      String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
       setState(() {
         tanggalAkhirController.text = formattedDate;
       });

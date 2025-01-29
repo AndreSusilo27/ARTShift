@@ -11,19 +11,16 @@ class HomeScreen extends StatelessWidget {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Background Image Full Screen
           Image.asset(
-            'assets/images/beranda.jpg', // Ganti dengan gambar background
+            'assets/images/beranda.jpg',
             fit: BoxFit.cover,
           ),
-
-          // Layer Transparan di Tengah
           Center(
             child: Card(
               elevation: 5,
-              color: Colors.white.withOpacity(0.8), // Transparan
+              color: Colors.white.withOpacity(0.8),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20), // Sudut membulat
+                borderRadius: BorderRadius.circular(20),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -33,7 +30,7 @@ class HomeScreen extends StatelessWidget {
                     // Logo
                     Image.asset(
                       'assets/images/ARTShift_logo.png',
-                      width: 170, // Ukuran logo
+                      width: 170,
                     ),
                     const SizedBox(height: 20),
                   ],
@@ -41,10 +38,8 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
           ),
-
-          // Tombol Masuk di Paling Bawah dengan jarak lebih dari bawah
           Positioned(
-            bottom: 28, // Jarak 50px dari bawah, Anda bisa sesuaikan ini
+            bottom: 28,
             left: 0,
             right: 0,
             child: Padding(

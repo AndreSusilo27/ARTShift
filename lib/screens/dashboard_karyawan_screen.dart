@@ -93,10 +93,9 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
                     Text(
                       "Dashboard Karyawan",
                       style: TextStyle(
-                        fontSize:
-                            24, // Ukuran teks yang cukup besar untuk judul
-                        fontWeight: FontWeight.bold, // Membuat teks tebal
-                        color: Colors.white, // Warna putih
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
                     SizedBox(height: 10),
@@ -109,8 +108,7 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
                       child: Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment
-                              .start, // Pastikan tidak ada perpindahan posisi
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // Foto Profil
                             CircleAvatar(
@@ -148,18 +146,13 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
                                     },
                                     style: ElevatedButton.styleFrom(
                                       foregroundColor: Colors.white,
-                                      backgroundColor:
-                                          Colors.blue, // Warna teks putih
+                                      backgroundColor: Colors.blue,
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            12), // Sudut melengkung untuk tombol
+                                        borderRadius: BorderRadius.circular(12),
                                       ),
-                                      elevation:
-                                          5, // Memberikan bayangan pada tombol
+                                      elevation: 5,
                                       padding: EdgeInsets.symmetric(
-                                          vertical: 10,
-                                          horizontal:
-                                              24), // Padding lebih besar
+                                          vertical: 10, horizontal: 24),
                                     ),
                                     child: Text(
                                       showShiftDetails
@@ -179,8 +172,7 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(7),
                                         side: BorderSide(
-                                            color: Colors.blue,
-                                            width: 2), // Border biru
+                                            color: Colors.blue, width: 2),
                                       ),
                                       elevation: 5,
                                       child: Padding(
@@ -251,19 +243,18 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
                     ),
                     SizedBox(height: 20),
                     Divider(
-                      color: Colors.white, // Warna putih untuk divider
-                      thickness: 2, // Ketebalan divider
-                      indent: 20, // Jarak awal dari divider
-                      endIndent: 20, // Jarak akhir dari divider
+                      color: Colors.white,
+                      thickness: 2,
+                      indent: 20,
+                      endIndent: 20,
                     ),
 
                     Text(
                       "List Meeting",
                       style: TextStyle(
-                        fontSize:
-                            24, // Ukuran teks yang cukup besar untuk judul
-                        fontWeight: FontWeight.bold, // Membuat teks tebal
-                        color: Colors.white, // Warna putih
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
 
@@ -285,8 +276,7 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
                       ),
                       child: SizedBox(
                         height: 500,
-                        child:
-                            MeetingList(), // Pastikan widget ini sudah dideklarasikan di project Anda
+                        child: MeetingList(),
                       ),
                     ),
                   ],

@@ -5,13 +5,10 @@ abstract class AuthState extends Equatable {
   List<Object?> get props => [];
 }
 
-// State awal (belum login)
 class AuthInitial extends AuthState {}
 
-// State loading (proses login)
 class AuthLoading extends AuthState {}
 
-// State saat berhasil login
 class Authenticated extends AuthState {
   final String uid;
   final String name;

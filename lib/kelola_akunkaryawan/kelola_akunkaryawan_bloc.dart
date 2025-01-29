@@ -48,9 +48,7 @@ class KelolaAkunKaryawanBloc
 
   Future<void> _exportDataToExcel(
       FetchKaryawanEvent2 event, Emitter<KelolaAkunkaryawanState> emit) async {
-    emit(
-        KelolaAkunkaryawanLoading()); // Menandakan proses loading sedang berlangsung
-
+    emit(KelolaAkunkaryawanLoading());
     // Menampilkan Snackbar untuk menunjukkan proses sedang berjalan
     final snackBar = SnackBar(
       content: Text("Sedang mengambil data..."),
@@ -58,10 +56,9 @@ class KelolaAkunKaryawanBloc
     );
     event.scaffoldMessenger.showSnackBar(snackBar);
 
-    // Menunggu 1.5 detik sebelum menutup Snackbar
     await Future.delayed(Duration(seconds: 1, milliseconds: 950));
 
-    // Menutup Snackbar setelah 1.5 detik
+    // Menutup Snackbar
     ScaffoldMessenger.of(event.context).hideCurrentSnackBar();
 
     try {
@@ -148,8 +145,7 @@ class KelolaAkunKaryawanBloc
       // Simpan file Excel
       var bytes = excel.save();
       if (bytes != null) {
-        Uint8List uint8ListBytes =
-            Uint8List.fromList(bytes); // Konversi List<int> ke Uint8List
+        Uint8List uint8ListBytes = Uint8List.fromList(bytes);
 
         // Menyimpan file Excel ke penyimpanan perangkat
         String filePath = await saveExcelToStorage(uint8ListBytes,
@@ -163,7 +159,6 @@ class KelolaAkunKaryawanBloc
           ),
         );
 
-        // Delay untuk menunggu Snackbar selesai, baru tampilkan dialog
         await Future.delayed(Duration(milliseconds: 500));
 
         // Menampilkan dialog untuk membuka file setelah ekspor berhasil
@@ -203,8 +198,7 @@ class KelolaAkunKaryawanBloc
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                OpenFile.open(
-                    filePath); // Membuka file setelah menekan tombol "Buka File"
+                OpenFile.open(filePath);
               },
               child: const Text("Buka File"),
             ),

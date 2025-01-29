@@ -26,42 +26,37 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Background Image Full Screen
           Image.asset(
             'assets/images/beranda.jpg',
             fit: BoxFit.cover,
           ),
-
-          // Layer Transparan di Tengah
           Center(
             child: Card(
               elevation: 5,
-              color: Colors.white.withOpacity(0.8), // Transparan
+              color: Colors.white.withOpacity(0.8),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20), // Sudut membulat
+                borderRadius: BorderRadius.circular(20),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Logo
                     Image.asset(
                       'assets/images/ARTShift_logo.png',
-                      width: 250, // Ukuran logo
+                      width: 250,
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 15),
 
-                    // Teks "Harap Tunggu Sebentar"
                     const Text(
                       "Harap Tunggu Sebentar...",
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
-                        color: Colors.black87, // Warna teks
+                        color: Colors.black87,
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
 
                     // Animasi Loading
                     const CircularProgressIndicator(),

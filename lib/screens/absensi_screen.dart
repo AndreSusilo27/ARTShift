@@ -19,7 +19,7 @@ class AbsensiScreen extends StatefulWidget {
 
 class _AbsensiScreenState extends State<AbsensiScreen> {
   bool isLate = false;
-  String status = ""; // Menambahkan status keterlambatan
+  String status = "";
 
   // Data shift karyawan
   String jamMasuk = "00:00";
@@ -34,7 +34,7 @@ class _AbsensiScreenState extends State<AbsensiScreen> {
     try {
       DocumentSnapshot doc = await FirebaseFirestore.instance
           .collection('shift_karyawan')
-          .doc(widget.email) // Mengambil data berdasarkan email
+          .doc(widget.email)
           .get();
 
       if (doc.exists && doc.data() != null) {
@@ -74,6 +74,7 @@ class _AbsensiScreenState extends State<AbsensiScreen> {
       context: context,
       builder: (context) => AlertDialog(
         content: Text(message),
+        backgroundColor: Colors.green,
       ),
     );
     Future.delayed(const Duration(seconds: 1), () {
@@ -84,7 +85,7 @@ class _AbsensiScreenState extends State<AbsensiScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchShiftData(); // Memanggil fungsi untuk mengambil data saat halaman pertama kali dimuat
+    _fetchShiftData();
   }
 
   @override
@@ -102,9 +103,8 @@ class _AbsensiScreenState extends State<AbsensiScreen> {
             return Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image:
-                      AssetImage("assets/images/bg2.png"), // Background image
-                  fit: BoxFit.cover, // Menyesuaikan ukuran gambar dengan layar
+                  image: AssetImage("assets/images/bg2.png"),
+                  fit: BoxFit.cover,
                 ),
               ),
               child: Padding(
@@ -255,9 +255,8 @@ class _AbsensiScreenState extends State<AbsensiScreen> {
                       ),
                     ),
                     ShiftKaryawanWidget(
-                      email: widget.email, // Mengirim email karyawan
-                      onJamMasukSelected:
-                          _handleJamMasukSelected, // Mengirim callback
+                      email: widget.email,
+                      onJamMasukSelected: _handleJamMasukSelected,
                     ),
                     const SizedBox(height: 10),
                     Card(
@@ -379,11 +378,10 @@ class AbsensiButton extends StatelessWidget {
         backgroundColor: color,
         padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
         shape: RoundedRectangleBorder(
-          borderRadius:
-              BorderRadius.circular(12), // Rounded button dengan lebih halus
+          borderRadius: BorderRadius.circular(12),
         ),
-        elevation: 5, // Slight shadow for depth
-        minimumSize: Size(double.infinity, 50), // Tombol memenuhi lebar layar
+        elevation: 5,
+        minimumSize: Size(double.infinity, 50),
       ),
       icon: Icon(icon, color: Colors.white),
       label: Text(

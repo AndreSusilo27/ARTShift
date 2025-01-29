@@ -7,13 +7,10 @@ abstract class ShiftKategoriState extends Equatable {
   List<Object> get props => [];
 }
 
-// State awal ketika aplikasi dibuka
 class ShiftKategoriInitial extends ShiftKategoriState {}
 
-// State loading saat sedang mengambil data
 class ShiftKategoriLoading extends ShiftKategoriState {}
 
-// State ketika data shift berhasil diambil
 class ShiftKategoriLoaded extends ShiftKategoriState {
   final List<Map<String, dynamic>> shiftKategori;
 

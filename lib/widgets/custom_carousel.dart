@@ -47,10 +47,9 @@ class _CustomCarouselState extends State<CustomCarousel> {
                   clipBehavior: Clip.antiAlias,
                   child: Image.asset(
                     imagePath,
-                    fit: BoxFit
-                        .cover, // Menyesuaikan gambar agar memenuhi slider
-                    width: double.infinity, // Gunakan lebar maksimum
-                    height: carouselHeight, // Menentukan tinggi agar konsisten
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: carouselHeight,
                   ),
                 ),
               );
@@ -60,7 +59,7 @@ class _CustomCarouselState extends State<CustomCarousel> {
               autoPlay: true,
               autoPlayInterval: const Duration(seconds: 3),
               enlargeCenterPage: true,
-              viewportFraction: 0.90, // Menggunakan seluruh lebar slider
+              viewportFraction: 0.90,
               onPageChanged: (index, reason) {
                 setState(() {
                   _currentIndex = index;

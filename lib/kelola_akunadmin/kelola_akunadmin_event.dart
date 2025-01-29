@@ -4,7 +4,7 @@ abstract class KelolaAkunAdminEvent {}
 class FetchAdminEvent extends KelolaAkunAdminEvent {}
 
 class DeleteAdminEvent extends KelolaAkunAdminEvent {
-  final String email; // Email yang akan digunakan untuk menghapus Admin
+  final String email;
 
   DeleteAdminEvent({required this.email});
 }

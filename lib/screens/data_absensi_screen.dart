@@ -55,8 +55,8 @@ class DataAbsensiScreen extends StatelessWidget {
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () {
-                      Navigator.of(dialogContext).pop(); // Tutup dialog
-                      _exportToExcel(context); // Lakukan ekspor data
+                      Navigator.of(dialogContext).pop();
+                      _exportToExcel(context);
                     },
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(color: Colors.grey),
@@ -87,7 +87,10 @@ class DataAbsensiScreen extends StatelessWidget {
 
     if (snapshot.docs.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Tidak ada data absensi untuk diekspor')),
+        const SnackBar(
+          content: Text('Tidak ada data absensi untuk diekspor'),
+          backgroundColor: Colors.red,
+        ),
       );
       return;
     }
@@ -127,7 +130,10 @@ class DataAbsensiScreen extends StatelessWidget {
     await file.writeAsBytes(excel.encode()!);
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Data berhasil diekspor ke Excel!')),
+      const SnackBar(
+        content: Text('Data berhasil diekspor ke Excel'),
+        backgroundColor: Colors.green,
+      ),
     );
 
     showDialog(
@@ -196,14 +202,10 @@ class DataAbsensiScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: const Color.fromARGB(203, 255, 255, 255),
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(
-                      12), // Menentukan radius untuk sudut kiri atas
-                  topRight: Radius.circular(
-                      12), // Menentukan radius untuk sudut kanan atas
-                  bottomLeft: Radius.circular(
-                      0), // Menjaga sudut kiri bawah tetap tegak
-                  bottomRight: Radius.circular(
-                      0), // Menjaga sudut kanan bawah tetap tegak
+                  topLeft: Radius.circular(12),
+                  topRight: Radius.circular(12),
+                  bottomLeft: Radius.circular(0),
+                  bottomRight: Radius.circular(0),
                 ),
               ),
               child: FutureBuilder<QuerySnapshot>(
@@ -224,7 +226,7 @@ class DataAbsensiScreen extends StatelessWidget {
                   }
 
                   return Container(
-                    height: 670, // Ukuran tetap 420 piksel
+                    height: 670,
                     padding:
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                     decoration: BoxDecoration(
@@ -278,8 +280,7 @@ class DataAbsensiScreen extends StatelessWidget {
       ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment:
-            CrossAxisAlignment.end, // Memastikan tombol tetap di kanan bawah
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           SizedBox(
             width: 50,
@@ -290,12 +291,11 @@ class DataAbsensiScreen extends StatelessWidget {
               tooltip: 'Export ke Excel',
               backgroundColor: Colors.blue,
               foregroundColor: Colors.white,
-              child: const Icon(Icons.print,
-                  size: 24), // Ukuran ikon tetap proporsional
+              child: const Icon(Icons.print, size: 24),
             ),
           ),
-          const SizedBox(height: 16), // Jarak antar tombol lebih jelas
-          const CustomFloatingBackButton(), // Pastikan ini didefinisikan dengan baik
+          const SizedBox(height: 16),
+          const CustomFloatingBackButton(),
         ],
       ),
     );

@@ -9,17 +9,10 @@ class AppTheme {
       centerTitle: true,
       backgroundColor: Color.fromARGB(255, 3, 1, 83),
       titleTextStyle: TextStyle(
-          // color: Color(0xFF4A90E2),
           color: Color(0xFF4A90E2),
           fontWeight: FontWeight.bold,
           fontFamily: 'Poppins',
           fontSize: 22),
-      // shape: RoundedRectangleBorder(
-      //   borderRadius: BorderRadius.only(
-      //     bottomLeft: Radius.circular(20),
-      //     bottomRight: Radius.circular(20),
-      //   ),
-      // ),
       elevation: 6,
     ),
     iconTheme: const IconThemeData(
@@ -51,7 +44,7 @@ class AppTheme {
     indicatorColor: Colors.blue,
   );
 
-  // Custom AppBar Biasa
+  // Custom AppBar
   static PreferredSizeWidget customAppBar({
     required GlobalKey<ScaffoldState> scaffoldKey,
   }) {
@@ -69,7 +62,7 @@ class AppTheme {
           ],
         ),
         child: AppBar(
-          toolbarHeight: 60, // Pastikan tinggi AppBar tetap 60px
+          toolbarHeight: 60,
           leading: IconButton(
             onPressed: () => scaffoldKey.currentState!.openDrawer(),
             icon: Image.asset(
@@ -99,14 +92,7 @@ class AppTheme {
               ],
             ),
           ),
-          // backgroundColor: const Color.fromARGB(255, 210, 210, 210),
           backgroundColor: const Color.fromARGB(255, 3, 1, 83),
-          // shape: const RoundedRectangleBorder(
-          //   borderRadius: BorderRadius.only(
-          //     bottomLeft: Radius.circular(20),
-          //     bottomRight: Radius.circular(20),
-          //   ),
-          // ),
         ),
       ),
     );

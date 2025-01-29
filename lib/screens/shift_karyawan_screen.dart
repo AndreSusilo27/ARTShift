@@ -55,7 +55,8 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
     });
   }
 
-  Future<void> saveSelectedAccountsToFirestore(dynamic state) async {
+  Future<void> saveSelectedAccountsToFirestore(
+      BuildContext context, dynamic state) async {
     try {
       for (int i = 0; i < selectedAccounts.length; i++) {
         if (selectedAccounts[i]) {
@@ -69,6 +70,11 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
 
           // Jika shift tidak ditemukan, lewati penyimpanan
           if (selectedShiftData.isEmpty) continue;
+
+          // Tampilkan dialog konfirmasi sebelum menyimpan
+          bool? confirmSave = await showConfirmationDialog(
+              context, karyawan['email'], selectedShiftData['nama_shift']);
+          if (confirmSave != true) continue;
 
           // Data yang akan disimpan ke Firestore
           final shiftKaryawanData = {
@@ -110,6 +116,43 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
         ),
       );
     }
+  }
+
+  Future<bool?> showConfirmationDialog(
+      BuildContext context, String email, String shift) async {
+    return showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Row(
+            children: [
+              Icon(
+                Icons.person_add,
+                color: Colors.red,
+                size: 28,
+              ),
+              SizedBox(width: 10),
+              Text(
+                "Konfirmasi Penyimpanan Shift Karyawan",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+            ],
+          ),
+          content: Text(
+              "Apakah Anda yakin ingin memberikan shift '$shift' kepada akun dengan email $email?"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text("Batal", style: TextStyle(color: Colors.red)),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: const Text("Ya", style: TextStyle(color: Colors.green)),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -169,7 +212,6 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
               return Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: SingleChildScrollView(
-                  // Tambahkan SingleChildScrollView disini
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -285,9 +327,11 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
                                   return;
                                 }
 
-                                saveSelectedAccountsToFirestore(context
-                                    .read<KelolaAkunKaryawanBloc>()
-                                    .state);
+                                saveSelectedAccountsToFirestore(
+                                    context,
+                                    context
+                                        .read<KelolaAkunKaryawanBloc>()
+                                        .state);
                               },
                               icon: const Icon(
                                 Icons.save,
@@ -300,7 +344,7 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
                       ),
                       const SizedBox(height: 20),
                       Container(
-                        height: 425, // Ukuran tetap 420 piksel
+                        height: 425,
                         padding: const EdgeInsets.symmetric(
                             vertical: 5, horizontal: 15),
                         decoration: BoxDecoration(
@@ -378,7 +422,7 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
                       ),
                       const SizedBox(height: 10),
                       Container(
-                        height: 425, // Ukuran tetap 420 piksel
+                        height: 425,
                         padding: const EdgeInsets.symmetric(
                             vertical: 5, horizontal: 15),
                         decoration: BoxDecoration(
@@ -450,7 +494,6 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
                                             ),
                                             trailing: GestureDetector(
                                               onTap: () {
-                                                // Tampilkan dialog yang lebih profesional
                                                 showDialog(
                                                   context: context,
                                                   builder: (context) {

@@ -1,4 +1,3 @@
-// shift_kategori_bloc.dart
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'shift_kategori_event.dart';
@@ -8,11 +7,9 @@ class ShiftKategoriBloc extends Bloc<ShiftKategoriEvent, ShiftKategoriState> {
   final FirebaseFirestore firestore;
 
   ShiftKategoriBloc({required this.firestore}) : super(ShiftKategoriInitial()) {
-    // Handler untuk event FetchShiftKategoriEvent
     on<FetchShiftKategoriEvent>((event, emit) async {
       emit(ShiftKategoriLoading());
       try {
-        // Ambil data dari Firestore
         QuerySnapshot querySnapshot =
             await firestore.collection('shift_kategori').get();
         List<Map<String, dynamic>> shiftKategori =
