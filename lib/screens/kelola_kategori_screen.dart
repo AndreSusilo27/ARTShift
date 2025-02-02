@@ -320,21 +320,60 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
   // Fungsi untuk menambah shift ke Firestore
   void _submitData(BuildContext context) {
     if (_formKey.currentState!.validate()) {
-      context.read<ShiftKategoriBloc>().add(TambahShiftKategoriEvent(
-            kategoriShift: kategoriShiftController.text,
-            jamMasuk: jamMasukController.text,
-            jamKeluar: jamKeluarController.text,
-            tanggalAkhir: tanggalAkhirController.text,
-          ));
+      showDialog(
+        context: context,
+        builder: (dialogContext) => AlertDialog(
+          title: const Row(
+            children: [
+              Icon(
+                Icons.post_add,
+                color: Colors.green,
+                size: 28,
+              ),
+              SizedBox(width: 10),
+              Text(
+                "Konfirmasi Tambah Shift",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+            ],
+          ),
+          content: const Text("Apakah Anda yakin ingin menambahkan shift ini?"),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+              child: const Text("Batal", style: TextStyle(color: Colors.red)),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Shift berhasil ditambahkan')),
+                context.read<ShiftKategoriBloc>().add(TambahShiftKategoriEvent(
+                      kategoriShift: kategoriShiftController.text,
+                      jamMasuk: jamMasukController.text,
+                      jamKeluar: jamKeluarController.text,
+                      tanggalAkhir: tanggalAkhirController.text,
+                    ));
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Shift berhasil ditambahkan'),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+
+                kategoriShiftController.clear();
+                jamMasukController.clear();
+                jamKeluarController.clear();
+                tanggalAkhirController.clear();
+              },
+              child:
+                  const Text("Tambah", style: TextStyle(color: Colors.green)),
+            ),
+          ],
+        ),
       );
-
-      kategoriShiftController.clear();
-      jamMasukController.clear();
-      jamKeluarController.clear();
-      tanggalAkhirController.clear();
     }
   }
 }

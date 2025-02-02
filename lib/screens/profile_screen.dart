@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:ARTShift/widgets/custom_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +50,6 @@ class ProfileScreen extends StatelessWidget {
               return const Center(child: Text('User data not found.'));
             }
 
-            // Extract user data
             var userData =
                 snapshot.data!.docs[0].data() as Map<String, dynamic>;
             String name = userData['name'] ?? 'Name not available';
@@ -76,7 +77,6 @@ class ProfileScreen extends StatelessWidget {
                   return const Center(child: Text('Biodata not found.'));
                 }
 
-                // Extract biodata
                 var biodata =
                     biodataSnapshot.data!.data() as Map<String, dynamic>;
                 String job = biodata['job'] ?? 'Not available';
@@ -86,107 +86,129 @@ class ProfileScreen extends StatelessWidget {
 
                 return SingleChildScrollView(
                   child: Container(
-                    height: 825,
+                    height: 820,
                     decoration: const BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage("assets/images/bg2.png"),
                         fit: BoxFit.cover,
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          // Profile Card with Glass Effect
-                          Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            elevation: 8,
-                            shadowColor: Colors.blueAccent.withOpacity(0.3),
-                            child: Padding(
-                              padding: const EdgeInsets.all(20.0),
+                    child: SingleChildScrollView(
+                      child: Center(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          padding: EdgeInsets.all(20),
+                          margin: EdgeInsets.symmetric(vertical: 20),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(
+                                0.15), // Efek transparan lebih elegan
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                blurRadius: 15,
+                                offset: Offset(0, 5),
+                              ),
+                            ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(
+                                  sigmaX: 10, sigmaY: 10), // Efek blur
                               child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  // Profile Picture
-                                  CircleAvatar(
-                                    radius: 55,
-                                    backgroundColor: Colors.blueAccent.shade100,
-                                    backgroundImage: photoUrl.isNotEmpty
-                                        ? NetworkImage(photoUrl)
-                                        : const AssetImage(
-                                                'assets/default_avatar.png')
-                                            as ImageProvider,
+                                  // Foto Profil berbentuk KOTAK dengan border elegan
+                                  Container(
+                                    width: 120,
+                                    height: 120,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          12), // Sudut membulat
+                                      border: Border.all(
+                                          color: Colors.white,
+                                          width: 3), // Border putih
+                                      image: DecorationImage(
+                                        image: photoUrl.isNotEmpty
+                                            ? NetworkImage(photoUrl)
+                                            : AssetImage(
+                                                    'assets/default_avatar.png')
+                                                as ImageProvider,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                                   ),
                                   const SizedBox(height: 15),
-                                  // Name
                                   Text(
                                     name,
                                     style: const TextStyle(
-                                      fontSize: 22,
+                                      fontSize: 24,
                                       fontWeight: FontWeight.bold,
+                                      color:
+                                          Colors.white, // Warna lebih kontras
                                     ),
                                   ),
                                   const SizedBox(height: 5),
-                                  // Email
                                   Text(
                                     emailFromFirestore,
                                     style: TextStyle(
                                       fontSize: 16,
-                                      color: Colors.grey[600],
+                                      color: Colors.white70,
                                     ),
                                   ),
                                   const SizedBox(height: 10),
-                                  // Role
+
+                                  // Role dengan gradient dan padding yang lebih rapi
                                   Container(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 5),
+                                        horizontal: 12, vertical: 6),
                                     decoration: BoxDecoration(
-                                      color: Colors.blue.shade100,
-                                      borderRadius: BorderRadius.circular(8),
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Colors.blue.shade400,
+                                          Colors.blue.shade700
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Text(
                                       role,
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.blue.shade800,
+                                        color: Colors.white,
                                       ),
                                     ),
                                   ),
+
+                                  const SizedBox(height: 20),
+                                  Divider(thickness: 2, color: Colors.white54),
+
+                                  // Informasi Pribadi dengan icon untuk tampilan lebih modern
+                                  const Text(
+                                    "Informasi Pribadi",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  _buildInfoRow(Icons.work, "Pekerjaan", job),
+                                  _buildInfoRow(
+                                      Icons.person, "Jenis Kelamin", gender),
+                                  _buildInfoRow(
+                                      Icons.phone, "No. Telepon", phone),
+                                  _buildInfoRow(Icons.home, "Alamat", address),
                                 ],
                               ),
                             ),
                           ),
-                          const SizedBox(height: 25),
-
-                          // Additional Biodata
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.blue.shade50,
-                              borderRadius: BorderRadius.circular(12),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.blueAccent.withOpacity(0.2),
-                                  blurRadius: 6,
-                                  offset: const Offset(0, 3),
-                                ),
-                              ],
-                            ),
-                            padding: const EdgeInsets.all(15),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                _buildInfoRow("Pekerjaan", job),
-                                _buildInfoRow("Jenis Kelamin", gender),
-                                _buildInfoRow("No.Telepon", phone),
-                                _buildInfoRow("Alamat", address),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 25),
-                        ],
+                        ),
                       ),
                     ),
                   ),
@@ -200,23 +222,27 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  // Helper method for building user information row
-  Widget _buildInfoRow(String title, String value) {
+// Fungsi untuk membuat row dengan icon
+  Widget _buildInfoRow(IconData icon, String title, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         children: [
+          Icon(icon, color: Color.fromARGB(220, 255, 255, 255), size: 20),
+          const SizedBox(width: 10),
           Text(
             "$title: ",
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,
+              color: Colors.white,
             ),
           ),
           Expanded(
             child: Text(
               value,
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(
+                  fontSize: 16, color: Color.fromARGB(220, 255, 255, 255)),
               overflow: TextOverflow.ellipsis,
             ),
           ),

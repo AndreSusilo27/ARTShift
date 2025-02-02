@@ -390,29 +390,72 @@ class _JadwalRapatScreenState extends State<JadwalRapatScreen> {
     }
   }
 
-  // Fungsi untuk menambah jadwal rapat ke Firestore
   void _submitData(BuildContext context) {
     if (_formKey.currentState!.validate()) {
-      FirebaseFirestore.instance.collection('jadwal_meeting').add({
-        'nama_rapat': namaRapatController.text,
-        'waktu_mulai': waktuMulaiController.text,
-        'waktu_selesai': waktuSelesaiController.text,
-        'tanggal_rapat': tanggalRapatController.text,
-        'link_meeting': linkMeetingController.text,
-      });
+      showDialog(
+        context: context,
+        builder: (BuildContext dialogContext) {
+          return AlertDialog(
+            title: const Row(
+              children: [
+                Icon(
+                  Icons.camera_indoor_outlined,
+                  color: Colors.blue,
+                  size: 28,
+                ),
+                SizedBox(width: 10),
+                Text(
+                  "Konfirmasi Tambah Rapat",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ],
+            ),
+            content: const Text(
+                "Apakah Anda yakin ingin menambahkan jadwal rapat ini?"),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(dialogContext).pop();
+                },
+                child: const Text("Batal", style: TextStyle(color: Colors.red)),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(dialogContext).pop();
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Jadwal rapat berhasil ditambahkan'),
-          backgroundColor: Colors.green,
-        ),
+                  // Tambahkan data ke Firestore
+                  FirebaseFirestore.instance.collection('jadwal_meeting').add({
+                    'nama_rapat': namaRapatController.text,
+                    'waktu_mulai': waktuMulaiController.text,
+                    'waktu_selesai': waktuSelesaiController.text,
+                    'tanggal_rapat': tanggalRapatController.text,
+                    'link_meeting': linkMeetingController.text,
+                  });
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Jadwal rapat berhasil ditambahkan'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+
+                  // Bersihkan input
+                  namaRapatController.clear();
+                  waktuMulaiController.clear();
+                  waktuSelesaiController.clear();
+                  tanggalRapatController.clear();
+                  linkMeetingController.clear();
+                },
+                child:
+                    const Text("Tambah", style: TextStyle(color: Colors.green)),
+              ),
+            ],
+          );
+        },
       );
-
-      namaRapatController.clear();
-      waktuMulaiController.clear();
-      waktuSelesaiController.clear();
-      tanggalRapatController.clear();
-      linkMeetingController.clear();
     }
   }
 

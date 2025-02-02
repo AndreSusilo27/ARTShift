@@ -59,11 +59,7 @@ class KelolaAkunAdminBloc
             await doc.reference.delete();
           }
 
-          final karyawanSnapshot = await firestore.collection('users').get();
-          List<Map<String, dynamic>> adminList =
-              karyawanSnapshot.docs.map((doc) => doc.data()).toList();
-
-          emit(KelolaAkunAdminLoaded(adminList: adminList));
+          add(FetchAdminEvent());
         } else {
           emit(KelolaAkunAdminError(message: 'Karyawan tidak ditemukan.'));
         }

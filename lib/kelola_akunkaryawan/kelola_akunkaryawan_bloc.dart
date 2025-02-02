@@ -246,10 +246,7 @@ class KelolaAkunKaryawanBloc
           await doc.reference.delete();
         }
 
-        final karyawanSnapshot = await firestore.collection('users').get();
-        List<Map<String, dynamic>> karyawanList =
-            karyawanSnapshot.docs.map((doc) => doc.data()).toList();
-        emit(KelolaAkunkaryawanLoaded(karyawanList: karyawanList));
+        add(FetchKaryawanEvent());
       } else {
         emit(KelolaAkunkaryawanError(message: 'Karyawan tidak ditemukan.'));
       }

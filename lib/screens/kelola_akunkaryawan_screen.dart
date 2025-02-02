@@ -95,7 +95,7 @@ class _KelolaAkunKaryawanScreenState extends State<KelolaAkunKaryawanScreen> {
                       ),
                       const SizedBox(height: 20),
                       Container(
-                        height: 670, // Ukuran tetap 420 piksel
+                        height: 670,
                         padding: const EdgeInsets.symmetric(
                             vertical: 5, horizontal: 15),
                         decoration: BoxDecoration(
@@ -121,7 +121,7 @@ class _KelolaAkunKaryawanScreenState extends State<KelolaAkunKaryawanScreen> {
                                       ? CircleAvatar(
                                           backgroundImage:
                                               NetworkImage(photoUrl),
-                                          radius: 28, // Lebih proporsional
+                                          radius: 28,
                                         )
                                       : const CircleAvatar(
                                           radius: 28,
@@ -130,43 +130,36 @@ class _KelolaAkunKaryawanScreenState extends State<KelolaAkunKaryawanScreen> {
                                   title: Text(
                                     karyawan['name'] ?? 'Tanpa Nama',
                                     style: const TextStyle(
-                                      fontSize:
-                                          18, // Ukuran font judul lebih jelas
+                                      fontSize: 18,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                   subtitle: Text(
                                     "${karyawan['email'] ?? 'Tidak diketahui'}",
                                     style: const TextStyle(
-                                      fontSize:
-                                          14, // Ukuran font email diperbaiki
+                                      fontSize: 14,
                                       color: Color.fromARGB(255, 133, 133, 133),
                                     ),
                                   ),
                                   trailing: Padding(
-                                    padding: const EdgeInsets.only(
-                                        right:
-                                            8), // Padding agar lebih seimbang
+                                    padding: const EdgeInsets.only(right: 8),
                                     child: InkWell(
-                                      borderRadius: BorderRadius.circular(
-                                          8), // Efek klik membulat
+                                      borderRadius: BorderRadius.circular(8),
                                       onTap: () {
                                         _showDeleteConfirmationDialog(
                                             context, karyawan['email']);
                                       },
                                       child: Container(
-                                        padding: const EdgeInsets.all(
-                                            6), // Spasi agar tidak terlalu rapat
+                                        padding: const EdgeInsets.all(6),
                                         decoration: BoxDecoration(
-                                          color: Colors.red.withOpacity(
-                                              0.1), // Warna merah transparan agar tidak terlalu tajam
+                                          color: Colors.red.withOpacity(0.1),
                                           borderRadius:
                                               BorderRadius.circular(8),
                                         ),
                                         child: const Icon(
                                           Icons.delete,
                                           color: Colors.red,
-                                          size: 22, // Ukuran lebih proporsional
+                                          size: 22,
                                         ),
                                       ),
                                     ),
@@ -219,7 +212,7 @@ class _KelolaAkunKaryawanScreenState extends State<KelolaAkunKaryawanScreen> {
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(dialogContext).pop(); // Tutup dialog
+                Navigator.of(dialogContext).pop();
                 context
                     .read<KelolaAkunKaryawanBloc>()
                     .add(DeleteKaryawanEvent(email: email));

@@ -218,7 +218,7 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
                     children: [
                       Center(
                         child: const Text(
-                          'Pilih shift karyawan yang ingin dikelola shift nya',
+                          'Pilih karyawan yang ingin dikelola shift nya',
                           style: TextStyle(fontSize: 16, color: Colors.grey),
                         ),
                       ),
@@ -400,11 +400,11 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
                         ),
                       ),
                       const SizedBox(height: 25),
-                      const Divider(
-                        color: Color.fromARGB(203, 255, 255, 255),
-                        thickness: 1.0,
-                        indent: 10,
-                        endIndent: 10,
+                      Divider(
+                        color: Colors.black87,
+                        thickness: 3,
+                        indent: 20,
+                        endIndent: 20,
                       ),
                       Center(
                         child: Column(
