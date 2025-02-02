@@ -171,7 +171,7 @@ class _DashboardAdminScreenState extends State<DashboardAdminScreen> {
                       borderRadius: BorderRadius.circular(15),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
+                          color: const Color.fromARGB(50, 0, 0, 0),
                           blurRadius: 6,
                           offset: const Offset(0, 3),
                         ),

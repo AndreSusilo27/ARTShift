@@ -246,6 +246,12 @@ class KelolaAkunKaryawanBloc
           await doc.reference.delete();
         }
 
+        // Hapus data dari koleksi 'biodata' berdasarkan email
+        await firestore.collection('biodata').doc(event.email).delete();
+
+        // Hapus data dari koleksi 'shift_karyawan' berdasarkan email
+        await firestore.collection('shift_karyawan').doc(event.email).delete();
+
         add(FetchKaryawanEvent());
       } else {
         emit(KelolaAkunkaryawanError(message: 'Karyawan tidak ditemukan.'));

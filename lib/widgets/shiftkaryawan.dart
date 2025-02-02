@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// Mengubah menjadi widget fungsi biasa
-Widget shiftKaryawanWidget({
-  required String email,
-  required Function(Map<String, dynamic>) onDataFetched,
-}) {
-  // Fungsi untuk mengambil data shift berdasarkan email
+class ShiftKaryawanWidget extends StatefulWidget {
+  final String email;
+  final Function(Map<String, dynamic>) onDataFetched;
+
+  const ShiftKaryawanWidget({
+    super.key,
+    required this.email,
+    required this.onDataFetched,
+  });
+
+  @override
+  State<ShiftKaryawanWidget> createState() => _ShiftKaryawanWidgetState();
+}
+
+class _ShiftKaryawanWidgetState extends State<ShiftKaryawanWidget> {
   Future<Map<String, dynamic>?> _fetchShiftData() async {
     try {
       DocumentSnapshot doc = await FirebaseFirestore.instance
           .collection('shift_karyawan')
-          .doc(email)
+          .doc(widget.email)
           .get();
 
       if (doc.exists && doc.data() != null) {
@@ -23,24 +32,26 @@ Widget shiftKaryawanWidget({
     return null;
   }
 
-  return FutureBuilder<Map<String, dynamic>?>(
-    // Gunakan FutureBuilder untuk mengambil data
-    future: _fetchShiftData(),
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return Center(child: CircularProgressIndicator()); // Menunggu data
-      }
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<Map<String, dynamic>?>(
+      future: _fetchShiftData(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
 
-      if (snapshot.hasError || !snapshot.hasData) {
-        return Center(child: Text("Data tidak ditemukan.")); // Error handling
-      }
+        if (snapshot.hasError || snapshot.data == null) {
+          return Center(child: Text("Data tidak ditemukan."));
+        }
 
-      final data = snapshot.data!;
+        // Panggil callback hanya jika data tersedia
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          widget.onDataFetched(snapshot.data!);
+        });
 
-      // Panggil callback untuk mengirimkan data yang sudah diambil
-      onDataFetched(data);
-
-      return SizedBox(); // Tidak menampilkan apapun setelah data diambil
-    },
-  );
+        return SizedBox();
+      },
+    );
+  }
 }

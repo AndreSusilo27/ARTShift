@@ -1,3 +1,4 @@
+import 'package:ARTShift/absensi/absensi_bloc.dart';
 import 'package:ARTShift/kelola_akunkaryawan/kelola_akunkaryawan_bloc.dart';
 import 'package:ARTShift/laporan_harian/laporan_harian_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -53,6 +54,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<KelolaAkunKaryawanBloc>(
           create: (context) =>
               KelolaAkunKaryawanBloc(firestore: FirebaseFirestore.instance),
+        ),
+        BlocProvider<AbsensiBloc>(
+          create: (context) => AbsensiBloc(),
         ),
       ],
       child: MaterialApp(

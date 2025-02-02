@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
           Center(
             child: Card(
               elevation: 5,
-              color: Colors.white.withOpacity(0.8),
+              color: const Color.fromARGB(200, 255, 255, 255),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),

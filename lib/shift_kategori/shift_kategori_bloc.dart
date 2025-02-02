@@ -49,9 +49,10 @@ class ShiftKategoriBloc extends Bloc<ShiftKategoriEvent, ShiftKategoriState> {
     });
 
     // Handler untuk event HapusShiftKategoriEvent
+    // Handler untuk event HapusShiftKategoriEvent
     on<HapusShiftKategoriEvent>((event, emit) async {
       try {
-        // Mencari dokumen berdasarkan nama_shift
+        // Mencari dokumen berdasarkan nama_shift pada koleksi shift_kategori
         final querySnapshot = await firestore
             .collection('shift_kategori')
             .where('nama_shift', isEqualTo: event.namaShift)
@@ -64,7 +65,22 @@ class ShiftKategoriBloc extends Bloc<ShiftKategoriEvent, ShiftKategoriState> {
           return;
         }
 
-        // Menghapus semua dokumen yang ditemukan berdasarkan nama_shift
+        // Menghapus atau mengupdate nama_shift di koleksi shift_karyawan untuk semua dokumen email
+        final shiftKaryawanSnapshot =
+            await firestore.collection('shift_karyawan').get();
+
+        for (var doc in shiftKaryawanSnapshot.docs) {
+          var data = doc.data();
+
+          // Cek apakah field nama_shift ada dan sesuai dengan nama_shift yang ingin dihapus
+          if (data.containsKey('nama_shift') &&
+              data['nama_shift'] == event.namaShift) {
+            // Menghapus field nama_shift dari dokumen
+            await doc.reference.update({'nama_shift': FieldValue.delete()});
+          }
+        }
+
+        // Menghapus semua dokumen yang ditemukan berdasarkan nama_shift di shift_kategori
         for (var doc in querySnapshot.docs) {
           await doc.reference.delete();
         }

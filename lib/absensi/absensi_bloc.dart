@@ -33,7 +33,6 @@ class AbsensiBloc extends Bloc<AbsensiEvent, AbsensiState> {
       emit(state.copyWith(
           currentTime: DateFormat('HH:mm:ss').format(DateTime.now())));
     });
-
     on<CheckAbsensiEvent>((event, emit) async {
       final DateTime now = DateTime.now();
       final String formattedDate = DateFormat('dd-MM-yyyy').format(now);
@@ -48,24 +47,56 @@ class AbsensiBloc extends Bloc<AbsensiEvent, AbsensiState> {
             .doc(formattedDate);
         final docSnapshot = await docRef.get();
 
+        // Cek apakah email memiliki shift
+        final userShiftRef = firestore.collection('shift_karyawan').doc(docId);
+        final userShiftSnapshot = await userShiftRef.get();
+
+        if (!userShiftSnapshot.exists) {
+          // Jika email tidak memiliki shift, maka tidak bisa absen
+          emit(state.copyWith(
+            canAbsenMasuk: false,
+            canAbsenKeluar: false,
+            isSakitOrIzin: false,
+            absensiStatus: "Belum terdaftar dalam shift",
+            errorMessage: "Anda belum memiliki shift!",
+          ));
+          return;
+        }
+
         if (docSnapshot.exists) {
           final data = docSnapshot.data();
-          if (data != null && data['keluar'] != null) {
-            emit(state.copyWith(
-              canAbsenMasuk: false,
-              canAbsenKeluar: false,
-              isSakitOrIzin: false,
-              absensiStatus: "Sudah absen keluar",
-              errorMessage: "Anda sudah melakukan absensi keluar hari ini!",
-            ));
-          } else if (data!['hadir'] != null) {
-            emit(state.copyWith(
-              canAbsenMasuk: false,
-              canAbsenKeluar: true,
-              isSakitOrIzin: false,
-              absensiStatus: "Sudah absen masuk",
-              successMessage: "Anda sudah absen masuk!",
-            ));
+          if (data != null) {
+            final bool isSick = data['sakit'] != null;
+            final bool isPermission = data['izin'] != null;
+
+            if (isSick || isPermission) {
+              emit(state.copyWith(
+                canAbsenMasuk: false,
+                canAbsenKeluar: false,
+                isSakitOrIzin: true,
+                absensiStatus: isSick
+                    ? "Anda sedang sakit hari ini"
+                    : "Anda sedang izin hari ini",
+                errorMessage:
+                    "Tidak dapat melakukan absen karena ${isSick ? 'sakit' : 'izin'}.",
+              ));
+            } else if (data['keluar'] != null) {
+              emit(state.copyWith(
+                canAbsenMasuk: false,
+                canAbsenKeluar: false,
+                isSakitOrIzin: false,
+                absensiStatus: "Sudah absen keluar",
+                errorMessage: "Anda sudah melakukan absensi keluar hari ini!",
+              ));
+            } else if (data['hadir'] != null) {
+              emit(state.copyWith(
+                canAbsenMasuk: false,
+                canAbsenKeluar: true,
+                isSakitOrIzin: false,
+                absensiStatus: "Sudah absen masuk",
+                successMessage: "Anda sudah absen masuk!",
+              ));
+            }
           }
         } else {
           emit(state.copyWith(

@@ -21,7 +21,7 @@ class _CustomCarouselState extends State<CustomCarousel> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    double carouselHeight = screenHeight * 0.65; // 65% dari tinggi layar
+    double carouselHeight = screenHeight * 0.65;
 
     return Column(
       children: [
@@ -35,13 +35,13 @@ class _CustomCarouselState extends State<CustomCarousel> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Colors.black.withOpacity(0), // Transparan di atas
-                      Colors.black.withOpacity(0.3), // Lebih gelap di tengah
-                      Colors.black.withOpacity(0.6), // Semakin pekat di bawah
+                      const Color.fromARGB(0, 0, 0, 0),
+                      const Color.fromARGB(85, 0, 0, 0),
+                      const Color.fromARGB(135, 0, 0, 0),
                     ],
                   ).createShader(bounds);
                 },
-                blendMode: BlendMode.overlay, // Lebih smooth
+                blendMode: BlendMode.overlay,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(5),
                   clipBehavior: Clip.antiAlias,

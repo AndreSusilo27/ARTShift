@@ -28,7 +28,7 @@ class _JadwalRapatScreenState extends State<JadwalRapatScreen> {
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.3),
+                color: const Color.fromARGB(95, 0, 0, 0),
                 blurRadius: 10,
                 spreadRadius: 2,
                 offset: const Offset(0, 5),
@@ -173,7 +173,7 @@ class _JadwalRapatScreenState extends State<JadwalRapatScreen> {
                       final jadwalList = snapshot.data!.docs;
 
                       return Container(
-                        height: 420, // Ukuran tetap 420 piksel
+                        height: 420,
                         padding: const EdgeInsets.symmetric(
                             vertical: 5, horizontal: 15),
                         decoration: BoxDecoration(
@@ -197,12 +197,11 @@ class _JadwalRapatScreenState extends State<JadwalRapatScreen> {
                                 'Link Meeting Tidak Tersedia';
 
                             return Card(
-                              elevation: 10, // Efek bayangan untuk tampilan 3D
-                              shadowColor: Colors.black, // Warna bayangan
+                              elevation: 10,
+                              shadowColor: Colors.black,
                               margin: const EdgeInsets.symmetric(vertical: 10),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    15), // Sudut melengkung
+                                borderRadius: BorderRadius.circular(15),
                               ),
                               child: ListTile(
                                 title: Text(namaRapat),
@@ -217,42 +216,34 @@ class _JadwalRapatScreenState extends State<JadwalRapatScreen> {
                                 trailing: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    // Ikon kalender dengan desain InkWell
                                     Padding(
                                       padding: const EdgeInsets.only(right: 8),
                                       child: InkWell(
-                                        borderRadius: BorderRadius.circular(
-                                            8), // Efek klik membulat
+                                        borderRadius: BorderRadius.circular(8),
                                         onTap: () {
                                           _showLinkDialog(context, linkMeeting);
                                         },
                                         child: Container(
-                                          padding: const EdgeInsets.all(
-                                              6), // Spasi agar tidak terlalu rapat
+                                          padding: const EdgeInsets.all(6),
                                           decoration: BoxDecoration(
-                                            color: Colors.blue.withOpacity(
-                                                0.1), // Warna biru transparan untuk kalender
+                                            color: const Color.fromARGB(
+                                                50, 3, 168, 244),
                                             borderRadius:
                                                 BorderRadius.circular(8),
                                           ),
                                           child: const Icon(
                                             Icons.description_outlined,
                                             color: Colors.blue,
-                                            size:
-                                                22, // Ukuran lebih proporsional
+                                            size: 22,
                                           ),
                                         ),
                                       ),
                                     ),
-
-                                    // Ikon hapus dengan desain InkWell
                                     Padding(
                                       padding: const EdgeInsets.only(right: 8),
                                       child: InkWell(
-                                        borderRadius: BorderRadius.circular(
-                                            8), // Efek klik membulat
+                                        borderRadius: BorderRadius.circular(8),
                                         onTap: () async {
-                                          // Konfirmasi sebelum menghapus jadwal
                                           bool? confirmDelete =
                                               await showDialog<bool>(
                                             context: context,
@@ -327,16 +318,15 @@ class _JadwalRapatScreenState extends State<JadwalRapatScreen> {
                                           padding: const EdgeInsets.all(
                                               6), // Spasi agar tidak terlalu rapat
                                           decoration: BoxDecoration(
-                                            color: Colors.red.withOpacity(
-                                                0.1), // Warna merah transparan untuk hapus
+                                            color: const Color.fromARGB(
+                                                50, 244, 67, 54),
                                             borderRadius:
                                                 BorderRadius.circular(8),
                                           ),
                                           child: const Icon(
                                             Icons.delete,
                                             color: Colors.red,
-                                            size:
-                                                22, // Ukuran lebih proporsional
+                                            size: 22,
                                           ),
                                         ),
                                       ),

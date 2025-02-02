@@ -177,7 +177,7 @@ class DataAbsensiScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: const Color.fromARGB(50, 0, 0, 0),
                   blurRadius: 8,
                   spreadRadius: 2,
                   offset: const Offset(0, 2),

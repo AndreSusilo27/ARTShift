@@ -60,17 +60,15 @@ class CustomDrawerKaryawan extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: const Color.fromARGB(35, 0, 0, 0),
                         blurRadius: 10,
                         spreadRadius: 2,
                         offset: const Offset(0, 5),
                       ),
                       BoxShadow(
-                        color: Colors.white
-                            .withOpacity(0.8), // Menambahkan efek border putih
-                        blurRadius: 12, // Menambahkan blur untuk efek neon
-                        spreadRadius:
-                            1, // Menambahkan sedikit spread untuk efek menyala
+                        color: const Color.fromARGB(200, 255, 255, 255),
+                        blurRadius: 12,
+                        spreadRadius: 1,
                         offset: const Offset(0, 0),
                       ),
                     ],
@@ -97,7 +95,7 @@ class CustomDrawerKaryawan extends StatelessWidget {
                                     Border.all(color: Colors.white, width: 2),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.3),
+                                    color: const Color.fromARGB(80, 0, 0, 0),
                                     blurRadius: 4,
                                   ),
                                 ],
@@ -170,7 +168,6 @@ class CustomDrawerKaryawan extends StatelessWidget {
                     );
                   },
                 ),
-                // Logout button is placed at the bottom
                 _buildDrawerItem(
                   context,
                   'assets/icons/icon_menu/logout.png',
@@ -208,8 +205,7 @@ class CustomDrawerKaryawan extends StatelessWidget {
     required VoidCallback navigateTo,
   }) {
     return ListTile(
-      leading: Image.asset(imagePath,
-          width: 26, height: 26), // Ukuran icon lebih besar
+      leading: Image.asset(imagePath, width: 26, height: 26),
       title: Text(
         title,
         style: const TextStyle(
@@ -219,8 +215,7 @@ class CustomDrawerKaryawan extends StatelessWidget {
         ),
       ),
       dense: true,
-      contentPadding: const EdgeInsets.symmetric(
-          horizontal: 20, vertical: 5), // Jarak antar menu lebih rapat
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       onTap: navigateTo,
     );
   }

@@ -65,8 +65,8 @@ class CardMeeting extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 10,
-      shadowColor: Colors.black,
+      elevation: 4,
+      shadowColor: const Color.fromARGB(135, 0, 0, 0),
       margin: const EdgeInsets.symmetric(vertical: 10),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
@@ -90,7 +90,7 @@ class CardMeeting extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
-                color: Colors.blue.withOpacity(0.1),
+                color: const Color.fromARGB(50, 3, 168, 244),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: const Icon(

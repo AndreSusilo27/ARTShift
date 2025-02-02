@@ -89,7 +89,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    // Divider dengan teks "LOGIN"
+
                     Row(
                       children: [
                         Expanded(

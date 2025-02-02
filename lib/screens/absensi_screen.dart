@@ -53,10 +53,17 @@ class _AbsensiScreenState extends State<AbsensiScreen> {
     }
   }
 
-  // Callback untuk menerima status keterlambatan
   void _handleJamMasukSelected(String newStatus) {
+    final absensiState = context.read<AbsensiBloc>().state;
+
     setState(() {
-      if (newStatus == "late") {
+      if (absensiState.absensiStatus == "Belum terdaftar dalam shift") {
+        isLate = false;
+        status = "Tidak memiliki shift";
+      } else if (absensiState.isSakitOrIzin) {
+        isLate = false;
+        status = "Tidak dapat absen (Sakit/Izin)";
+      } else if (newStatus == "late") {
         isLate = true;
         status = "Terlambat";
       } else if (newStatus == "onTime") {

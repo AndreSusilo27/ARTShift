@@ -30,7 +30,7 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.3),
+                color: const Color.fromARGB(95, 0, 0, 0),
                 blurRadius: 10,
                 spreadRadius: 2,
                 offset: const Offset(0, 5),
@@ -260,7 +260,8 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
                                     child: Container(
                                       padding: const EdgeInsets.all(6),
                                       decoration: BoxDecoration(
-                                        color: Colors.red.withOpacity(0.1),
+                                        color: const Color.fromARGB(
+                                            50, 244, 67, 54),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: const Icon(

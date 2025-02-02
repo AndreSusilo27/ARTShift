@@ -1,4 +1,3 @@
-// kelola_akunkaryawan_bloc.dart
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'kelola_akunadmin_event.dart';
@@ -58,13 +57,15 @@ class KelolaAkunAdminBloc
           for (var doc in querySnapshot.docs) {
             await doc.reference.delete();
           }
+          // Hapus data dari koleksi 'biodata' berdasarkan email
+          await firestore.collection('biodata').doc(event.email).delete();
 
           add(FetchAdminEvent());
         } else {
-          emit(KelolaAkunAdminError(message: 'Karyawan tidak ditemukan.'));
+          emit(KelolaAkunAdminError(message: 'Admin tidak ditemukan.'));
         }
       } catch (e) {
-        emit(KelolaAkunAdminError(message: 'Gagal menghapus karyawan.'));
+        emit(KelolaAkunAdminError(message: 'Gagal menghapus Admin.'));
       }
     });
   }

@@ -58,6 +58,9 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
   Future<void> saveSelectedAccountsToFirestore(
       BuildContext context, dynamic state) async {
     try {
+      WriteBatch batch =
+          _firestore.batch(); // Membuat batch untuk multiple operasi
+
       for (int i = 0; i < selectedAccounts.length; i++) {
         if (selectedAccounts[i]) {
           final karyawan = state.karyawanList[i];
@@ -88,17 +91,28 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
             'photoUrl': karyawan['photoUrl'] ?? '',
           };
 
-          // Simpan ke Firestore dengan ID dokumen menggunakan email
-          await _firestore
-              .collection('shift_karyawan')
-              .doc(karyawan['email'])
-              .set(shiftKaryawanData);
+          final docRef =
+              _firestore.collection('shift_karyawan').doc(karyawan['email']);
 
-          print("Data shift untuk ${karyawan['email']} berhasil disimpan.");
+          // Memeriksa apakah dokumen sudah ada
+          final docSnapshot = await docRef.get();
 
-          _refreshData(context);
+          if (docSnapshot.exists) {
+            // Jika dokumen ada, update data
+            batch.update(docRef, shiftKaryawanData);
+            print(
+                "Data shift untuk ${karyawan['email']} ditambahkan ke batch (update).");
+          } else {
+            // Jika dokumen tidak ada, set data (menambahkan data baru)
+            batch.set(docRef, shiftKaryawanData);
+            print(
+                "Data shift untuk ${karyawan['email']} ditambahkan ke batch (set).");
+          }
         }
       }
+
+      // Commit batch untuk menyimpan semua data
+      await batch.commit();
 
       // Menampilkan notifikasi atau feedback
       ScaffoldMessenger.of(context).showSnackBar(
@@ -107,6 +121,9 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
           backgroundColor: Colors.green,
         ),
       );
+
+      // Memperbarui UI setelah proses selesai
+      _refreshData(context);
     } catch (e) {
       print("Error saat menyimpan data shift karyawan: $e");
       ScaffoldMessenger.of(context).showSnackBar(
@@ -128,12 +145,12 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
             children: [
               Icon(
                 Icons.person_add,
-                color: Colors.red,
+                color: Colors.green,
                 size: 28,
               ),
               SizedBox(width: 10),
               Text(
-                "Konfirmasi Penyimpanan Shift Karyawan",
+                "Konfirmasi Simpan Shift Karyawan",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
             ],
@@ -164,7 +181,7 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.3),
+                color: const Color.fromARGB(95, 0, 0, 0),
                 blurRadius: 10,
                 spreadRadius: 2,
                 offset: const Offset(0, 5),
@@ -649,17 +666,17 @@ Future<Map<String, dynamic>> getShiftByEmail(String email) async {
     // Mengambil data dari koleksi shift_karyawan berdasarkan email
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('shift_karyawan')
-        .where('email', isEqualTo: email) // Filter berdasarkan email
+        .where('email', isEqualTo: email)
         .get();
 
     if (snapshot.docs.isNotEmpty) {
       // Jika data ditemukan, ambil data pertama
       return snapshot.docs.first.data() as Map<String, dynamic>;
     } else {
-      return {}; // Kembalikan kosong jika tidak ada data
+      return {};
     }
   } catch (e) {
     print('Error fetching shift data: $e');
-    return {}; // Kembalikan kosong jika terjadi error
+    return {};
   }
 }

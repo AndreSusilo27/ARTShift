@@ -18,7 +18,7 @@ class ProfileScreen extends StatelessWidget {
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.3),
+                color: const Color.fromARGB(95, 0, 0, 0),
                 blurRadius: 10,
                 spreadRadius: 2,
                 offset: const Offset(0, 5),
@@ -100,12 +100,12 @@ class ProfileScreen extends StatelessWidget {
                           padding: EdgeInsets.all(20),
                           margin: EdgeInsets.symmetric(vertical: 20),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(
-                                0.15), // Efek transparan lebih elegan
+                            color: const Color.fromARGB(50, 255, 255,
+                                255), // Efek transparan lebih elegan
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
+                                color: const Color.fromARGB(75, 0, 0, 0),
                                 blurRadius: 15,
                                 offset: Offset(0, 5),
                               ),
@@ -114,28 +114,22 @@ class ProfileScreen extends StatelessWidget {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(20),
                             child: BackdropFilter(
-                              filter: ImageFilter.blur(
-                                  sigmaX: 10, sigmaY: 10), // Efek blur
+                              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  // Foto Profil berbentuk KOTAK dengan border elegan
                                   Container(
                                     width: 120,
                                     height: 120,
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                          12), // Sudut membulat
+                                      borderRadius: BorderRadius.circular(12),
                                       border: Border.all(
-                                          color: Colors.white,
-                                          width: 3), // Border putih
+                                          color: Colors.white, width: 3),
                                       image: DecorationImage(
                                         image: photoUrl.isNotEmpty
                                             ? NetworkImage(photoUrl)
-                                            : AssetImage(
-                                                    'assets/default_avatar.png')
-                                                as ImageProvider,
+                                            : AssetImage('') as ImageProvider,
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -146,8 +140,7 @@ class ProfileScreen extends StatelessWidget {
                                     style: const TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold,
-                                      color:
-                                          Colors.white, // Warna lebih kontras
+                                      color: Colors.white,
                                     ),
                                   ),
                                   const SizedBox(height: 5),
@@ -159,8 +152,6 @@ class ProfileScreen extends StatelessWidget {
                                     ),
                                   ),
                                   const SizedBox(height: 10),
-
-                                  // Role dengan gradient dan padding yang lebih rapi
                                   Container(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 12, vertical: 6),
@@ -184,11 +175,8 @@ class ProfileScreen extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-
                                   const SizedBox(height: 20),
                                   Divider(thickness: 2, color: Colors.white54),
-
-                                  // Informasi Pribadi dengan icon untuk tampilan lebih modern
                                   const Text(
                                     "Informasi Pribadi",
                                     style: TextStyle(
@@ -222,7 +210,6 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-// Fungsi untuk membuat row dengan icon
   Widget _buildInfoRow(IconData icon, String title, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),

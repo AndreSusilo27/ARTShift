@@ -26,7 +26,7 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
   String namekaryawan = "";
   String photoUrlkaryawan = "";
   String tanggalAkhir = "";
-  bool showShiftDetails = false; // Untuk menampilkan atau menyembunyikan shift
+  bool showShiftDetails = false;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -35,7 +35,7 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
     try {
       DocumentSnapshot doc = await FirebaseFirestore.instance
           .collection('shift_karyawan')
-          .doc(widget.email) // Mengambil data berdasarkan email
+          .doc(widget.email)
           .get();
 
       if (doc.exists && doc.data() != null) {
@@ -44,8 +44,8 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
           jamMasuk = data['jam_masuk'] ?? "00:00";
           jamKeluar = data['jam_keluar'] ?? "00:00";
           namaShift = data['nama_shift'] ?? "";
-          namekaryawan = data['name'] ?? widget.name;
-          photoUrlkaryawan = data['photoUrl'] ?? widget.photoUrl;
+          namekaryawan = widget.name;
+          photoUrlkaryawan = widget.photoUrl;
           tanggalAkhir = data['tanggal_akhir'] ?? "";
         });
       }
@@ -113,11 +113,7 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
                             // Foto Profil
                             CircleAvatar(
                               radius: 47,
-                              backgroundImage: photoUrlkaryawan.isNotEmpty
-                                  ? NetworkImage(photoUrlkaryawan)
-                                  : const AssetImage(
-                                          "assets/images/default_profile.png")
-                                      as ImageProvider,
+                              backgroundImage: NetworkImage(widget.photoUrl),
                             ),
                             const SizedBox(width: 10),
 
@@ -127,7 +123,7 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    namekaryawan,
+                                    widget.name,
                                     style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold),
@@ -225,8 +221,8 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
                               icon: Container(
                                 padding: const EdgeInsets.all(6),
                                 decoration: BoxDecoration(
-                                  color: Colors.blue.withOpacity(
-                                      0.1), // Warna latar belakang yang sama
+                                  color: const Color.fromARGB(50, 3, 168,
+                                      244), // Warna latar belakang yang sama
                                   borderRadius: BorderRadius.circular(
                                       8), // Border radius yang serupa
                                 ),
@@ -268,7 +264,7 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
                         borderRadius: BorderRadius.circular(15),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
+                            color: const Color.fromARGB(50, 0, 0, 0),
                             blurRadius: 6,
                             offset: const Offset(0, 3),
                           ),

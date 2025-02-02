@@ -17,7 +17,7 @@ class ShiftKaryawanWidget extends StatefulWidget {
 }
 
 class _ShiftKaryawanWidgetState extends State<ShiftKaryawanWidget> {
-  bool isChecked = false; // Flag untuk memastikan hanya sekali pengecekan
+  bool isChecked = false;
   String jamMasuk = "00:00";
   String jamKeluar = "00:00";
 

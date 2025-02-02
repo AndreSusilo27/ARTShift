@@ -37,9 +37,9 @@ void showLogoutDialog(BuildContext context) {
                 child: OutlinedButton(
                   onPressed: () => Navigator.of(dialogContext).pop(),
                   style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: Colors.grey), // Border hitam
+                    side: const BorderSide(color: Colors.grey),
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 10), // Padding
+                        horizontal: 15, vertical: 10),
                   ),
                   child: const Text(
                     "Batal",
@@ -52,17 +52,15 @@ void showLogoutDialog(BuildContext context) {
               Expanded(
                 child: OutlinedButton(
                   onPressed: () {
-                    // Logout dengan Bloc
                     BlocProvider.of<AuthBloc>(context).add(SignOut());
 
-                    Navigator.of(dialogContext).pop(); // Tutup dialog
-                    Navigator.of(context).pushReplacementNamed(
-                        '/splash'); // Arahkan ke SplashScreen terlebih dahulu
+                    Navigator.of(dialogContext).pop();
+                    Navigator.of(context).pushReplacementNamed('/splash');
                   },
                   style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: Colors.grey), // Border hitam
+                    side: const BorderSide(color: Colors.grey),
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 10), // Padding
+                        horizontal: 15, vertical: 10),
                   ),
                   child: const Text(
                     "Ya, Keluar",

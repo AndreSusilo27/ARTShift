@@ -63,7 +63,7 @@ class RoleSelectionScreen extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               margin: const EdgeInsets.symmetric(horizontal: 30),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.8),
+                color: const Color.fromARGB(200, 255, 255, 255),
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
