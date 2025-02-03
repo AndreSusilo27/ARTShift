@@ -1,5 +1,4 @@
 import 'package:ARTShift/screens/kelola_faq.dart';
-import 'package:ARTShift/screens/chatbot_screen.dart';
 import 'package:ARTShift/screens/jadwal_rapat_screen.dart';
 import 'package:ARTShift/screens/laporan_screen.dart';
 import 'package:ARTShift/screens/shift_karyawan_screen.dart';
@@ -178,13 +177,6 @@ class CustomDrawerAdmin extends StatelessWidget {
                   navigateTo: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => KelolaFAQScreen()));
-              }),
-              _buildDrawerItem(context, 'assets/icons/icon_menu/biodata.png',
-                  "Chatbot ARTShift", navigateTo: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => FAQChatbotScreen()));
               }),
               _buildDrawerItem(context, 'assets/icons/icon_menu/biodata.png',
                   "Lengkapi Data", navigateTo: () {

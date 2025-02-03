@@ -1,4 +1,5 @@
 import 'package:ARTShift/screens/absensi_screen.dart';
+import 'package:ARTShift/screens/chatbot_screen.dart';
 import 'package:ARTShift/screens/lengkapidata_screen.dart';
 import 'package:ARTShift/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -142,6 +143,13 @@ class CustomDrawerKaryawan extends StatelessWidget {
                 }),
                 const SizedBox(height: 20),
                 _buildDrawerHeader("MENU LAINNYA"),
+                _buildDrawerItem(context, 'assets/icons/icon_menu/biodata.png',
+                    "Chatbot ARTShift", navigateTo: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => FAQChatbotScreen()));
+                }),
                 _buildDrawerItem(
                   context,
                   'assets/icons/icon_menu/biodata.png',
