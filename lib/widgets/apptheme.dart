@@ -9,14 +9,15 @@ class AppTheme {
       centerTitle: true,
       backgroundColor: Color.fromARGB(255, 3, 1, 83),
       titleTextStyle: TextStyle(
-          color: Color(0xFF4A90E2),
+          // color: Color(0xFF4A90E2),
+          color: Colors.white,
           fontWeight: FontWeight.bold,
           fontFamily: 'Poppins',
           fontSize: 22),
       elevation: 6,
     ),
     iconTheme: const IconThemeData(
-      color: Colors.blue,
+      color: Colors.white,
       size: 24,
     ),
     textTheme: const TextTheme(
@@ -93,6 +94,35 @@ class AppTheme {
             ),
           ),
           backgroundColor: const Color.fromARGB(255, 3, 1, 83),
+        ),
+      ),
+    );
+  }
+
+  static PreferredSizeWidget appBar({required String titleText}) {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(60.0),
+      child: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: const Color.fromARGB(95, 0, 0, 0),
+              blurRadius: 10,
+              spreadRadius: 2,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: AppBar(
+          title: Text(
+            titleText, // Menggunakan parameter titleText yang diterima
+            style: TextStyle(
+              fontSize: 24, // Ukuran teks bisa disesuaikan
+              color: Colors.white, // Warna teks
+              fontWeight: FontWeight.bold, // Ketebalan font
+            ),
+          ),
+          automaticallyImplyLeading: false, // Menonaktifkan tombol back
         ),
       ),
     );

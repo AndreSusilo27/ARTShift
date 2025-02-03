@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:ARTShift/widgets/apptheme.dart';
 import 'package:ARTShift/widgets/custom_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -12,25 +13,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60.0),
-        child: Container(
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: const Color.fromARGB(95, 0, 0, 0),
-                blurRadius: 10,
-                spreadRadius: 2,
-                offset: const Offset(0, 5),
-              ),
-            ],
-          ),
-          child: AppBar(
-            title: Text('Profil'),
-            automaticallyImplyLeading: false,
-          ),
-        ),
-      ),
+      appBar: AppTheme.appBar(titleText: 'Profil'),
       body: SafeArea(
         child: FutureBuilder<QuerySnapshot>(
           future: FirebaseFirestore.instance

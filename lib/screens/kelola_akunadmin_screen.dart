@@ -1,6 +1,7 @@
 import 'package:ARTShift/kelola_akunadmin/kelola_akunadmin_bloc.dart';
 import 'package:ARTShift/kelola_akunadmin/kelola_akunadmin_event.dart';
 import 'package:ARTShift/kelola_akunadmin/kelola_akunadmin_state.dart';
+import 'package:ARTShift/widgets/apptheme.dart';
 import 'package:ARTShift/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,10 +37,7 @@ class _KelolaAkunAdminScreenState extends State<KelolaAkunAdminScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Kelola Akun Admin'),
-        automaticallyImplyLeading: false,
-      ),
+      appBar: AppTheme.appBar(titleText: 'Kelola Akun Admin'),
       body: BlocProvider(
         create: (context) =>
             KelolaAkunAdminBloc(firestore: FirebaseFirestore.instance)

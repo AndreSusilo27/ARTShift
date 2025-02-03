@@ -1,6 +1,7 @@
 import 'package:ARTShift/shift_kategori/shift_kategori_bloc.dart';
 import 'package:ARTShift/shift_kategori/shift_kategori_event.dart';
 import 'package:ARTShift/shift_kategori/shift_kategori_state.dart';
+import 'package:ARTShift/widgets/apptheme.dart';
 import 'package:ARTShift/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,25 +25,7 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60.0),
-        child: Container(
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: const Color.fromARGB(95, 0, 0, 0),
-                blurRadius: 10,
-                spreadRadius: 2,
-                offset: const Offset(0, 5),
-              ),
-            ],
-          ),
-          child: AppBar(
-            title: Text('Kelola Kategori Shift'),
-            automaticallyImplyLeading: false,
-          ),
-        ),
-      ),
+      appBar: AppTheme.appBar(titleText: 'Kelola Kategori Shift'),
       body: BlocProvider(
         create: (context) =>
             ShiftKategoriBloc(firestore: FirebaseFirestore.instance)

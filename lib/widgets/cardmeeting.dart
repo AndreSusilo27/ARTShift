@@ -67,12 +67,18 @@ class CardMeeting extends StatelessWidget {
     return Card(
       elevation: 4,
       shadowColor: const Color.fromARGB(135, 0, 0, 0),
-      margin: const EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.only(top: 8, left: 10, right: 10, bottom: 8),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
       child: ListTile(
-        title: Text(namaRapat),
+        title: Text(
+          namaRapat,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

@@ -1,3 +1,4 @@
+import 'package:ARTShift/widgets/apptheme.dart';
 import 'package:ARTShift/widgets/custom_button.dart';
 import 'package:ARTShift/widgets/custom_textformfield.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -134,25 +135,7 @@ class _LengkapiDataScreenState extends State<LengkapiDataScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60.0),
-        child: Container(
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: const Color.fromARGB(95, 0, 0, 0),
-                blurRadius: 10,
-                spreadRadius: 2,
-                offset: const Offset(0, 5),
-              ),
-            ],
-          ),
-          child: AppBar(
-            title: Text('Lengkapi Data'),
-            automaticallyImplyLeading: false,
-          ),
-        ),
-      ),
+      appBar: AppTheme.appBar(titleText: 'Lengkapi Data'),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Form(
@@ -180,9 +163,9 @@ class _LengkapiDataScreenState extends State<LengkapiDataScreen> {
               ),
               SizedBox(height: 10),
               CustomTextFormField(
-                labelText: "No. Telepon",
+                labelText: "No.Telepon",
                 controller: _phoneController,
-                hintText: '+62 - 021 - 1234 - 5678',
+                hintText: '08xxxxxxxxxx',
                 keyboardType: TextInputType.phone,
                 validator: (value) {
                   if (value == null || value.isEmpty) {

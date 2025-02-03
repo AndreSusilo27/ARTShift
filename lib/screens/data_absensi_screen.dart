@@ -1,3 +1,4 @@
+import 'package:ARTShift/widgets/apptheme.dart';
 import 'package:ARTShift/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:excel/excel.dart';
@@ -163,10 +164,7 @@ class DataAbsensiScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Data Absensi'),
-        automaticallyImplyLeading: false,
-      ),
+      appBar: AppTheme.appBar(titleText: 'Data Absensi'),
       body: Column(
         children: [
           Container(

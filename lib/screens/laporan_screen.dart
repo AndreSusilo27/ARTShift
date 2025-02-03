@@ -2,6 +2,7 @@ import 'package:ARTShift/kelola_akunkaryawan/kelola_akunkaryawan_bloc.dart';
 import 'package:ARTShift/kelola_akunkaryawan/kelola_akunkaryawan_event.dart';
 import 'package:ARTShift/kelola_akunkaryawan/kelola_akunkaryawan_state.dart';
 import 'package:ARTShift/screens/data_absensi_screen.dart';
+import 'package:ARTShift/widgets/apptheme.dart';
 import 'package:ARTShift/widgets/custom_button.dart';
 
 import 'package:flutter/material.dart';
@@ -100,25 +101,7 @@ class _LaporanScreenState extends State<LaporanScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60.0),
-        child: Container(
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: const Color.fromARGB(95, 0, 0, 0),
-                blurRadius: 10,
-                spreadRadius: 2,
-                offset: const Offset(0, 5),
-              ),
-            ],
-          ),
-          child: AppBar(
-            title: Text('Laporan Absensi'),
-            automaticallyImplyLeading: false,
-          ),
-        ),
-      ),
+      appBar: AppTheme.appBar(titleText: 'Laporan'),
       body: BlocProvider(
         create: (context) =>
             KelolaAkunKaryawanBloc(firestore: FirebaseFirestore.instance)

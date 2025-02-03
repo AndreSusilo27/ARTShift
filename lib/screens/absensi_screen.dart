@@ -1,3 +1,4 @@
+import 'package:ARTShift/widgets/apptheme.dart';
 import 'package:ARTShift/widgets/custom_button.dart';
 import 'package:ARTShift/widgets/keterlambatan.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -100,10 +101,7 @@ class _AbsensiScreenState extends State<AbsensiScreen> {
     return BlocProvider(
       create: (_) => AbsensiBloc()..add(CheckAbsensiEvent(email: widget.email)),
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text("Absensi"),
-          automaticallyImplyLeading: false,
-        ),
+        appBar: AppTheme.appBar(titleText: 'Absensi'),
         body: BlocBuilder<AbsensiBloc, AbsensiState>(
           builder: (context, state) {
             final bloc = BlocProvider.of<AbsensiBloc>(context);

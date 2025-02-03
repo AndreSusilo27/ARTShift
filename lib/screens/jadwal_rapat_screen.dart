@@ -1,3 +1,4 @@
+import 'package:ARTShift/widgets/apptheme.dart';
 import 'package:ARTShift/widgets/custom_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -22,25 +23,7 @@ class _JadwalRapatScreenState extends State<JadwalRapatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60.0),
-        child: Container(
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: const Color.fromARGB(95, 0, 0, 0),
-                blurRadius: 10,
-                spreadRadius: 2,
-                offset: const Offset(0, 5),
-              ),
-            ],
-          ),
-          child: AppBar(
-            title: const Text('Kelola Jadwal Rapat'),
-            automaticallyImplyLeading: false,
-          ),
-        ),
-      ),
+      appBar: AppTheme.appBar(titleText: 'Kelola Jadwal Rapat'),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

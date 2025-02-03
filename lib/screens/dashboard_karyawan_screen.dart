@@ -2,6 +2,7 @@ import 'package:ARTShift/screens/absensi_screen.dart';
 import 'package:ARTShift/widgets/apptheme.dart';
 import 'package:ARTShift/widgets/cardmeeting.dart';
 import 'package:ARTShift/widgets/custom_drawer_karyawan.dart';
+import 'package:ARTShift/widgets/faqlist.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -255,10 +256,10 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
                     ),
 
                     SizedBox(height: 10),
-                    // List Meeting
                     Container(
                       margin: const EdgeInsets.all(10),
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 5, vertical: 15),
                       decoration: BoxDecoration(
                         color: const Color.fromARGB(203, 255, 255, 255),
                         borderRadius: BorderRadius.circular(15),
@@ -270,9 +271,47 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
                           ),
                         ],
                       ),
-                      child: SizedBox(
-                        height: 500,
+                      child: const SizedBox(
+                        height: 450,
                         child: MeetingList(),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Divider(
+                      color: Colors.white,
+                      thickness: 2,
+                      indent: 20,
+                      endIndent: 20,
+                    ),
+                    Text(
+                      "List FAQ",
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      margin: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 5, vertical: 15),
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(203, 255, 255, 255),
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color.fromARGB(50, 0, 0, 0),
+                            blurRadius: 6,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: const SizedBox(
+                        height: 350,
+                        child: FAQList(
+                          showCount: false,
+                        ),
                       ),
                     ),
                   ],
