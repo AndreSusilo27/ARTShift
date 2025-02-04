@@ -79,6 +79,73 @@ class DataAbsensiScreen extends StatelessWidget {
     );
   }
 
+  void _showFileSavedDialog(BuildContext context, String filePath) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          titlePadding: const EdgeInsets.all(20),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          actionsPadding:
+              const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          title: const Row(
+            children: [
+              Icon(Icons.check_circle, color: Colors.green, size: 28),
+              SizedBox(width: 10),
+              Text("File Berhasil Disimpan",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+            ],
+          ),
+          content: Text(
+            "File telah disimpan di:\n$filePath",
+            style: const TextStyle(fontSize: 16),
+          ),
+          actions: [
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () => Navigator.of(dialogContext).pop(),
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: Colors.grey),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                    ),
+                    child: const Text(
+                      "Tutup",
+                      style: TextStyle(
+                          color: Colors.green, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 5),
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () {
+                      Navigator.of(dialogContext).pop();
+                      OpenFile.open(filePath);
+                    },
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: Colors.grey),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                    ),
+                    child: const Text(
+                      "Buka File",
+                      style: TextStyle(
+                          color: Colors.blue, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> _exportToExcel(BuildContext context) async {
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('absensi')
@@ -108,12 +175,16 @@ class DataAbsensiScreen extends StatelessWidget {
     int row = 2;
     for (var doc in snapshot.docs) {
       var data = doc.data() as Map<String, dynamic>;
-      var tanggal = data['tanggal'] ?? 'Tidak ada tanggal';
-      var hadir = data['hadir']?['waktu'] ?? 'Belum hadir';
-      var keluar = data['keluar']?['waktu'] ?? 'Belum keluar';
-      var sakit = data['sakit'] ?? 'Tidak sakit';
-      var izin = data['izin'] ?? 'Tidak izin';
 
+      var tanggal = data['tanggal'] ?? 'Tidak ada tanggal';
+
+      // Menangani data hadir, keluar, izin, sakit yang merupakan Map
+      var hadir = _getValueFromMap(data['hadir']);
+      var keluar = _getValueFromMap(data['keluar']);
+      var izin = _getValueFromMap(data['izin']);
+      var sakit = _getValueFromMap(data['sakit']);
+
+      // Memasukkan data ke dalam sheet
       sheet.cell(CellIndex.indexByString('A$row')).value =
           TextCellValue(tanggal);
       sheet.cell(CellIndex.indexByString('B$row')).value = TextCellValue(hadir);
@@ -137,28 +208,22 @@ class DataAbsensiScreen extends StatelessWidget {
       ),
     );
 
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("File Berhasil Disimpan"),
-          content: Text("File telah disimpan di:\n$filePath"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                OpenFile.open(filePath);
-              },
-              child: const Text("Buka File"),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text("Tutup"),
-            ),
-          ],
-        );
-      },
-    );
+    _showFileSavedDialog(context, filePath);
+  }
+
+// Fungsi untuk mengambil nilai dari Map yang ada pada field (hadir, keluar, izin, sakit)
+  String _getValueFromMap(dynamic field) {
+    if (field == null) {
+      return '-';
+    }
+
+    if (field is Map) {
+      // Mengambil nilai dari Map jika ada field tertentu, misalnya 'waktu'
+      var waktu = field['waktu'];
+      return waktu ?? '-';
+    }
+
+    return field.toString(); // Jika bukan Map, kembalikan nilai langsung
   }
 
   @override

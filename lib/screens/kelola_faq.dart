@@ -12,38 +12,212 @@ class KelolaFAQScreen extends StatefulWidget {
 
 class _KelolaFAQScreenState extends State<KelolaFAQScreen> {
   final TextEditingController _answerController = TextEditingController();
+  String _selectedStatus = 'Umum';
+  bool _requiresQuestion = true;
 
-  // Fungsi untuk menambahkan jawaban
   Future<void> addAnswer(String question, String answer, String docId) async {
     if (answer.isNotEmpty) {
-      // Menambahkan jawaban ke koleksi FAQ
       await FirebaseFirestore.instance.collection('faq').add({
         'question': question,
         'answer': answer,
         'count': 0,
+        'status': _selectedStatus,
+        'requires_question': _requiresQuestion,
       });
 
-      // Menghapus pertanyaan yang sudah dijawab dari koleksi pending_questions
       await FirebaseFirestore.instance
           .collection('pending_questions')
           .doc(docId)
           .delete();
     } else {
-      // Menampilkan pesan jika jawaban kosong
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Jawaban tidak boleh kosong")),
+        const SnackBar(content: Text("Jawaban tidak boleh kosong")),
       );
     }
   }
 
-  // Fungsi untuk menghapus pertanyaan yang ada di koleksi pending_questions
   Future<void> deletePendingQuestion(String docId) async {
     await FirebaseFirestore.instance
         .collection('pending_questions')
         .doc(docId)
         .delete();
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Pertanyaan berhasil dihapus")),
+      const SnackBar(content: Text("Pertanyaan berhasil dihapus")),
+    );
+  }
+
+  void showDeleteDialog(BuildContext context, String questionId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Row(
+            children: [
+              Icon(
+                Icons.warning_amber_rounded,
+                color: Colors.red,
+                size: 28,
+              ),
+              SizedBox(width: 10),
+              Text(
+                "Konfirmasi Hapus Pertanyaan",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+            ],
+          ),
+          content: const Text(
+            "Apakah Anda yakin ingin menghapus pertanyaan ini?",
+            style: TextStyle(fontSize: 16),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: const Text("Batal", style: TextStyle(color: Colors.green)),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                deletePendingQuestion(questionId);
+              },
+              child: const Text("Hapus", style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void showAnswerDialog(BuildContext context, String question, String docId) {
+    bool localRequiresQuestion = _requiresQuestion;
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              insetPadding: const EdgeInsets.all(20),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    top: 20,
+                    bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Text(
+                          'Tambahkan Jawaban',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueAccent,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      TextField(
+                        controller: _answerController,
+                        maxLines: 4,
+                        decoration: InputDecoration(
+                          hintText: 'Masukkan jawaban Anda...',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          contentPadding: const EdgeInsets.all(12),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      DropdownButtonFormField<String>(
+                        value: _selectedStatus,
+                        items: ['Khusus', 'Penting', 'Teknis', 'Umum']
+                            .map((status) => DropdownMenuItem(
+                                  value: status,
+                                  child: Text(status),
+                                ))
+                            .toList(),
+                        onChanged: (value) {
+                          setDialogState(() {
+                            _selectedStatus = value!;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'Pilih Status',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          contentPadding: const EdgeInsets.all(12),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Butuh Pertanyaan?",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          Switch(
+                            value: localRequiresQuestion,
+                            activeColor: Colors.blueAccent,
+                            onChanged: (value) {
+                              setDialogState(() {
+                                localRequiresQuestion = value;
+                              });
+                              _requiresQuestion = value;
+                            },
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              _answerController.clear();
+                              Navigator.pop(context);
+                            },
+                            style: TextButton.styleFrom(
+                              foregroundColor: Colors.redAccent,
+                            ),
+                            child: const Text('Batal'),
+                          ),
+                          const SizedBox(width: 10),
+                          ElevatedButton(
+                            onPressed: () {
+                              addAnswer(
+                                  question, _answerController.text, docId);
+                              _answerController.clear();
+                              Navigator.pop(context);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blueAccent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: const Text(
+                              'Simpan',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 
@@ -51,140 +225,144 @@ class _KelolaFAQScreenState extends State<KelolaFAQScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppTheme.appBar(titleText: 'Kelola FAQ'),
-      body: StreamBuilder(
-        // Mendengarkan perubahan pada koleksi 'pending_questions'
-        stream: FirebaseFirestore.instance
-            .collection('pending_questions')
-            .snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData) {
-            // Jika data belum tersedia, tampilkan loading
-            return Center(child: CircularProgressIndicator());
-          }
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Judul & Deskripsi
+            const Text(
+              "Pertanyaan yang Perlu Ditinjau",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 6),
+            const Text(
+              "Daftar pertanyaan ini memerlukan tinjauan sebelum dipublikasikan. Anda bisa menambahkan jawaban atau menghapus pertanyaan yang tidak relevan.",
+              style: TextStyle(fontSize: 14, color: Colors.grey),
+            ),
+            const SizedBox(height: 12),
+            const Divider(thickness: 1.5),
+            const SizedBox(height: 8),
 
-          // Jika tidak ada data dalam 'pending_questions'
-          if (snapshot.data!.docs.isEmpty) {
-            return Center(child: Text("Tidak ada pertanyaan yang ditemukan"));
-          }
+            // Daftar Pertanyaan (Menggunakan StreamBuilder)
+            Expanded(
+              child: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('pending_questions')
+                    .snapshots(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                        child: CircularProgressIndicator.adaptive());
+                  }
 
-          var pendingQuestions = snapshot.data!.docs;
-          return ListView.builder(
-            itemCount: pendingQuestions.length,
-            itemBuilder: (context, index) {
-              var questionData = pendingQuestions[index];
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        "Tidak ada pertanyaan yang ditemukan",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w500),
+                      ),
+                    );
+                  }
 
-              // Mengambil data dengan pengecekan null
-              String question = questionData['question'] ?? 'Pertanyaan kosong';
-              int userCount = questionData['user_count'] ?? 0;
+                  var pendingQuestions = snapshot.data!.docs;
 
-              return Card(
-                margin: EdgeInsets.all(8.0),
-                child: ListTile(
-                  title: Text(question),
-                  subtitle: Text('Ditanyakan: $userCount kali'),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Tombol untuk menambahkan jawaban
-                      InkWell(
-                        borderRadius: BorderRadius.circular(8),
-                        onTap: () {
-                          // Menampilkan dialog untuk menambahkan jawaban
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: Text('Tambahkan Jawaban'),
-                                content: TextField(
-                                  controller: _answerController,
-                                  decoration: InputDecoration(
-                                      hintText: 'Masukkan jawaban'),
+                  return ListView.builder(
+                    itemCount: pendingQuestions.length,
+                    itemBuilder: (context, index) {
+                      var questionData = pendingQuestions[index];
+                      String question =
+                          questionData['question'] ?? 'Pertanyaan kosong';
+                      int userCount = questionData['user_count'] ?? 0;
+
+                      return Card(
+                        margin: const EdgeInsets.symmetric(vertical: 6),
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      question,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      'Ditanyakan: $userCount kali',
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      addAnswer(
-                                        question,
-                                        _answerController.text,
-                                        questionData.id,
-                                      );
-                                      _answerController.clear();
-                                      Navigator.pop(context);
+                              ),
+                              const SizedBox(width: 10),
+                              Row(
+                                children: [
+                                  _actionButton(
+                                    icon: Icons.add,
+                                    color: Colors.blue,
+                                    onTap: () {
+                                      showAnswerDialog(
+                                          context, question, questionData.id);
                                     },
-                                    child: Text('Simpan'),
+                                  ),
+                                  const SizedBox(width: 6),
+                                  _actionButton(
+                                    icon: Icons.delete,
+                                    color: Colors.red,
+                                    onTap: () {
+                                      showDeleteDialog(
+                                          context, questionData.id);
+                                    },
                                   ),
                                 ],
-                              );
-                            },
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(60, 3, 168, 244),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Icon(
-                            Icons.add,
-                            color: Colors.blue,
-                            size: 22,
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 10),
-                      // Tombol untuk menghapus pertanyaan
-                      InkWell(
-                        borderRadius: BorderRadius.circular(8),
-                        onTap: () {
-                          // Konfirmasi sebelum menghapus
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: Text('Konfirmasi'),
-                                content: Text(
-                                    'Apakah Anda yakin ingin menghapus pertanyaan ini?'),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text('Batal'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      deletePendingQuestion(questionData.id);
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text('Hapus'),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(60, 244, 67, 54),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Icon(
-                            Icons.delete,
-                            color: Colors.red,
-                            size: 22,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
-        },
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
       floatingActionButton: CustomFloatingBackButton(),
     );
   }
+}
+
+// Fungsi untuk membuat tombol aksi dengan efek interaktif
+Widget _actionButton(
+    {required IconData icon,
+    required Color color,
+    required VoidCallback onTap}) {
+  return InkWell(
+    borderRadius: BorderRadius.circular(10),
+    onTap: onTap,
+    child: Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Icon(icon, color: color, size: 24),
+    ),
+  );
 }

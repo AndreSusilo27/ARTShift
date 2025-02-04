@@ -172,9 +172,8 @@ class CustomDrawerAdmin extends StatelessWidget {
 
               // MENU LAINNYA
               _buildSectionTitle("MENU LAINNYA"),
-              _buildDrawerItem(
-                  context, 'assets/icons/icon_menu/biodata.png', "FAQ",
-                  navigateTo: () {
+              _buildDrawerItem(context, 'assets/icons/icon_menu/Kelola FAQ.png',
+                  "Kelola FAQ", navigateTo: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => KelolaFAQScreen()));
               }),

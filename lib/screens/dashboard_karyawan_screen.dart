@@ -3,6 +3,8 @@ import 'package:ARTShift/widgets/apptheme.dart';
 import 'package:ARTShift/widgets/cardmeeting.dart';
 import 'package:ARTShift/widgets/custom_drawer_karyawan.dart';
 import 'package:ARTShift/widgets/faqlist.dart';
+import 'package:ARTShift/widgets/riwayat_absensi.dart';
+import 'package:ARTShift/widgets/shift_team.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -227,10 +229,10 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
                                   borderRadius: BorderRadius.circular(
                                       8), // Border radius yang serupa
                                 ),
-                                child: const Icon(
-                                  Icons.calendar_today,
-                                  color: Colors.blue,
-                                  size: 30,
+                                child: Image.asset(
+                                  'assets/icons/icon_menu/kehadiran.png',
+                                  width: 30,
+                                  height: 30,
                                 ),
                               ),
                             ),
@@ -238,6 +240,9 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
                         ),
                       ),
                     ),
+                    RiwayatAbsensiWidget(email: widget.email),
+                    ShiftTeamPage(email: widget.email),
+
                     SizedBox(height: 20),
                     Divider(
                       color: Colors.white,

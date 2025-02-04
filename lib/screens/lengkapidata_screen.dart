@@ -68,6 +68,7 @@ class _LengkapiDataScreenState extends State<LengkapiDataScreen> {
               .collection('biodata')
               .doc(userEmail)
               .set({
+            'email': userEmail,
             'job': _jobController.text,
             'phone': _phoneController.text,
             'gender': _selectedGender,

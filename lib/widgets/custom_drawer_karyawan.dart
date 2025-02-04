@@ -143,7 +143,9 @@ class CustomDrawerKaryawan extends StatelessWidget {
                 }),
                 const SizedBox(height: 20),
                 _buildDrawerHeader("MENU LAINNYA"),
-                _buildDrawerItem(context, 'assets/icons/icon_menu/biodata.png',
+                _buildDrawerItem(
+                    context,
+                    'assets/icons/icon_menu/FAQ with AI.png',
                     "Chatbot ARTShift", navigateTo: () {
                   Navigator.push(
                       context,

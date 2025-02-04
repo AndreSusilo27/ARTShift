@@ -10,7 +10,11 @@ class FAQList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('faq').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('faq')
+            .where('requires_question',
+                isEqualTo: false) // Hanya data yang requires_question == false
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
