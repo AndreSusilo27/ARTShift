@@ -8,40 +8,36 @@ class MeetingList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: StreamBuilder<QuerySnapshot>(
-        stream:
-            FirebaseFirestore.instance.collection('jadwal_meeting').snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text("Tidak ada data rapat."));
-          }
+    return StreamBuilder<QuerySnapshot>(
+      stream:
+          FirebaseFirestore.instance.collection('jadwal_meeting').snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return const Center(child: Text("Tidak ada data rapat."));
+        }
 
-          final meetings = snapshot.data!.docs;
+        final meetings = snapshot.data!.docs;
 
-          return ListView.builder(
-            itemCount: meetings.length,
-            itemBuilder: (context, index) {
-              final meetingData = meetings[index];
-              return CardMeeting(
-                namaRapat:
-                    meetingData['nama_rapat'] ?? "Nama rapat tidak tersedia",
-                waktuMulai:
-                    meetingData['waktu_mulai'] ?? "Waktu tidak tersedia",
-                waktuSelesai:
-                    meetingData['waktu_selesai'] ?? "Waktu tidak tersedia",
-                tanggalRapat:
-                    meetingData['tanggal_rapat'] ?? "Tanggal tidak tersedia",
-                linkMeeting:
-                    meetingData['link_meeting'] ?? "Link tidak tersedia",
-              );
-            },
-          );
-        },
-      ),
+        return ListView.builder(
+          itemCount: meetings.length,
+          itemBuilder: (context, index) {
+            final meetingData = meetings[index];
+            return CardMeeting(
+              namaRapat:
+                  meetingData['nama_rapat'] ?? "Nama rapat tidak tersedia",
+              waktuMulai: meetingData['waktu_mulai'] ?? "Waktu tidak tersedia",
+              waktuSelesai:
+                  meetingData['waktu_selesai'] ?? "Waktu tidak tersedia",
+              tanggalRapat:
+                  meetingData['tanggal_rapat'] ?? "Tanggal tidak tersedia",
+              linkMeeting: meetingData['link_meeting'] ?? "Link tidak tersedia",
+            );
+          },
+        );
+      },
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // Untuk format tanggal
+import 'package:intl/intl.dart';
 
 // Widget untuk menampilkan riwayat absensi
 class RiwayatAbsensiWidget extends StatefulWidget {
@@ -9,7 +9,7 @@ class RiwayatAbsensiWidget extends StatefulWidget {
   const RiwayatAbsensiWidget({super.key, required this.email});
 
   @override
-  _RiwayatAbsensiWidgetState createState() => _RiwayatAbsensiWidgetState();
+  State<RiwayatAbsensiWidget> createState() => _RiwayatAbsensiWidgetState();
 }
 
 class _RiwayatAbsensiWidgetState extends State<RiwayatAbsensiWidget> {
@@ -71,7 +71,7 @@ class _RiwayatAbsensiWidgetState extends State<RiwayatAbsensiWidget> {
 
     List<Map<String, dynamic>> riwayatAbsensi = [];
 
-    snapshot.docs.forEach((doc) {
+    for (var doc in snapshot.docs) {
       String tanggal = doc.id; // Mengambil tanggal dari documentId (tanggal)
 
       // Mengonversi tanggal ke DateTime untuk perbandingan
@@ -111,7 +111,7 @@ class _RiwayatAbsensiWidgetState extends State<RiwayatAbsensiWidget> {
           'dateTime': tanggalDoc, // Menyimpan objek DateTime
         });
       }
-    });
+    }
 
     // Mengurutkan data berdasarkan tanggal
     riwayatAbsensi.sort((a, b) {
@@ -128,11 +128,10 @@ class _RiwayatAbsensiWidgetState extends State<RiwayatAbsensiWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(10.0),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.blue, width: 1),
+          borderRadius: BorderRadius.circular(20),
           color: Colors.white,
         ),
         padding: const EdgeInsets.all(16.0),
@@ -150,7 +149,8 @@ class _RiwayatAbsensiWidgetState extends State<RiwayatAbsensiWidget> {
                 ),
               ),
             ),
-            Divider(color: Colors.blue, thickness: 1), // Devider untuk pemisah
+            Divider(color: Colors.blue, thickness: 1),
+            SizedBox(width: 10),
 
             // Row untuk memilih tanggal mulai dan tanggal akhir
             Row(
@@ -161,7 +161,7 @@ class _RiwayatAbsensiWidgetState extends State<RiwayatAbsensiWidget> {
                     onTap: () => _selectDate(context, true),
                     child: Container(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          EdgeInsets.symmetric(horizontal: 15, vertical: 12),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(color: Colors.blue, width: 1),
@@ -192,7 +192,7 @@ class _RiwayatAbsensiWidgetState extends State<RiwayatAbsensiWidget> {
                     onTap: () => _selectDate(context, false),
                     child: Container(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          EdgeInsets.symmetric(horizontal: 15, vertical: 12),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(color: Colors.blue, width: 1),

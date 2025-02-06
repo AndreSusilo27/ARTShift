@@ -271,28 +271,24 @@ class _FAQChatbotScreenState extends State<FAQChatbotScreen> {
             child: Container(
               decoration: BoxDecoration(
                 color: Color.fromARGB(215, 5, 10, 85),
-                borderRadius: BorderRadius.circular(
-                    20.0), // Sudut melengkung pada background
+                borderRadius: BorderRadius.circular(20.0),
                 boxShadow: [
                   BoxShadow(
-                    color:
-                        Colors.black.withOpacity(0.1), // Efek bayangan lembut
+                    color: const Color.fromARGB(50, 0, 0, 0),
                     blurRadius: 8.0,
                     offset: Offset(0, 4),
                   ),
                 ],
               ),
               child: Padding(
-                padding: const EdgeInsets.all(
-                    12.0), // Padding internal untuk memberi ruang
+                padding: const EdgeInsets.all(12.0),
                 child: Row(
                   children: [
                     Expanded(
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(
-                              30.0), // Membuat sudut TextField melengkung
+                          borderRadius: BorderRadius.circular(30.0),
                         ),
                         child: TextField(
                           controller: _questionController,
@@ -303,8 +299,7 @@ class _FAQChatbotScreenState extends State<FAQChatbotScreen> {
                                 color: const Color.fromARGB(145, 0, 0, 0)),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30.0),
-                              borderSide: BorderSide
-                                  .none, // Menghilangkan border pada TextField
+                              borderSide: BorderSide.none,
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30.0),
