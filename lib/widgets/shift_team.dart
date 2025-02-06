@@ -31,7 +31,7 @@ class ShiftTeamPage extends StatelessWidget {
       return {
         'name': data['name'],
         'photoUrl': data['photoUrl'],
-        'email': data['email'], // Tambahkan email untuk mencari biodata
+        'email': data['email'],
       };
     }).toList();
   }
@@ -156,13 +156,10 @@ class ShiftTeamPage extends StatelessWidget {
   }
 
   void _openWhatsApp(String phoneNumber) async {
-    // Pastikan nomor telepon dihapus dari karakter selain angka
     final formattedPhoneNumber = phoneNumber.replaceAll(RegExp(r'[^0-9]'), '');
 
-    // Format URL WhatsApp dengan nomor yang telah diformat
     final Uri url = Uri.parse("https://wa.me/$formattedPhoneNumber");
 
-    // Coba untuk membuka WhatsApp dengan URL tersebut
     if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       throw 'Could not launch WhatsApp with phone number: $formattedPhoneNumber';
     }

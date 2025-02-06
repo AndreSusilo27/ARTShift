@@ -33,7 +33,7 @@ class FAQList extends StatelessWidget {
                 question: faqData['question'] ?? "Pertanyaan tidak tersedia",
                 answer: faqData['answer'] ?? "Jawaban tidak tersedia",
                 count: faqData['count'] ?? 0,
-                showCount: showCount, // Meneruskan nilai showCount ke CardFAQ
+                showCount: showCount,
               );
             },
           );
@@ -91,7 +91,7 @@ class _CardFAQState extends State<CardFAQ> {
                       style: TextStyle(color: Colors.grey[600]),
                     ),
                   )
-                : null, // Jika showCount == false, subtitle akan null
+                : null,
             trailing: IconButton(
               icon: AnimatedRotation(
                 turns: _isExpanded ? 0.5 : 0.0,

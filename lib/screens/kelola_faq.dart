@@ -230,7 +230,6 @@ class _KelolaFAQScreenState extends State<KelolaFAQScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Judul & Deskripsi
             const Text(
               "Pertanyaan yang Perlu Ditinjau",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -243,8 +242,6 @@ class _KelolaFAQScreenState extends State<KelolaFAQScreen> {
             const SizedBox(height: 12),
             const Divider(thickness: 1.5),
             const SizedBox(height: 8),
-
-            // Daftar Pertanyaan (Menggunakan StreamBuilder)
             Expanded(
               child: StreamBuilder(
                 stream: FirebaseFirestore.instance
@@ -348,7 +345,6 @@ class _KelolaFAQScreenState extends State<KelolaFAQScreen> {
   }
 }
 
-// Fungsi untuk membuat tombol aksi dengan efek interaktif
 Widget _actionButton(
     {required IconData icon,
     required Color color,

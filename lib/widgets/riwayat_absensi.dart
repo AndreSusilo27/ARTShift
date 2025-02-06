@@ -138,7 +138,6 @@ class _RiwayatAbsensiWidgetState extends State<RiwayatAbsensiWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Judul Riwayat Kehadiran
             Center(
               child: Text(
                 'Riwayat Kehadiran',
@@ -152,10 +151,8 @@ class _RiwayatAbsensiWidgetState extends State<RiwayatAbsensiWidget> {
             Divider(color: Colors.blue, thickness: 1),
             SizedBox(width: 10),
 
-            // Row untuk memilih tanggal mulai dan tanggal akhir
             Row(
               children: [
-                // TextField untuk memilih tanggal mulai
                 Expanded(
                   child: GestureDetector(
                     onTap: () => _selectDate(context, true),

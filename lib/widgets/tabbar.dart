@@ -34,68 +34,48 @@ class _TabBarWidgetState extends State<TabBarWidget>
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(10.0),
-      padding:
-          const EdgeInsets.all(10.0), // Penambahan padding yang lebih konsisten
+      padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(135, 255, 255,
-            255), // Warna latar belakang menjadi putih agar lebih jelas
-        borderRadius: BorderRadius.circular(
-            15), // Radius border lebih besar untuk tampilan lebih halus
+        color: const Color.fromARGB(135, 255, 255, 255),
+        borderRadius: BorderRadius.circular(15),
         boxShadow: const [
-          BoxShadow(
-              color: Colors.black12,
-              blurRadius: 6,
-              offset: Offset(0, 3)), // Shadow lebih lembut
+          BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 3)),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize:
-            MainAxisSize.min, // Menyesuaikan ukuran column dengan konten
+        mainAxisSize: MainAxisSize.min,
         children: [
-          // TabBar dengan margin kiri dan kanan
           Container(
-            margin: const EdgeInsets.symmetric(
-                horizontal: 25.0), // Menambahkan margin pada TabBar
+            margin: const EdgeInsets.symmetric(horizontal: 25.0),
             decoration: BoxDecoration(
-              color: Colors.white, // Background putih
-              borderRadius: BorderRadius.circular(
-                  8), // Memberikan border radius agar lebih mirip tombol
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
             ),
             child: TabBar(
               controller: _tabController,
-              indicatorColor:
-                  Colors.blueAccent, // Warna indikator yang lebih lembut
-              labelColor: Colors
-                  .blue[900], // Warna label aktif putih agar lebih kontras
-              unselectedLabelColor:
-                  Colors.blueAccent, // Warna label yang tidak aktif biru
-              labelStyle: const TextStyle(
-                  fontWeight: FontWeight.bold), // Menebalkan teks label
-              unselectedLabelStyle: const TextStyle(
-                  fontWeight: FontWeight
-                      .normal), // Menormalisasi teks label yang tidak aktif
+              indicatorColor: Colors.blueAccent,
+              labelColor: Colors.blue[900],
+              unselectedLabelColor: Colors.blueAccent,
+              labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+              unselectedLabelStyle:
+                  const TextStyle(fontWeight: FontWeight.normal),
               tabs: const [
                 Tab(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical:
-                            10.0), // Menambahkan padding vertikal untuk efek tombol
+                    padding: EdgeInsets.symmetric(vertical: 10.0),
                     child: Text('List Meeting'),
                   ),
                 ),
                 Tab(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical:
-                            10.0), // Menambahkan padding vertikal untuk efek tombol
+                    padding: EdgeInsets.symmetric(vertical: 10.0),
                     child: Text('List FAQ'),
                   ),
                 ),
               ],
             ),
           ),
-          // TabBarView dengan konten terbatas tinggi 500
           Flexible(
             child: SizedBox(
               height: 450,
@@ -103,17 +83,13 @@ class _TabBarWidgetState extends State<TabBarWidget>
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  // Konten Tab 1 (Meeting List)
                   Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child:
-                        MeetingList(), // Panggil MeetingList langsung tanpa pembungkus tambahan
+                    child: MeetingList(),
                   ),
-                  // Konten Tab 2 (FAQ)
                   Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: FAQList(
-                        showCount: false), // Memastikan tampilan tetap bersih
+                    child: FAQList(showCount: false),
                   ),
                 ],
               ),

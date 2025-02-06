@@ -138,14 +138,13 @@ class _FAQChatbotScreenState extends State<FAQChatbotScreen> {
                 return ListView.builder(
                   controller: _scrollController,
                   itemCount: conversations.length,
-                  // Dalam builder ListView, ubah kode ini:
                   itemBuilder: (context, index) {
                     var conversation = conversations[index];
                     var timestampData = conversation['timestamp'];
 
                     // Memeriksa apakah 'timestamp' null atau tidak bertipe Timestamp
                     if (timestampData == null || timestampData is! Timestamp) {
-                      return SizedBox(); // Atau handle error dengan cara lain, misal tampilkan pesan error.
+                      return SizedBox();
                     }
 
                     Timestamp timestamp = timestampData;
@@ -165,7 +164,6 @@ class _FAQChatbotScreenState extends State<FAQChatbotScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           if (isNewDay)
-                            // Pembatas Hari
                             Align(
                               alignment: Alignment.center,
                               child: Container(
@@ -176,7 +174,7 @@ class _FAQChatbotScreenState extends State<FAQChatbotScreen> {
                                   borderRadius: BorderRadius.circular(12.0),
                                 ),
                                 child: Text(
-                                  currentDay, // Menampilkan hari dengan format 'Day, dd MMM yyyy'
+                                  currentDay,
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
@@ -185,7 +183,6 @@ class _FAQChatbotScreenState extends State<FAQChatbotScreen> {
                               ),
                             ),
                           SizedBox(height: 10),
-                          // Pertanyaan User (Align kanan)
                           Align(
                             alignment: Alignment.centerRight,
                             child: Container(
@@ -222,7 +219,6 @@ class _FAQChatbotScreenState extends State<FAQChatbotScreen> {
                             ),
                           ),
                           SizedBox(height: 10),
-                          // Jawaban Chatbot (Align kiri)
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Container(
@@ -322,8 +318,7 @@ class _FAQChatbotScreenState extends State<FAQChatbotScreen> {
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Colors
-                              .blueAccent, // Warna tombol kirim tetap biru
+                          color: Colors.blueAccent,
                           borderRadius: BorderRadius.circular(50.0),
                         ),
                         padding: EdgeInsets.all(12.0),
