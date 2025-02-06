@@ -115,14 +115,14 @@ class AppTheme {
         ),
         child: AppBar(
           title: Text(
-            titleText, // Menggunakan parameter titleText yang diterima
+            titleText,
             style: TextStyle(
-              fontSize: 24, // Ukuran teks bisa disesuaikan
-              color: Colors.white, // Warna teks
-              fontWeight: FontWeight.bold, // Ketebalan font
+              fontSize: 24,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          automaticallyImplyLeading: false, // Menonaktifkan tombol back
+          automaticallyImplyLeading: false,
         ),
       ),
     );
