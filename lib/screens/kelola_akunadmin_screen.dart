@@ -313,7 +313,6 @@ void _showBiodataDialog(
       },
     );
   } catch (e) {
-    // Jika terjadi error, tampilkan pesan error
     _showErrorDialog(context, 'Terjadi kesalahan, coba lagi');
   }
 }

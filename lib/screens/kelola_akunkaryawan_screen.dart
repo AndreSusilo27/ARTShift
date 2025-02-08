@@ -22,7 +22,7 @@ class _KelolaAkunKaryawanScreenState extends State<KelolaAkunKaryawanScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppTheme.appBar(titleText: 'Kelola Akun Admin'),
+      appBar: AppTheme.appBar(titleText: 'Kelola Akun Karyawan'),
       body: BlocProvider(
         create: (context) =>
             KelolaAkunKaryawanBloc(firestore: FirebaseFirestore.instance)

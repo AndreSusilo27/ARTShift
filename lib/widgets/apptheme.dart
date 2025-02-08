@@ -99,30 +99,57 @@ class AppTheme {
     );
   }
 
-  static PreferredSizeWidget appBar({required String titleText}) {
+  static PreferredSizeWidget appBar({
+    String? titleText,
+    TabBar? bottom,
+  }) {
+    double tabBarHeight = bottom != null ? 35.0 : 0.0;
+    double totalHeight = 60.0 + tabBarHeight;
+
     return PreferredSize(
-      preferredSize: Size.fromHeight(60.0),
+      preferredSize: Size.fromHeight(totalHeight),
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
+          color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: const Color.fromARGB(95, 0, 0, 0),
+              color: Color.fromARGB(95, 0, 0, 0),
               blurRadius: 10,
               spreadRadius: 2,
-              offset: const Offset(0, 5),
+              offset: Offset(0, 5),
             ),
           ],
         ),
         child: AppBar(
-          title: Text(
-            titleText,
-            style: TextStyle(
-              fontSize: 24,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          title: titleText != null
+              ? Text(
+                  titleText,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+              : null,
           automaticallyImplyLeading: false,
+          backgroundColor: Color.fromARGB(255, 3, 1, 83),
+          elevation: 0,
+          bottom: bottom != null
+              ? PreferredSize(
+                  preferredSize: Size.fromHeight(tabBarHeight),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      bottom,
+                      const Divider(
+                        height: 1,
+                        thickness: 1,
+                        color: Colors.grey,
+                      ),
+                    ],
+                  ),
+                )
+              : null,
         ),
       ),
     );

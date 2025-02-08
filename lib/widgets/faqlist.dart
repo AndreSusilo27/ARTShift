@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class FAQList extends StatelessWidget {
   final bool showCount;
 
-  const FAQList({super.key, this.showCount = true}); // Default true
+  const FAQList({super.key, this.showCount = true});
 
   @override
   Widget build(BuildContext context) {
@@ -12,8 +12,7 @@ class FAQList extends StatelessWidget {
       child: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('faq')
-            .where('requires_question',
-                isEqualTo: false) // Hanya data yang requires_question == false
+            .where('requires_question', isEqualTo: false)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -23,7 +22,13 @@ class FAQList extends StatelessWidget {
             return const Center(child: Text("Tidak ada data FAQ."));
           }
 
+          // Ambil data dari Firestore dan urutkan berdasarkan 'question' secara A-Z
           final faqs = snapshot.data!.docs;
+          faqs.sort((a, b) {
+            String questionA = (a['question'] ?? "").toString().toLowerCase();
+            String questionB = (b['question'] ?? "").toString().toLowerCase();
+            return questionA.compareTo(questionB);
+          });
 
           return ListView.builder(
             itemCount: faqs.length,

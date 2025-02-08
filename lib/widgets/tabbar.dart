@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ARTShift/widgets/cardmeeting.dart';
-import 'package:ARTShift/widgets/faqlist.dart'; // Ganti dengan widget yang sesuai
+import 'package:ARTShift/widgets/faqlist.dart';
 
 class TabBarWidget extends StatefulWidget {
-  final String email; // Menyimpan email dari halaman pemanggil
-  final String name; // Menyimpan nama dari halaman pemanggil
+  final String email;
+  final String name;
 
   const TabBarWidget({super.key, required this.email, required this.name});
 
@@ -14,19 +14,17 @@ class TabBarWidget extends StatefulWidget {
 
 class _TabBarWidgetState extends State<TabBarWidget>
     with SingleTickerProviderStateMixin {
-  late TabController _tabController; // Controller untuk tab bar
+  late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController =
-        TabController(length: 2, vsync: this); // Menentukan jumlah tab
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
   void dispose() {
-    _tabController
-        .dispose(); // Pastikan controller dibuang ketika widget dihapus
+    _tabController.dispose();
     super.dispose();
   }
 

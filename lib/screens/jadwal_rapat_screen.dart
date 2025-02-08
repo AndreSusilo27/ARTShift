@@ -3,7 +3,7 @@ import 'package:ARTShift/widgets/custom_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter/services.dart'; // Untuk copyToClipboard
+import 'package:flutter/services.dart';
 
 class JadwalRapatScreen extends StatefulWidget {
   const JadwalRapatScreen({super.key});
@@ -187,7 +187,13 @@ class _JadwalRapatScreenState extends State<JadwalRapatScreen> {
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               child: ListTile(
-                                title: Text(namaRapat),
+                                title: Text(
+                                  namaRapat,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -298,8 +304,7 @@ class _JadwalRapatScreenState extends State<JadwalRapatScreen> {
                                           }
                                         },
                                         child: Container(
-                                          padding: const EdgeInsets.all(
-                                              6), // Spasi agar tidak terlalu rapat
+                                          padding: const EdgeInsets.all(6),
                                           decoration: BoxDecoration(
                                             color: const Color.fromARGB(
                                                 50, 244, 67, 54),
