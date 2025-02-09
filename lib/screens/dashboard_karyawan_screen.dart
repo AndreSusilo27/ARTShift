@@ -32,7 +32,6 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  // Fungsi untuk mengambil data shift karyawan dari Firestore
   Future<void> _fetchShiftData() async {
     try {
       DocumentSnapshot doc = await FirebaseFirestore.instance
@@ -101,7 +100,6 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
                       ),
                     ),
                     SizedBox(height: 10),
-                    // Card Profil & Shift
                     Card(
                       margin: const EdgeInsets.all(10),
                       shape: RoundedRectangleBorder(
@@ -112,14 +110,11 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Foto Profil
                             CircleAvatar(
                               radius: 47,
                               backgroundImage: NetworkImage(widget.photoUrl),
                             ),
                             const SizedBox(width: 10),
-
-                            // Info Profil & Shift
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,7 +130,6 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
                                     style: const TextStyle(color: Colors.grey),
                                   ),
                                   const SizedBox(height: 8),
-
                                   ElevatedButton(
                                     onPressed: () {
                                       setState(() {
@@ -161,8 +155,6 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ),
-
-                                  // Animasi tampilan shift agar tidak mengganggu tata letak
                                   AnimatedCrossFade(
                                     firstChild: const SizedBox.shrink(),
                                     secondChild: Card(
@@ -206,8 +198,6 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
                                 ],
                               ),
                             ),
-
-                            // Navigasi ke Absensi
                             IconButton(
                               onPressed: () {
                                 Navigator.push(
@@ -223,10 +213,8 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
                               icon: Container(
                                 padding: const EdgeInsets.all(6),
                                 decoration: BoxDecoration(
-                                  color: const Color.fromARGB(50, 3, 168,
-                                      244), // Warna latar belakang yang sama
-                                  borderRadius: BorderRadius.circular(
-                                      8), // Border radius yang serupa
+                                  color: const Color.fromARGB(50, 3, 168, 244),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Image.asset(
                                   'assets/icons/icon_menu/kehadiran.png',
@@ -239,7 +227,6 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
                         ),
                       ),
                     ),
-
                     SizedBox(height: 10),
                     Divider(
                       color: Colors.white,
@@ -249,9 +236,7 @@ class _DashboardKaryawanScreenState extends State<DashboardKaryawanScreen> {
                     ),
                     SizedBox(height: 10),
                     ShiftTeamPage(email: widget.email),
-
                     RiwayatAbsensiWidget(email: widget.email),
-
                     Divider(
                       color: Colors.white,
                       thickness: 2,

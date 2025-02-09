@@ -45,17 +45,30 @@ class _PendingQuestionsWidgetState extends State<PendingQuestionsWidget> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Konfirmasi Hapus"),
+          title: const Row(
+            children: [
+              Icon(
+                Icons.warning_amber_rounded,
+                color: Colors.red,
+                size: 28,
+              ),
+              SizedBox(width: 10),
+              Text(
+                "Konfirmasi Hapus Pertanyaan",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+            ],
+          ),
           content: const Text(
               "Apakah Anda yakin ingin menghapus pertanyaan ini? Tindakan ini tidak dapat dibatalkan."),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text("Batal", style: TextStyle(color: Colors.grey)),
+              child: const Text("Batal", style: TextStyle(color: Colors.green)),
             ),
             TextButton(
               onPressed: () async {
-                Navigator.pop(context); // Tutup dialog sebelum menghapus
+                Navigator.pop(context);
                 await FirebaseFirestore.instance
                     .collection('pending_questions')
                     .doc(docId)
@@ -77,6 +90,7 @@ class _PendingQuestionsWidgetState extends State<PendingQuestionsWidget> {
         SnackBar(
           content: Text(message),
           backgroundColor: backgroundColor,
+          behavior: SnackBarBehavior.floating,
         ),
       );
     }
@@ -147,7 +161,8 @@ class _PendingQuestionsWidgetState extends State<PendingQuestionsWidget> {
                           onPressed: () => Navigator.pop(context),
                           style: TextButton.styleFrom(
                               foregroundColor: Colors.redAccent),
-                          child: const Text('Batal'),
+                          child: const Text('Batal',
+                              style: TextStyle(color: Colors.green)),
                         ),
                         const SizedBox(width: 10),
                         ElevatedButton(

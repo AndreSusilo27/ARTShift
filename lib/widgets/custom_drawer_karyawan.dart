@@ -36,7 +36,6 @@ class CustomDrawerKaryawan extends StatelessWidget {
         ),
         child: Drawer(
           child: Container(
-            // Kontainer untuk menambahkan latar belakang pada drawer
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [

@@ -141,7 +141,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    // Footer tanpa padding yang berlebihan
+
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 100),
                       height: 4,

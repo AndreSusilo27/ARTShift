@@ -22,7 +22,6 @@ class FAQList extends StatelessWidget {
             return const Center(child: Text("Tidak ada data FAQ."));
           }
 
-          // Ambil data dari Firestore dan urutkan berdasarkan 'question' secara A-Z
           final faqs = snapshot.data!.docs;
           faqs.sort((a, b) {
             String questionA = (a['question'] ?? "").toString().toLowerCase();

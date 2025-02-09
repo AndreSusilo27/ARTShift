@@ -254,15 +254,12 @@ class _KelolaAkunAdminScreenState extends State<KelolaAkunAdminScreen> {
   }
 }
 
-// Fungsi untuk menampilkan data biodata berdasarkan email
 void _showBiodataDialog(
     BuildContext context, String email, String adminName) async {
   try {
-    // Mengambil biodata berdasarkan email (sebagai ID dokumen)
     Map<String, String> biodata =
         await _fetchBiodataFromEmail(email, adminName);
 
-    // Menampilkan dialog dengan data biodata
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -317,15 +314,12 @@ void _showBiodataDialog(
   }
 }
 
-// Fungsi untuk mengambil data biodata berdasarkan email
 Future<Map<String, String>> _fetchBiodataFromEmail(
     String email, String adminName) async {
-  // Ambil dokumen berdasarkan email yang digunakan sebagai ID dokumen
   DocumentSnapshot snapshot =
       await FirebaseFirestore.instance.collection('biodata').doc(email).get();
 
   if (snapshot.exists) {
-    // Ambil data dari dokumen dan kembalikan dalam bentuk map
     Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
     return {
       'Name': adminName,
@@ -343,7 +337,6 @@ Future<Map<String, String>> _fetchBiodataFromEmail(
   }
 }
 
-// Menampilkan dialog error jika terjadi kesalahan
 void _showErrorDialog(BuildContext context, String message) {
   showDialog(
     context: context,

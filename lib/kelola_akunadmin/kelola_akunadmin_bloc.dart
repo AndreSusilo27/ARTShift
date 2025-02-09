@@ -59,6 +59,8 @@ class KelolaAkunAdminBloc
           }
           // Hapus data dari koleksi 'biodata' berdasarkan email
           await firestore.collection('biodata').doc(event.email).delete();
+          // Hapus data dari koleksi 'chat_logs' berdasarkan email
+          await firestore.collection('chat_logs').doc(event.email).delete();
 
           add(FetchAdminEvent());
         } else {

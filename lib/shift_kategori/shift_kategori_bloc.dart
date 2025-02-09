@@ -48,8 +48,6 @@ class ShiftKategoriBloc extends Bloc<ShiftKategoriEvent, ShiftKategoriState> {
       }
     });
 
-    // Handler untuk event HapusShiftKategoriEvent
-    // Handler untuk event HapusShiftKategoriEvent
     on<HapusShiftKategoriEvent>((event, emit) async {
       try {
         // Mencari dokumen berdasarkan nama_shift pada koleksi shift_kategori

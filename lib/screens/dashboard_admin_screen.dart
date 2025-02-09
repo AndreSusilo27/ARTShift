@@ -31,31 +31,26 @@ class _DashboardAdminScreenState extends State<DashboardAdminScreen> {
 
   Future<void> fetchData() async {
     try {
-      // Mengambil jumlah Karyawan
       QuerySnapshot karyawanSnapshot = await FirebaseFirestore.instance
           .collection('users')
           .where('role', isEqualTo: 'Karyawan')
           .get();
       int karyawanCount = karyawanSnapshot.docs.length;
 
-      // Mengambil jumlah Admin
       QuerySnapshot adminSnapshot = await FirebaseFirestore.instance
           .collection('users')
           .where('role', isEqualTo: 'Admin')
           .get();
       int adminCount = adminSnapshot.docs.length;
 
-      // Mengambil jumlah Shift Kategori
       QuerySnapshot shiftSnapshot =
           await FirebaseFirestore.instance.collection('shift_kategori').get();
       int shiftKategoriCount = shiftSnapshot.docs.length;
 
-      // Mengambil jumlah Jadwal Meeting
       QuerySnapshot jadwalMeetingSnapshot =
           await FirebaseFirestore.instance.collection('jadwal_meeting').get();
       int jadwalMeetingCount = jadwalMeetingSnapshot.docs.length;
 
-      // Memperbarui state dengan data yang diambil
       setState(() {
         jumlahKaryawan = karyawanCount;
         jumlahAdmin = adminCount;
@@ -230,7 +225,6 @@ class _DashboardAdminScreenState extends State<DashboardAdminScreen> {
   }
 }
 
-// Fungsi untuk membuat container stat dengan gambar dan data
 Widget _buildStatContainer(String imagePath, String title, int data) {
   return Expanded(
     child: Container(
@@ -262,7 +256,6 @@ Widget _buildStatContainer(String imagePath, String title, int data) {
                     color: Colors.black),
               ),
               SizedBox(width: 10),
-              // Menambahkan latar belakang biru dengan opacity pada gambar
               Container(
                 decoration: BoxDecoration(
                   color: Color(0x1A2196F3),

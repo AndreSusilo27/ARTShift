@@ -59,28 +59,23 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
   Future<void> saveSelectedAccountsToFirestore(
       BuildContext context, dynamic state) async {
     try {
-      WriteBatch batch =
-          _firestore.batch(); // Membuat batch untuk multiple operasi
+      WriteBatch batch = _firestore.batch();
 
       for (int i = 0; i < selectedAccounts.length; i++) {
         if (selectedAccounts[i]) {
           final karyawan = state.karyawanList[i];
 
-          // Ambil detail shift yang dipilih
           final selectedShiftData = shiftData.firstWhere(
             (shift) => shift['nama_shift'] == selectedShift,
             orElse: () => {},
           );
 
-          // Jika shift tidak ditemukan, lewati penyimpanan
           if (selectedShiftData.isEmpty) continue;
 
-          // Tampilkan dialog konfirmasi sebelum menyimpan
           bool? confirmSave = await showConfirmationDialog(
               context, karyawan['email'], selectedShiftData['nama_shift']);
           if (confirmSave != true) continue;
 
-          // Data yang akan disimpan ke Firestore
           final shiftKaryawanData = {
             'name': karyawan['name'],
             'email': karyawan['email'],
@@ -95,16 +90,13 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
           final docRef =
               _firestore.collection('shift_karyawan').doc(karyawan['email']);
 
-          // Memeriksa apakah dokumen sudah ada
           final docSnapshot = await docRef.get();
 
           if (docSnapshot.exists) {
-            // Jika dokumen ada, update data
             batch.update(docRef, shiftKaryawanData);
             print(
                 "Data shift untuk ${karyawan['email']} ditambahkan ke batch (update).");
           } else {
-            // Jika dokumen tidak ada, set data (menambahkan data baru)
             batch.set(docRef, shiftKaryawanData);
             print(
                 "Data shift untuk ${karyawan['email']} ditambahkan ke batch (set).");
@@ -112,10 +104,8 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
         }
       }
 
-      // Commit batch untuk menyimpan semua data
       await batch.commit();
 
-      // Menampilkan notifikasi atau feedback
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Data shift karyawan berhasil disimpan."),
@@ -123,7 +113,6 @@ class _KelolaShiftKaryawanScreenState extends State<KelolaShiftKaryawanScreen> {
         ),
       );
 
-      // Memperbarui UI setelah proses selesai
       _refreshData(context);
     } catch (e) {
       print("Error saat menyimpan data shift karyawan: $e");

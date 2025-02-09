@@ -34,7 +34,6 @@ class LaporanBloc extends Bloc<LaporanEvent, LaporanState> {
               .collection('absensi_harian')
               .get();
 
-          // Mengambil data absensi untuk setiap tanggal dalam subkoleksi
           for (var absensiDoc in absensiHarianSnapshot.docs) {
             final data = absensiDoc.data();
             laporanData.add({

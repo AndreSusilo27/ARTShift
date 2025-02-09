@@ -138,7 +138,6 @@ class _JadwalRapatScreenState extends State<JadwalRapatScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              // Menampilkan Daftar Jadwal Rapat
               SizedBox(
                 height: 420,
                 child: Expanded(
@@ -167,7 +166,7 @@ class _JadwalRapatScreenState extends State<JadwalRapatScreen> {
                           itemBuilder: (ctx, index) {
                             final jadwal = jadwalList[index].data()
                                 as Map<String, dynamic>;
-                            // Mengambil data dari Firestore dan menangani field tidak ada
+
                             String namaRapat = jadwal['nama_rapat'] ??
                                 'Nama Rapat Tidak Tersedia';
                             String waktuMulai = jadwal['waktu_mulai'] ??
@@ -287,7 +286,6 @@ class _JadwalRapatScreenState extends State<JadwalRapatScreen> {
                                           );
 
                                           if (confirmDelete == true) {
-                                            // Menghapus jadwal dari Firestore berdasarkan ID
                                             FirebaseFirestore.instance
                                                 .collection('jadwal_meeting')
                                                 .doc(jadwalList[index].id)
@@ -299,6 +297,8 @@ class _JadwalRapatScreenState extends State<JadwalRapatScreen> {
                                                 content: Text(
                                                     'Jadwal rapat berhasil dihapus'),
                                                 backgroundColor: Colors.red,
+                                                behavior:
+                                                    SnackBarBehavior.floating,
                                               ),
                                             );
                                           }
@@ -338,7 +338,6 @@ class _JadwalRapatScreenState extends State<JadwalRapatScreen> {
     );
   }
 
-  // Fungsi untuk memilih waktu
   Future<void> _selectTime(
       BuildContext context, TextEditingController controller) async {
     TimeOfDay? pickedTime = await showTimePicker(
@@ -352,7 +351,6 @@ class _JadwalRapatScreenState extends State<JadwalRapatScreen> {
     }
   }
 
-  // Fungsi untuk memilih tanggal dengan format dd-MM-yyyy
   Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -417,6 +415,7 @@ class _JadwalRapatScreenState extends State<JadwalRapatScreen> {
                     const SnackBar(
                       content: Text('Jadwal rapat berhasil ditambahkan'),
                       backgroundColor: Colors.green,
+                      behavior: SnackBarBehavior.floating,
                     ),
                   );
 
@@ -437,7 +436,6 @@ class _JadwalRapatScreenState extends State<JadwalRapatScreen> {
     }
   }
 
-  // Fungsi untuk menampilkan dialog dengan link meeting
   void _showLinkDialog(BuildContext context, String link) {
     showDialog(
       context: context,
@@ -470,6 +468,7 @@ class _JadwalRapatScreenState extends State<JadwalRapatScreen> {
                       'Link berhasil disalin!',
                     ),
                     backgroundColor: Colors.green,
+                    behavior: SnackBarBehavior.floating,
                   ),
                 );
                 Navigator.of(ctx).pop();

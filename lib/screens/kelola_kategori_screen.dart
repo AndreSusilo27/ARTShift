@@ -133,7 +133,6 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
                     ),
                   ),
 
-                  // Menampilkan Data Shift
                   if (state is ShiftKategoriLoading)
                     const Center(child: CircularProgressIndicator()),
 
@@ -143,7 +142,6 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
                             style: const TextStyle(color: Colors.red))),
 
                   if (state is ShiftKategoriLoaded)
-                    // Menampilkan daftar shift dalam ListView
                     Expanded(
                       child: Container(
                         height: 670,
@@ -271,7 +269,6 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
     );
   }
 
-  // Fungsi untuk memilih waktu
   Future<void> _selectTime(
       BuildContext context, TextEditingController controller) async {
     TimeOfDay? pickedTime = await showTimePicker(
@@ -285,7 +282,6 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
     }
   }
 
-  // Fungsi untuk memilih tanggal dengan format dd-MM-yyyy
   Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -301,7 +297,6 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
     }
   }
 
-  // Fungsi untuk menambah shift ke Firestore
   void _submitData(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       showDialog(
@@ -344,6 +339,7 @@ class _KelolaKategoriScreenState extends State<KelolaKategoriScreen> {
                   const SnackBar(
                     content: Text('Shift berhasil ditambahkan'),
                     backgroundColor: Colors.green,
+                    behavior: SnackBarBehavior.floating,
                   ),
                 );
 

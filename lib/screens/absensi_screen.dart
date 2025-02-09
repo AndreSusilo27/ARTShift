@@ -30,7 +30,6 @@ class _AbsensiScreenState extends State<AbsensiScreen> {
   String photoUrlkaryawan = "";
   String tanggalAkhir = "";
 
-  // Fungsi untuk mengambil data shift karyawan dari Firestore
   Future<void> _fetchShiftData() async {
     try {
       DocumentSnapshot doc = await FirebaseFirestore.instance
@@ -167,7 +166,6 @@ class _AbsensiScreenState extends State<AbsensiScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    // Header Card
                                     Row(
                                       children: [
                                         Icon(Icons.work,
@@ -185,7 +183,6 @@ class _AbsensiScreenState extends State<AbsensiScreen> {
                                     ),
                                     const SizedBox(height: 10),
 
-                                    // Nama Karyawan
                                     Row(
                                       children: [
                                         Icon(Icons.person,
@@ -199,7 +196,6 @@ class _AbsensiScreenState extends State<AbsensiScreen> {
                                     ),
                                     const Divider(),
 
-                                    // Nama Shift
                                     Row(
                                       children: [
                                         Icon(Icons.schedule,
@@ -213,7 +209,6 @@ class _AbsensiScreenState extends State<AbsensiScreen> {
                                     ),
                                     const Divider(),
 
-                                    // Jam Masuk
                                     Row(
                                       children: [
                                         Icon(Icons.login, color: Colors.green),
@@ -226,7 +221,6 @@ class _AbsensiScreenState extends State<AbsensiScreen> {
                                     ),
                                     const Divider(),
 
-                                    // Jam Keluar
                                     Row(
                                       children: [
                                         Icon(Icons.logout, color: Colors.red),

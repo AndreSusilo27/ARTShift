@@ -45,7 +45,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               name: user.displayName ?? "User",
               email: user.email ?? "",
               photoUrl: user.photoURL ?? "",
-              role: "", // Belum memiliki role
+              role: "",
             ));
           } else {
             // Jika user sudah terdaftar, ambil role dari Firestore

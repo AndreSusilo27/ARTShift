@@ -9,7 +9,6 @@ class AppTheme {
       centerTitle: true,
       backgroundColor: Color.fromARGB(255, 3, 1, 83),
       titleTextStyle: TextStyle(
-          // color: Color(0xFF4A90E2),
           color: Colors.white,
           fontWeight: FontWeight.bold,
           fontFamily: 'Poppins',

@@ -204,7 +204,6 @@ class CustomDrawerAdmin extends StatelessWidget {
     );
   }
 
-  /// Widget untuk membuat item di Drawer lebih rapi
   Widget _buildDrawerItem(
     BuildContext context,
     String imagePath,
@@ -227,7 +226,6 @@ class CustomDrawerAdmin extends StatelessWidget {
     );
   }
 
-  /// Widget untuk membuat judul section lebih rapi
   Widget _buildSectionTitle(String title) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),

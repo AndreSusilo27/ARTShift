@@ -76,7 +76,7 @@ class ShiftTeamPage extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
-          elevation: 8, // Efek elevasi agar lebih elegan
+          elevation: 8,
           title: Row(
             children: [
               CircleAvatar(

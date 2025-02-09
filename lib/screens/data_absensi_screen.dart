@@ -158,6 +158,7 @@ class DataAbsensiScreen extends StatelessWidget {
         const SnackBar(
           content: Text('Tidak ada data absensi untuk diekspor'),
           backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
         ),
       );
       return;
@@ -205,25 +206,24 @@ class DataAbsensiScreen extends StatelessWidget {
       const SnackBar(
         content: Text('Data berhasil diekspor ke Excel'),
         backgroundColor: Colors.green,
+        behavior: SnackBarBehavior.floating,
       ),
     );
 
     _showFileSavedDialog(context, filePath);
   }
 
-// Fungsi untuk mengambil nilai dari Map yang ada pada field (hadir, keluar, izin, sakit)
   String _getValueFromMap(dynamic field) {
     if (field == null) {
       return '-';
     }
 
     if (field is Map) {
-      // Mengambil nilai dari Map jika ada field tertentu, misalnya 'waktu'
       var waktu = field['waktu'];
       return waktu ?? '-';
     }
 
-    return field.toString(); // Jika bukan Map, kembalikan nilai langsung
+    return field.toString();
   }
 
   @override

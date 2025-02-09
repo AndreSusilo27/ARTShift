@@ -142,7 +142,6 @@ class _FAQChatbotScreenState extends State<FAQChatbotScreen> {
                     var conversation = conversations[index];
                     var timestampData = conversation['timestamp'];
 
-                    // Memeriksa apakah 'timestamp' null atau tidak bertipe Timestamp
                     if (timestampData == null || timestampData is! Timestamp) {
                       return SizedBox();
                     }
@@ -151,7 +150,6 @@ class _FAQChatbotScreenState extends State<FAQChatbotScreen> {
                     String formattedTime = formatDate(timestamp);
                     String currentDay = getDayFromTimestamp(timestamp);
 
-                    // Cek apakah tanggalnya berubah untuk menambahkan pembatas
                     bool isNewDay = currentDay != lastDay;
                     if (isNewDay) {
                       lastDay = currentDay;

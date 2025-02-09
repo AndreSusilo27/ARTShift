@@ -37,8 +37,6 @@ class _FAQListWidgetState extends State<FAQListWidget> {
             style: TextStyle(fontSize: 14, color: Colors.grey),
           ),
           const SizedBox(height: 12),
-
-          /// Search Bar & Dropdown Filter
           Row(
             children: [
               Expanded(
@@ -74,12 +72,9 @@ class _FAQListWidgetState extends State<FAQListWidget> {
               ),
             ],
           ),
-
           const SizedBox(height: 12),
           const Divider(thickness: 1.5),
           const SizedBox(height: 8),
-
-          /// List FAQ with Filters
           Expanded(
             child: StreamBuilder(
               stream: FirebaseFirestore.instance.collection('faq').snapshots(),
@@ -99,7 +94,6 @@ class _FAQListWidgetState extends State<FAQListWidget> {
                   );
                 }
 
-                /// Filter berdasarkan search query dan status yang dipilih
                 var faqList = snapshot.data!.docs.where((doc) {
                   String question =
                       doc['question']?.toString().toLowerCase() ?? "";
@@ -217,7 +211,6 @@ class _FAQListWidgetState extends State<FAQListWidget> {
   }
 }
 
-/// Button Action Widget
 Widget _actionButton(
     {required IconData icon,
     required Color color,
@@ -236,21 +229,33 @@ Widget _actionButton(
   );
 }
 
-/// Function to Show Delete Dialog
 void showDeleteDialog(BuildContext context, String docId) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: const Text("Hapus FAQ"),
+      title: const Row(
+        children: [
+          Icon(
+            Icons.warning_amber_rounded,
+            color: Colors.red,
+            size: 28,
+          ),
+          SizedBox(width: 10),
+          Text(
+            "Konfirmasi Hapus FAQ",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          ),
+        ],
+      ),
       content: const Text("Apakah Anda yakin ingin menghapus FAQ ini?"),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text("Batal"),
+          child: const Text("Batal", style: TextStyle(color: Colors.green)),
         ),
         TextButton(
           onPressed: () {
-            showDeleteDialog(context, docId);
+            deleteFAQ(context, docId);
             Navigator.pop(context);
           },
           child: const Text("Hapus", style: TextStyle(color: Colors.red)),
@@ -260,13 +265,12 @@ void showDeleteDialog(BuildContext context, String docId) {
   );
 }
 
-/// Function to Delete FAQ with Snackbar
 void deleteFAQ(BuildContext context, String docId) {
   FirebaseFirestore.instance.collection('faq').doc(docId).delete().then((_) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: const Text("FAQ berhasil dihapus!"),
-        backgroundColor: Colors.red, // Warna merah
+        backgroundColor: Colors.green,
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -274,7 +278,7 @@ void deleteFAQ(BuildContext context, String docId) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text("Gagal menghapus: $error"),
-        backgroundColor: Colors.grey, // Warna abu-abu jika gagal
+        backgroundColor: Colors.grey,
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -298,7 +302,13 @@ void showEditDialog(BuildContext context, String docId, String currentAnswer,
     builder: (context) => StatefulBuilder(
       builder: (context, setState) {
         return AlertDialog(
-          title: const Text("Edit FAQ"),
+          title: const Center(
+            child: Text("Edit FAQ",
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blueAccent)),
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -342,17 +352,29 @@ void showEditDialog(BuildContext context, String docId, String currentAnswer,
             ],
           ),
           actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text("Batal"),
-            ),
-            TextButton(
-              onPressed: () {
-                updateFAQ(context, docId, answerController.text,
-                    requiresQuestion, status);
-                Navigator.pop(context);
-              },
-              child: const Text("Simpan", style: TextStyle(color: Colors.blue)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  style:
+                      TextButton.styleFrom(foregroundColor: Colors.redAccent),
+                  child: const Text('Batal',
+                      style: TextStyle(color: Colors.green)),
+                ),
+                const SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    updateFAQ(context, docId, answerController.text,
+                        requiresQuestion, status);
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blueAccent),
+                  child: const Text('Simpan',
+                      style: TextStyle(color: Colors.white)),
+                ),
+              ],
             ),
           ],
         );
@@ -373,6 +395,7 @@ void updateFAQ(BuildContext context, String docId, String newAnswer,
         const SnackBar(
           content: Text("FAQ berhasil diperbarui!"),
           backgroundColor: Colors.green,
+          behavior: SnackBarBehavior.floating,
         ),
       );
     }
@@ -382,6 +405,7 @@ void updateFAQ(BuildContext context, String docId, String newAnswer,
         SnackBar(
           content: Text("Gagal memperbarui FAQ: $error"),
           backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
         ),
       );
     }

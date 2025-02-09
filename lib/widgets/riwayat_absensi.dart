@@ -16,9 +16,8 @@ class _RiwayatAbsensiWidgetState extends State<RiwayatAbsensiWidget> {
   DateTime? startDate;
   DateTime? endDate;
   bool isDataVisible = false;
-  bool isAscending = false; // Menyimpan status pengurutan
+  bool isAscending = false;
 
-  // Fungsi untuk memilih tanggal
   Future<void> _selectDate(BuildContext context, bool isStartDate) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -72,12 +71,10 @@ class _RiwayatAbsensiWidgetState extends State<RiwayatAbsensiWidget> {
     List<Map<String, dynamic>> riwayatAbsensi = [];
 
     for (var doc in snapshot.docs) {
-      String tanggal = doc.id; // Mengambil tanggal dari documentId (tanggal)
+      String tanggal = doc.id;
 
-      // Mengonversi tanggal ke DateTime untuk perbandingan
       DateTime tanggalDoc = parseDate(tanggal);
 
-      // Memeriksa apakah tanggal berada dalam rentang yang dipilih
       if (startDate != null &&
           endDate != null &&
           tanggalDoc.isAfter(modifiedStartDate) &&
@@ -108,12 +105,11 @@ class _RiwayatAbsensiWidgetState extends State<RiwayatAbsensiWidget> {
           'tanggal': tanggal,
           'status': status,
           'warna': warna,
-          'dateTime': tanggalDoc, // Menyimpan objek DateTime
+          'dateTime': tanggalDoc,
         });
       }
     }
 
-    // Mengurutkan data berdasarkan tanggal
     riwayatAbsensi.sort((a, b) {
       if (isAscending) {
         return a['dateTime'].compareTo(b['dateTime']);
@@ -150,7 +146,6 @@ class _RiwayatAbsensiWidgetState extends State<RiwayatAbsensiWidget> {
             ),
             Divider(color: Colors.blue, thickness: 1),
             SizedBox(width: 10),
-
             Row(
               children: [
                 Expanded(
@@ -183,7 +178,6 @@ class _RiwayatAbsensiWidgetState extends State<RiwayatAbsensiWidget> {
                   ),
                 ),
                 SizedBox(width: 10),
-                // TextField untuk memilih tanggal akhir
                 Expanded(
                   child: GestureDetector(
                     onTap: () => _selectDate(context, false),
@@ -216,12 +210,9 @@ class _RiwayatAbsensiWidgetState extends State<RiwayatAbsensiWidget> {
               ],
             ),
             SizedBox(height: 16),
-            // Mengganti tombol urutkan data dengan dropdown, ditempatkan sejajar dengan tombol
             Row(
-              mainAxisAlignment: MainAxisAlignment
-                  .center, // Untuk memastikan sejajar di tengah
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Tombol untuk menampilkan atau menyembunyikan data
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -241,13 +232,11 @@ class _RiwayatAbsensiWidgetState extends State<RiwayatAbsensiWidget> {
                   child: Text(
                     isDataVisible ? 'Sembunyikan Data' : 'Tampilkan Data',
                     style: TextStyle(
-                      fontSize: 16, // Ukuran font yang lebih besar
-                      fontWeight:
-                          FontWeight.w600, // Menggunakan font yang lebih tebal
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
-
                 SizedBox(
                   width: 10,
                 ),
@@ -277,12 +266,9 @@ class _RiwayatAbsensiWidgetState extends State<RiwayatAbsensiWidget> {
                 ),
               ],
             ),
-
             SizedBox(height: 16),
-            // Menampilkan riwayat absensi jika tombol ditekan
             isDataVisible
                 ? Center(
-                    // Center the data table
                     child: FutureBuilder<List<Map<String, dynamic>>>(
                       future: tampilkanRiwayatAbsensi(),
                       builder: (context, snapshot) {
@@ -299,7 +285,6 @@ class _RiwayatAbsensiWidgetState extends State<RiwayatAbsensiWidget> {
                           return Text('Tidak ada riwayat absensi.');
                         }
 
-                        // Menampilkan tabel riwayat absensi
                         return SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: DataTable(
@@ -313,8 +298,7 @@ class _RiwayatAbsensiWidgetState extends State<RiwayatAbsensiWidget> {
                                   DataCell(
                                     Text(
                                       absensi['tanggal'],
-                                      textAlign:
-                                          TextAlign.center, // Center the text
+                                      textAlign: TextAlign.center,
                                     ),
                                   ),
                                   DataCell(
@@ -327,8 +311,7 @@ class _RiwayatAbsensiWidgetState extends State<RiwayatAbsensiWidget> {
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold),
-                                        textAlign:
-                                            TextAlign.center, // Center the text
+                                        textAlign: TextAlign.center,
                                       ),
                                     ),
                                   ),

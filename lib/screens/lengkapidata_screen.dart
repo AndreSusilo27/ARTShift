@@ -26,20 +26,17 @@ class _LengkapiDataScreenState extends State<LengkapiDataScreen> {
   }
 
   void _loadUserData() async {
-    // Mendapatkan email pengguna yang sedang login
     User? user = FirebaseAuth.instance.currentUser;
     String userEmail = user?.email ?? '';
 
     if (userEmail.isNotEmpty) {
       try {
-        // Mengambil data pengguna dari Firestore berdasarkan email
         DocumentSnapshot userDoc = await FirebaseFirestore.instance
             .collection('biodata')
             .doc(userEmail)
             .get();
 
         if (userDoc.exists) {
-          // Jika data ditemukan, auto-isi form dengan data yang ada
           setState(() {
             _jobController.text = userDoc['job'] ?? '';
             _phoneController.text = userDoc['phone'] ?? '';
@@ -58,12 +55,10 @@ class _LengkapiDataScreenState extends State<LengkapiDataScreen> {
   void _saveData() async {
     if (_formKey.currentState!.validate()) {
       try {
-        // Mendapatkan email pengguna yang sedang login
         User? user = FirebaseAuth.instance.currentUser;
-        String userEmail = user?.email ?? ''; // Ambil email user yang login
+        String userEmail = user?.email ?? '';
 
         if (userEmail.isNotEmpty) {
-          // Menyimpan data ke dalam koleksi 'biodata' dengan ID dokumen berdasarkan email
           await FirebaseFirestore.instance
               .collection('biodata')
               .doc(userEmail)
@@ -74,11 +69,9 @@ class _LengkapiDataScreenState extends State<LengkapiDataScreen> {
             'gender': _selectedGender,
             'address': _addressController.text,
             'created_at': FieldValue.serverTimestamp(),
-            'updated_at':
-                FieldValue.serverTimestamp(), // Menandakan waktu update
+            'updated_at': FieldValue.serverTimestamp(),
           });
 
-          // Menampilkan Snackbar setelah berhasil menyimpan data
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(

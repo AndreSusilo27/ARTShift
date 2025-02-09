@@ -53,12 +53,12 @@ class KelolaAkunKaryawanBloc
     final snackBar = SnackBar(
       content: Text("Sedang mengambil data..."),
       backgroundColor: Colors.orange,
+      behavior: SnackBarBehavior.floating,
     );
     event.scaffoldMessenger.showSnackBar(snackBar);
 
     await Future.delayed(Duration(seconds: 1, milliseconds: 950));
 
-    // Menutup Snackbar
     ScaffoldMessenger.of(event.context).hideCurrentSnackBar();
 
     try {
@@ -74,6 +74,7 @@ class KelolaAkunKaryawanBloc
           SnackBar(
             content: Text("Tidak ada data karyawan."),
             backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
           ),
         );
         return;
@@ -137,6 +138,7 @@ class KelolaAkunKaryawanBloc
           SnackBar(
             content: Text("Tidak ada data absensi yang diekspor."),
             backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
           ),
         );
         return;
@@ -156,6 +158,7 @@ class KelolaAkunKaryawanBloc
           SnackBar(
             content: Text("Data berhasil diekspor: $filePath"),
             backgroundColor: Colors.green,
+            behavior: SnackBarBehavior.floating,
           ),
         );
 
@@ -169,6 +172,7 @@ class KelolaAkunKaryawanBloc
           SnackBar(
             content: Text("Gagal menyimpan data."),
             backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
           ),
         );
       }
@@ -181,6 +185,7 @@ class KelolaAkunKaryawanBloc
         SnackBar(
           content: Text("Gagal mengekspor data: ${e.toString()}"),
           backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
         ),
       );
     }
@@ -248,7 +253,8 @@ class KelolaAkunKaryawanBloc
 
         // Hapus data dari koleksi 'biodata' berdasarkan email
         await firestore.collection('biodata').doc(event.email).delete();
-
+        // Hapus data dari koleksi 'chat_logs' berdasarkan email
+        await firestore.collection('chat_logs').doc(event.email).delete();
         // Hapus data dari koleksi 'shift_karyawan' berdasarkan email
         await firestore.collection('shift_karyawan').doc(event.email).delete();
 
